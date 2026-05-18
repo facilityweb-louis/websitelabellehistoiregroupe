@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Belle Histoire Groupe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=open-sauce-sans@300,400,500,600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { white: '#fffdfd', black: '#262726' },
+          fontFamily: {
+            display: ['"DM Serif Display"', 'Georgia', 'serif'],
+            serif:   ['Lora', 'Georgia', 'serif'],
+            sans:    ['"Open Sauce Sans"', 'Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    /* ============================================================
+       LA BELLE HISTOIRE GROUPE — Feuille de style intégrée
+       ============================================================ */
+
+    /* ---------- Base ---------- */
+    body {
+      margin: 0;
+      background: #fffdfd;
+      font-family: 'Open Sauce Sans', 'Inter', system-ui, -apple-system, sans-serif;
+      font-weight: 300;
+      color: #262726;
+      -webkit-font-smoothing: antialiased;
+    }
+    html { scroll-behavior: smooth; }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      font-weight: 400 !important;
+      letter-spacing: -0.01em;
+    }
+    .font-subtitle {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .logo-chip {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+
+    /* ---------- Animations ---------- */
+    @keyframes floatSlow  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes pulseGlow  { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: .55; transform: scale(1.08); } }
+    @keyframes slideUpFade{ from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes marquee    { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    .animate-floatSlow    { animation: floatSlow 6s ease-in-out infinite; }
+    .animate-pulseGlow    { animation: pulseGlow 7s ease-in-out infinite; }
+    .animate-slideUpFade  { animation: slideUpFade .9s ease forwards; }
+    .animate-marquee      { animation: marquee 45s linear infinite; }
+
+    .marquee-mask {
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useMemo, useEffect } = React;
+
+    /* ============================================================
+       DATA — Établissements (11)
+       Pour ajouter une photo : décommenter / ajouter
+       image: "assets/venues/<nom>.jpg"  juste après color
+       ============================================================ */
+    const allVenues = (lang) => [
+      { name: "Flavio", year: "1949", loc: "touquet", color: "#7A4A2B",
+        fr: { type: "Restaurant gastronomique", vibe: "Iconique & chargé d'histoire", description: "La légende du Touquet. Lieu où Serge Gainsbourg pianotait à ses débuts. Cuisine gastronomique dans un cadre chargé d'histoire.", tags: ["Iconique", "Gastronomique", "Patrimoine"] },
+        en: { type: "Fine dining", vibe: "Iconic & steeped in history", description: "Le Touquet's legend. Where Serge Gainsbourg played piano in his early days. Fine cuisine in a setting steeped in history.", tags: ["Iconic", "Fine dining", "Heritage"] },
+      },
+      { name: "L'Impasse", year: "1999", loc: "touquet", color: "#A6201C",
+        fr: { type: "Bar · Food · Music", vibe: "Le bar fondateur du groupe", description: "Le bar fondateur du groupe. Ambiance festive, tapas, cocktails et musique live. Cœur battant de La Belle Histoire depuis plus de 24 ans.", tags: ["Bar", "Musique", "Fondateur"] },
+        en: { type: "Bar · Food · Music", vibe: "The group's founding bar", description: "The bar that founded the group. Festive vibe, tapas, cocktails and live music. La Belle Histoire's beating heart for over 24 years.", tags: ["Bar", "Music", "Founder"] },
+      },
+      { name: "La Plage des Pirates", year: "2009", loc: "touquet", color: "#E30613",
+        fr: { type: "Restaurant / Bar de plage", vibe: "Esprit bord de mer & convivialité", description: "Bar-restaurant en bord de plage. Ambiance décontractée, fruits de mer, cocktails les pieds dans le sable.", tags: ["Plage", "Famille", "Terrasse"] },
+        en: { type: "Beach bar & restaurant", vibe: "Seaside spirit & conviviality", description: "Beachfront bar-restaurant. Relaxed atmosphere, seafood, cocktails with your feet in the sand.", tags: ["Beach", "Family", "Terrace"] },
+      },
+      { name: "Le Marcel", year: "2016", loc: "touquet", color: "#1A1A1A",
+        fr: { type: "Bar d'ambiance", vibe: "Rétro-chic & cocktails élaborés", description: "Bar au style rétro-chic. Cocktails élaborés, ambiance soignée, clientèle stylée. Le spot du soir par excellence.", tags: ["Cocktails", "Ambiance", "Soir"] },
+        en: { type: "Mood bar", vibe: "Retro-chic & crafted cocktails", description: "A retro-chic bar. Crafted cocktails, refined ambience, stylish crowd. The go-to evening spot.", tags: ["Cocktails", "Ambience", "Evening"] },
+      },
+      { name: "L'Atelier Éphémère", year: "2017", loc: "touquet", color: "#C9B68F",
+        fr: { type: "Restaurant chef-driven", vibe: "Concept créatif & changeant", description: "Concept créatif et changeant. Carte courte, produits du marché, cuisine inventive. L'établissement le plus chef-driven du groupe.", tags: ["Créatif", "Saison", "Chef"] },
+        en: { type: "Chef-driven restaurant", vibe: "Creative & ever-changing concept", description: "A creative, ever-changing concept. Short menu, market produce, inventive cuisine. The group's most chef-driven venue.", tags: ["Creative", "Seasonal", "Chef"] },
+      },
+      { name: "La Base Nord", year: "2018", loc: "touquet", color: "#7E8C7C",
+        fr: { type: "Brasserie moderne", vibe: "Brasserie moderne & grands volumes", description: "Brasserie moderne avec une belle carte de viandes et poissons frais. Cadre design industriel, idéal pour les séminaires et événements privés.", tags: ["Brasserie", "Événements", "Séminaires"] },
+        en: { type: "Modern brasserie", vibe: "Modern brasserie & large volumes", description: "Modern brasserie with a strong selection of meats and fresh fish. Industrial design, ideal for seminars and private events.", tags: ["Brasserie", "Events", "Seminars"] },
+      },
+      { name: "Caravane", year: "2022", loc: "touquet", color: "#2F5233",
+        fr: { type: "Restaurant festif", vibe: "Lifestyle, spontanéité & plaisir", description: "Concept voyageur et festif. Carte généreuse, couleurs chaudes, ambiance latine. L'un des plus récents succès du groupe.", tags: ["Festif", "Lifestyle", "Food"] },
+        en: { type: "Festive restaurant", vibe: "Lifestyle, spontaneity & pleasure", description: "A traveler's festive concept. Generous menu, warm colors, latin vibe. One of the group's most recent successes.", tags: ["Festive", "Lifestyle", "Food"] },
+      },
+      { name: "L'Amour", year: "2023", loc: "touquet", color: "#E2001A",
+        fr: { type: "Restaurant d'ambiance", vibe: "Intime, sensuel & premium", description: "Restaurant intime et sensuel. Décor sombre, partage de plats, accords mets-vins. Pour les soirées en amoureux.", tags: ["Signature", "Expérience", "Premium"] },
+        en: { type: "Mood restaurant", vibe: "Intimate, sensual & premium", description: "Intimate and sensual restaurant. Dark décor, shared plates, wine pairings. For lovers' evenings.", tags: ["Signature", "Experience", "Premium"] },
+      },
+      { name: "La Nonna", year: "2023", loc: "touquet", color: "#E8853A",
+        fr: { type: "Trattoria italienne", vibe: "Trattoria authentique romaine", description: "Trattoria authentique : pizzas, pastas fraîches, burrata. Décor chaleureux façon osteria romaine.", tags: ["Italien", "Nouveau", "Trattoria"] },
+        en: { type: "Italian trattoria", vibe: "Authentic Roman trattoria", description: "Authentic trattoria: pizzas, fresh pastas, burrata. Warm Roman osteria décor.", tags: ["Italian", "New", "Trattoria"] },
+      },
+      { name: "Tipi", year: "2024", loc: "meribel", color: "#C97F2A",
+        fr: { type: "Restaurant alpin", vibe: "Cuisine de montagne & cadre alpin", description: "Première expansion hors-Touquet. Restaurant alpin à Méribel, ouvert en 2024. Cuisine de montagne dans un cadre typique au cœur des pistes.", tags: ["Alpin", "Montagne", "Méribel"] },
+        en: { type: "Alpine restaurant", vibe: "Mountain cuisine & alpine setting", description: "First expansion outside Le Touquet. Alpine restaurant in Méribel, opened in 2024. Mountain cuisine in a typical setting at the heart of the slopes.", tags: ["Alpine", "Mountain", "Méribel"] },
+      },
+      { name: "Hardelot", year: lang === "en" ? "Soon" : "Bientôt", loc: "hardelot", color: "#0F766E",
+        fr: { type: "Restaurant — Ouverture prochaine", vibe: "Nouveau chapitre côte d'Opale", description: "Première implantation à Hardelot. Un restaurant signé La Belle Histoire Groupe verra prochainement le jour sur la côte d'Opale, dans l'esprit qui fait l'identité de la maison : élégance, hospitalité et générosité.", tags: ["Bientôt", "Côte d'Opale", "À venir"] },
+        en: { type: "Restaurant — Opening soon", vibe: "New Opal Coast chapter", description: "First location in Hardelot. A new restaurant by La Belle Histoire Groupe will soon open on the Opal Coast, in the spirit that defines the house: elegance, hospitality and generosity.", tags: ["Soon", "Opal Coast", "Upcoming"] },
+      },
+    ];
+
+    /* ============================================================
+       I18N — Dictionnaire FR / EN
+       ============================================================ */
+    const T = {
+      fr: {
+        headerTag: "Fondé en 1999 · Le Touquet · Hardelot · Méribel",
+        navGroup: "Le groupe", navVenues: "Établissements", navEvents: "Événements", navContact: "Contact",
+        ctaReserve: "Réserver", soon: "Bientôt",
+        filterAll: "Tout le groupe", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
+        discover: "Découvrir les lieux", eventsCta: "Privatisations & événements",
+        immersiveView: "Vue immersive",
+        immersiveSubtitle: { all: "Écosystème LBH", touquet: "Univers Le Touquet", hardelot: "Univers Hardelot", meribel: "Univers Méribel" },
+        venueWord: (n) => `${n} ${n > 1 ? "lieux" : "lieu"}`,
+        marqueeTitle: "Nos maisons", marqueeDest: "Le Touquet · Hardelot · Méribel",
+        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
+        venuesEyebrow: { all: "Les établissements", touquet: "Les établissements du Touquet", hardelot: "Hardelot · à venir", meribel: "L'adresse alpine" },
+        shortAll: "Tout",
+        eventsBadge: "Événements & groupes",
+        eventsTitle: {
+          all: "Un groupe, trois destinations, mille possibilités.",
+          touquet: "Le Touquet, terrain de jeu événementiel.",
+          hardelot: "Hardelot, l'événement avant tout le monde.",
+          meribel: "Votre événement en altitude.",
+        },
+        eventsDesc: {
+          all: "Du front de mer du Touquet aux sommets de Méribel, en passant par la côte d'Opale, le groupe accompagne mariages, séminaires, soirées privées et groupes sur mesure.",
+          touquet: "Mariages face à la mer, séminaires MICE, privatisations de plage ou de brasserie : le Touquet et ses 9 adresses du groupe couvrent tous les formats d'événement.",
+          hardelot: "Notre future adresse à Hardelot accueillera dès l'ouverture événements privés, mariages intimistes et soirées d'entreprise. Inscrivez-vous pour être informé en avant-première.",
+          meribel: "Séminaires au sommet, soirées d'entreprise dans un cadre alpin, privatisation de Tipi pour un moment hors du temps au cœur des 3 Vallées.",
+        },
+        eventsItems: {
+          all: ["Mer, côte d'Opale ou montagne", "Mariages, séminaires, incentives", "Offre cross-lieux coordonnée", "Formulaires contextualisés"],
+          touquet: ["Privatisation de La Base Nord", "Mariages à La Plage des Pirates", "Séminaires MICE", "Soirées privées multi-lieux"],
+          hardelot: ["Soirée de lancement", "Pré-réservations événements", "Mariages côte d'Opale", "Privatisation à l'ouverture"],
+          meribel: ["Privatisation de Tipi", "Séminaires au cœur des 3V", "Soirées corporate ski", "Groupes & incentives"],
+        },
+        parcoursLabel: "Exemple de parcours",
+        parcoursTitle: "Demande de privatisation",
+        parcoursDest: {
+          all: "1. Destination : Le Touquet, Hardelot ou Méribel",
+          touquet: "1. Destination : Le Touquet",
+          hardelot: "1. Destination : Hardelot (à venir)",
+          meribel: "1. Destination : Méribel",
+        },
+        parcoursStep2: "2. L'utilisateur choisit un établissement",
+        parcoursStep3: "3. Capacités & types d'événements disponibles",
+        parcoursStep4: "4. Formulaire contextualisé au lieu choisi",
+        eventsRequest: "Faire une demande d'événement",
+        contactEyebrow: "Contact",
+        contactTitle: "Donnons une identité digitale forte au groupe.",
+        contactDesc: "Une base Next.js connectée à un CMS, des pages établissements détaillées, des animations premium en GSAP et une filtration intelligente par destination : Le Touquet, Hardelot ou Méribel.",
+        formName: "Nom", formEmail: "Email",
+        formDestAny: "Destination — Indifférent",
+        formDestHardelot: "Hardelot (ouverture prochaine)",
+        formMsg: "Parlez-nous du projet", formSubmit: "Envoyer la demande",
+        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Fondé en 1999",
+        locContent: {
+          all: {
+            badge: "Le Touquet • Hardelot • Méribel • Collection d'expériences",
+            title: "Des lieux où l'on ne vient pas seulement consommer,",
+            subtitle: "mais vivre.",
+            intro: "Chaque établissement possède son identité, son rythme, son atmosphère. Du déjeuner au dernier verre, de la plage à la nuit, tout est pensé pour créer des moments forts, sincères et mémorables. Plus qu'un groupe, c'est une collection d'expériences.",
+            stats: [{ value: "10 +1", label: "maisons & ouverture prochaine" }, { value: "25+", label: "années d'histoire depuis 1999" }, { value: "3", label: "destinations : Le Touquet, Hardelot & Méribel" }],
+            sectionTitle: "Une collection de lieux avec leurs propres codes.",
+            sectionDesc: "Chaque adresse possède sa personnalité, son rythme, son ambiance et sa promesse. Explorez l'ensemble du groupe ou filtrez par destination.",
+          },
+          touquet: {
+            badge: "Le Touquet-Paris-Plage • Depuis 1949",
+            title: "Le Touquet,", subtitle: "le berceau d'une belle histoire.",
+            intro: "Station balnéaire premium, le Touquet-Paris-Plage est le territoire historique du groupe. De Flavio (1949) à La Nonna (2023), neuf adresses complémentaires rythment la vie de la station, entre front de mer, gastronomie, bars d'ambiance et lieux festifs.",
+            stats: [{ value: "9", label: "adresses au Touquet" }, { value: "1949", label: "la légende Flavio" }, { value: "1999", label: "fondation du groupe" }],
+            sectionTitle: "Les établissements du Touquet.",
+            sectionDesc: "Plage, gastronomie, bars, brasseries : le Touquet est un écosystème à part entière, où chaque lieu a trouvé sa place et son public.",
+          },
+          meribel: {
+            badge: "Méribel • Savoie • Depuis 2024",
+            title: "Méribel,", subtitle: "l'écriture d'un nouveau chapitre.",
+            intro: "Avec l'ouverture de Tipi en 2024, La Belle Histoire Groupe signe sa première expansion hors du Touquet. Direction les Alpes, au cœur du domaine des 3 Vallées, pour proposer l'hospitalité du groupe dans un cadre alpin d'exception.",
+            stats: [{ value: "1", label: "adresse alpine : Tipi" }, { value: "2024", label: "année d'ouverture" }, { value: "3V", label: "au cœur des 3 Vallées" }],
+            sectionTitle: "L'expansion alpine du groupe.",
+            sectionDesc: "Méribel marque une nouvelle page : l'esprit La Belle Histoire appliqué à la montagne, avec la même exigence et la même envie de créer des souvenirs.",
+          },
+          hardelot: {
+            badge: "Hardelot • Côte d'Opale • Ouverture prochaine",
+            title: "Hardelot,", subtitle: "le prochain chapitre s'écrit ici.",
+            intro: "À quelques kilomètres au sud du Touquet, Hardelot accueillera prochainement une nouvelle adresse du groupe. Une station confidentielle, des dunes, des pins, et bientôt un lieu signé La Belle Histoire Groupe.",
+            stats: [{ value: "Bientôt", label: "ouverture du restaurant" }, { value: "1", label: "adresse à venir" }, { value: "62", label: "côte d'Opale · Pas-de-Calais" }],
+            sectionTitle: "Hardelot, l'adresse en préparation.",
+            sectionDesc: "Le projet est en cours. Inscrivez-vous via le formulaire de contact pour être informé en avant-première de l'ouverture et des soirées de lancement.",
+          },
+        },
+      },
+      en: {
+        headerTag: "Founded in 1999 · Le Touquet · Hardelot · Méribel",
+        navGroup: "The group", navVenues: "Venues", navEvents: "Events", navContact: "Contact",
+        ctaReserve: "Book", soon: "Soon",
+        filterAll: "All venues", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
+        discover: "Discover venues", eventsCta: "Private events & MICE",
+        immersiveView: "Immersive view",
+        immersiveSubtitle: { all: "LBH Ecosystem", touquet: "Le Touquet world", hardelot: "Hardelot world", meribel: "Méribel world" },
+        venueWord: (n) => `${n} ${n > 1 ? "venues" : "venue"}`,
+        marqueeTitle: "Our houses", marqueeDest: "Le Touquet · Hardelot · Méribel",
+        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
+        venuesEyebrow: { all: "The venues", touquet: "Le Touquet venues", hardelot: "Hardelot · upcoming", meribel: "The alpine address" },
+        shortAll: "All",
+        eventsBadge: "Events & groups",
+        eventsTitle: {
+          all: "One group, three destinations, endless possibilities.",
+          touquet: "Le Touquet, an events playground.",
+          hardelot: "Hardelot, host your event before anyone else.",
+          meribel: "Your event at altitude.",
+        },
+        eventsDesc: {
+          all: "From Le Touquet's seafront to the peaks of Méribel, including the Opal Coast, the group hosts weddings, seminars, private parties and bespoke groups.",
+          touquet: "Weddings by the sea, MICE seminars, private buyouts of a beach or brasserie: Le Touquet and its 9 venues cover every event format.",
+          hardelot: "Our upcoming Hardelot venue will host private events, intimate weddings and corporate evenings from day one. Sign up for early access.",
+          meribel: "Seminars at the summit, corporate evenings in an alpine setting, full buyout of Tipi for a timeless moment in the heart of the 3 Vallées.",
+        },
+        eventsItems: {
+          all: ["Sea, Opal Coast or mountain", "Weddings, seminars, incentives", "Coordinated multi-venue offer", "Context-aware forms"],
+          touquet: ["Buyout of La Base Nord", "Weddings at La Plage des Pirates", "MICE seminars", "Multi-venue private evenings"],
+          hardelot: ["Launch party", "Event pre-bookings", "Opal Coast weddings", "Opening-day buyout"],
+          meribel: ["Buyout of Tipi", "Seminars in the 3 Valleys", "Corporate ski evenings", "Groups & incentives"],
+        },
+        parcoursLabel: "Example journey",
+        parcoursTitle: "Private event request",
+        parcoursDest: {
+          all: "1. Destination: Le Touquet, Hardelot or Méribel",
+          touquet: "1. Destination: Le Touquet",
+          hardelot: "1. Destination: Hardelot (upcoming)",
+          meribel: "1. Destination: Méribel",
+        },
+        parcoursStep2: "2. User chooses a venue",
+        parcoursStep3: "3. Capacities & available event types",
+        parcoursStep4: "4. Form tailored to the chosen venue",
+        eventsRequest: "Submit an event request",
+        contactEyebrow: "Contact",
+        contactTitle: "Let's give the group a powerful digital identity.",
+        contactDesc: "A Next.js base connected to a CMS, detailed venue pages, premium GSAP animations and smart filtering by destination: Le Touquet, Hardelot or Méribel.",
+        formName: "Name", formEmail: "Email",
+        formDestAny: "Destination — Any",
+        formDestHardelot: "Hardelot (upcoming)",
+        formMsg: "Tell us about the project", formSubmit: "Send request",
+        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Founded in 1999",
+        locContent: {
+          all: {
+            badge: "Le Touquet • Hardelot • Méribel • A collection of experiences",
+            title: "Places you don't just go to consume,", subtitle: "but to live.",
+            intro: "Each venue has its own identity, rhythm and atmosphere. From lunch to the last drink, from the beach to the night, everything is designed to create strong, sincere and memorable moments. More than a group, it's a collection of experiences.",
+            stats: [{ value: "10 +1", label: "houses & upcoming opening" }, { value: "25+", label: "years of history since 1999" }, { value: "3", label: "destinations: Le Touquet, Hardelot & Méribel" }],
+            sectionTitle: "A collection of places with their own codes.",
+            sectionDesc: "Each address has its own personality, rhythm, atmosphere and promise. Explore the entire group or filter by destination.",
+          },
+          touquet: {
+            badge: "Le Touquet-Paris-Plage • Since 1949",
+            title: "Le Touquet,", subtitle: "where the beautiful story began.",
+            intro: "A premium seaside resort, Le Touquet-Paris-Plage is the group's historic territory. From Flavio (1949) to La Nonna (2023), nine complementary venues animate the resort — from seafront to fine dining, ambient bars and festive spots.",
+            stats: [{ value: "9", label: "venues in Le Touquet" }, { value: "1949", label: "the Flavio legend" }, { value: "1999", label: "the group's founding" }],
+            sectionTitle: "The venues of Le Touquet.",
+            sectionDesc: "Beach, fine dining, bars, brasseries: Le Touquet is its own ecosystem, where every venue has found its place and its audience.",
+          },
+          meribel: {
+            badge: "Méribel • Savoie • Since 2024",
+            title: "Méribel,", subtitle: "writing a new chapter.",
+            intro: "With Tipi opening in 2024, La Belle Histoire Groupe signed its first expansion outside Le Touquet. Off to the Alps, in the heart of the 3 Vallées, bringing the group's hospitality to an exceptional alpine setting.",
+            stats: [{ value: "1", label: "alpine venue: Tipi" }, { value: "2024", label: "year of opening" }, { value: "3V", label: "in the 3 Vallées" }],
+            sectionTitle: "The group's alpine expansion.",
+            sectionDesc: "Méribel turns a new page: the La Belle Histoire spirit applied to the mountain, with the same standards and the same desire to create memories.",
+          },
+          hardelot: {
+            badge: "Hardelot • Opal Coast • Opening soon",
+            title: "Hardelot,", subtitle: "the next chapter starts here.",
+            intro: "A few kilometers south of Le Touquet, Hardelot will soon host a new venue from the group. A confidential resort, dunes, pines — and soon a place signed La Belle Histoire Groupe.",
+            stats: [{ value: "Soon", label: "restaurant opening" }, { value: "1", label: "upcoming venue" }, { value: "62", label: "Opal Coast · Pas-de-Calais" }],
+            sectionTitle: "Hardelot, the venue in preparation.",
+            sectionDesc: "The project is underway. Sign up via the contact form to be notified first about the opening and launch parties.",
+          },
+        },
+      },
+    };
+
+    /* ============================================================
+       COMPONENT
+       ============================================================ */
+    function LBHHomepage() {
+      const [location, setLocation] = useState("all");
+      const [lang, setLang] = useState(() => {
+        if (typeof window === "undefined") return "fr";
+        const saved = localStorage.getItem("lbh-lang");
+        if (saved === "fr" || saved === "en") return saved;
+        return navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "fr";
+      });
+
+      useEffect(() => {
+        localStorage.setItem("lbh-lang", lang);
+        document.documentElement.lang = lang;
+      }, [lang]);
+
+      const t = T[lang];
+      const venuesData = allVenues(lang);
+      const venues = useMemo(() => (location === "all" ? venuesData : venuesData.filter((v) => v.loc === location)), [location, lang]);
+      const content = t.locContent[location];
+
+      const LangToggle = () => (
+        <div className="flex items-center rounded-full border border-black/15 bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+          <button onClick={() => setLang("fr")} className={`rounded-full px-3 py-1.5 transition ${lang === "fr" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "fr"}>FR</button>
+          <button onClick={() => setLang("en")} className={`rounded-full px-3 py-1.5 transition ${lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "en"}>EN</button>
+        </div>
+      );
+
+      return (
+        <div className="min-h-screen bg-white text-neutral-900 selection:bg-black selection:text-white">
+
+          <header className="sticky top-0 z-50 border-b border-black/10 bg-white/80 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
+              <a href="#" className="flex items-center gap-3">
+                <img src="assets/lbh-seal.png" alt="" aria-hidden="true" className="h-11 w-11 object-contain" />
+                <div>
+                  <img src="assets/lbh-wordmark.png" alt="La Belle Histoire Groupe" className="hidden h-[18px] object-contain md:block" />
+                  <div className="text-lg font-semibold tracking-wide text-black md:hidden">La Belle Histoire Groupe</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.3em] text-neutral-500">{t.headerTag}</div>
+                </div>
+              </a>
+              <nav className="hidden items-center gap-8 text-sm text-neutral-600 lg:flex">
+                <a href="#group" className="transition hover:text-black">{t.navGroup}</a>
+                <a href="#venues" className="transition hover:text-black">{t.navVenues}</a>
+                <a href="#events" className="transition hover:text-black">{t.navEvents}</a>
+                <a href="#contact" className="transition hover:text-black">{t.navContact}</a>
+              </nav>
+              <div className="flex items-center gap-3">
+                <LangToggle />
+                <a href="reserver.html" className="rounded-full bg-black px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:scale-[1.03] hover:shadow-xl md:px-7">{t.ctaReserve}</a>
+              </div>
+            </div>
+          </header>
+
+          <section className="relative overflow-hidden">
+            <video autoPlay muted loop playsInline poster="https://images.pexels.com/videos/36805136/pictures/preview-0.jpg" className="absolute inset-0 h-full w-full object-cover">
+              <source src="https://videos.pexels.com/video-files/36805136/15596007_1920_1080_50fps.mp4" type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.4),transparent_30%),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.3),transparent_25%)]" />
+            <div className="absolute left-[10%] top-24 h-56 w-56 rounded-full bg-white/50 blur-3xl animate-pulseGlow" />
+            <div className="absolute bottom-8 right-[10%] h-64 w-64 rounded-full bg-white/40 blur-3xl animate-pulseGlow" />
+            <img src="assets/lbh-seal.png" alt="" aria-hidden="true" className="pointer-events-none absolute -left-40 top-1/2 hidden w-[520px] -translate-y-1/2 select-none opacity-[0.07] lg:block" />
+
+            <div className="relative mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:px-10">
+              <div key={`${location}-${lang}`} className="animate-slideUpFade">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-black/15 bg-black/5 px-4 py-2 text-xs uppercase tracking-[0.28em] text-neutral-700">{content.badge}</div>
+                <h1 className="max-w-4xl text-5xl leading-[1] tracking-tight text-black md:text-7xl">
+                  {content.title}
+                  <span className="font-subtitle mt-2 block text-4xl text-neutral-500 md:text-5xl">{content.subtitle}</span>
+                </h1>
+                <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-600 md:text-lg">{content.intro}</p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <button onClick={() => setLocation("all")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "all" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterAll}</button>
+                  <button onClick={() => setLocation("touquet")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "touquet" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterTouquet}</button>
+                  <button onClick={() => setLocation("hardelot")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "hardelot" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterHardelot} <span className="ml-1 text-[10px] uppercase tracking-wider opacity-70">{t.soon}</span></button>
+                  <button onClick={() => setLocation("meribel")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "meribel" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterMeribel}</button>
+                </div>
+
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
+                  <a href="#venues" className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:translate-y-[-1px]">{t.discover}</a>
+                  <a href="#events" className="rounded-full border border-black/15 bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-neutral-100">{t.eventsCta}</a>
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="animate-floatSlow rounded-[2rem] border border-black/10 bg-white p-4 shadow-2xl">
+                  <div className="rounded-[1.75rem] border border-black/10 bg-neutral-50 p-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <div>
+                        <div className="text-xs uppercase tracking-[0.25em] text-neutral-500">{t.immersiveView}</div>
+                        <div className="mt-1 text-xl font-medium text-black">{t.immersiveSubtitle[location]}</div>
+                      </div>
+                      <div className="rounded-full border border-emerald-600/30 bg-emerald-600/10 px-3 py-1 text-xs text-emerald-700">{t.venueWord(venues.length)}</div>
+                    </div>
+
+                    <div className="grid gap-3">
+                      {venues.slice(0, 3).map((venue) => (
+                        <details key={venue.name} className="group rounded-2xl border border-black/10 bg-white p-4 transition open:bg-neutral-50" style={{ borderLeft: `2px solid ${venue.color}` }}>
+                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              {venue.image ? (
+                                <img src={venue.image} alt="" aria-hidden="true" loading="lazy" className="h-12 w-12 flex-shrink-0 rounded-xl object-cover" />
+                              ) : (
+                                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: `${venue.color}1a` }}>
+                                  <span className="logo-chip text-xs" style={{ color: venue.color }}>{venue.name.slice(0, 2)}</span>
+                                </div>
+                              )}
+                              <div>
+                                <div className="text-lg text-black">{venue.name}</div>
+                                <div className="font-subtitle text-sm text-neutral-500">{venue[lang].vibe}</div>
+                              </div>
+                            </div>
+                            <div className="rounded-full border border-black/10 px-3 py-1 text-xs text-neutral-500 transition group-open:rotate-45">+</div>
+                          </summary>
+                          <div className="pt-4 text-sm leading-6 text-neutral-700">
+                            {venue[lang].description}
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {venue[lang].tags.map((tag) => (<span key={tag} className="rounded-full border border-black/10 px-3 py-1 text-xs text-neutral-600">{tag}</span>))}
+                            </div>
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section aria-label={t.marqueeTitle} className="border-y border-black/10 bg-white">
+            <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
+              <div className="mb-4 flex items-center justify-between gap-6">
+                <div className="text-[10px] uppercase tracking-[0.3em] text-neutral-500">{t.marqueeTitle}</div>
+                <div className="hidden h-px flex-1 bg-black/10 md:block" />
+                <div className="hidden text-[10px] uppercase tracking-[0.3em] text-neutral-500 md:block">{t.marqueeDest}</div>
+              </div>
+              <div className="marquee-mask relative overflow-hidden">
+                <div className="animate-marquee flex w-max items-center gap-12 whitespace-nowrap py-3">
+                  {[...venuesData, ...venuesData].map((v, i) => (
+                    <div key={`mq-${i}`} className="flex items-center gap-12">
+                      <span className="logo-chip text-2xl text-black md:text-3xl" style={{ borderBottom: `2px solid ${v.color}`, paddingBottom: '2px' }}>
+                        {v.name}
+                      </span>
+                      <span className="text-neutral-300" aria-hidden="true">✦</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="group" className="border-y border-black/10 bg-neutral-50">
+            <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 md:grid-cols-3 lg:px-10">
+              {content.stats.map((item) => (
+                <div key={item.label} className="rounded-3xl border border-black/10 bg-white p-6">
+                  <div className="text-4xl font-semibold tracking-tight text-black">{item.value}</div>
+                  <div className="mt-2 text-sm uppercase tracking-[0.2em] text-neutral-500">{item.label}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section id="venues" className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
+            <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr]">
+              <div>
+                <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.venuesEyebrow[location]}</div>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-black md:text-5xl">{content.sectionTitle}</h2>
+                <p className="mt-5 max-w-xl text-base leading-7 text-neutral-600">{content.sectionDesc}</p>
+
+                <div className="mt-8 flex flex-wrap gap-2">
+                  <button onClick={() => setLocation("all")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "all" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.shortAll} ({venuesData.length})</button>
+                  <button onClick={() => setLocation("touquet")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "touquet" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterTouquet} ({venuesData.filter((v) => v.loc === "touquet").length})</button>
+                  <button onClick={() => setLocation("hardelot")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "hardelot" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterHardelot} ({venuesData.filter((v) => v.loc === "hardelot").length})</button>
+                  <button onClick={() => setLocation("meribel")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "meribel" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterMeribel} ({venuesData.filter((v) => v.loc === "meribel").length})</button>
+                </div>
+              </div>
+
+              <div key={`grid-${location}-${lang}`} className="grid gap-4 md:grid-cols-2">
+                {venues.map((venue) => (
+                  <div key={venue.name} className="group animate-slideUpFade overflow-hidden rounded-[1.75rem] border border-black/10 bg-white transition duration-300 hover:-translate-y-1 hover:border-black/30 hover:shadow-lg" style={{ borderTop: `2px solid ${venue.color}` }}>
+                    {venue.image ? (
+                      <div className="relative h-56 overflow-hidden">
+                        <img src={venue.image} alt={venue.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                        <div className="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 text-xs text-neutral-700 backdrop-blur-sm">{venue.year}</div>
+                        <div className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur-sm">{t.chip[venue.loc]}</div>
+                      </div>
+                    ) : (
+                      <div className="relative h-56 overflow-hidden" style={{ background: `linear-gradient(135deg, ${venue.color}22 0%, ${venue.color}11 100%)` }}>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="logo-chip text-4xl" style={{ color: venue.color, opacity: 0.55 }}>{venue.name}</span>
+                        </div>
+                        <div className="absolute left-4 top-4 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-500">{venue.year}</div>
+                        <div className="absolute right-4 top-4 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-500">{t.chip[venue.loc]}</div>
+                      </div>
+                    )}
+                    <div className="p-5">
+                      <h3 className="text-3xl tracking-tight text-black">{venue.name}</h3>
+                      <div className="font-subtitle mt-2 text-sm text-neutral-500">{venue[lang].type}</div>
+                      <p className="mt-4 text-sm leading-6 text-neutral-700">{venue[lang].description}</p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {venue[lang].tags.map((tag) => (<span key={tag} className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600">{tag}</span>))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section id="events" className="mx-auto max-w-7xl px-6 pb-24 lg:px-10">
+            <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-neutral-50">
+              <div className="grid lg:grid-cols-[1fr_.9fr]">
+                <div className="p-8 md:p-12">
+                  <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.eventsBadge}</div>
+                  <h2 className="mt-4 text-3xl font-semibold tracking-tight text-black md:text-5xl">{t.eventsTitle[location]}</h2>
+                  <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-600">{t.eventsDesc[location]}</p>
+
+                  <div className="mt-8 grid gap-4 md:grid-cols-2">
+                    {t.eventsItems[location].map((item) => (
+                      <div key={item} className="rounded-2xl border border-black/10 bg-white p-4 text-sm text-neutral-700">{item}</div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t border-black/10 bg-white p-8 lg:border-l lg:border-t-0 md:p-12">
+                  <div className="rounded-[1.5rem] border border-black/10 bg-neutral-50 p-5">
+                    <div className="text-sm text-neutral-500">{t.parcoursLabel}</div>
+                    <div className="mt-2 text-2xl font-medium text-black">{t.parcoursTitle}</div>
+                    <div className="mt-6 space-y-3">
+                      {[t.parcoursDest[location], t.parcoursStep2, t.parcoursStep3, t.parcoursStep4].map((step) => (
+                        <div key={step} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-neutral-700">{step}</div>
+                      ))}
+                    </div>
+                    <a href="evenements.html" className="mt-6 inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:translate-y-[-1px]">
+                      {t.eventsRequest}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="contact" className="border-t border-black/10 bg-neutral-50">
+            <div className="mx-auto grid max-w-7xl gap-8 px-6 py-20 lg:grid-cols-[1fr_.8fr] lg:px-10">
+              <div>
+                <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.contactEyebrow}</div>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-black md:text-5xl">{t.contactTitle}</h2>
+                <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-600">{t.contactDesc}</p>
+              </div>
+              <form className="rounded-[2rem] border border-black/10 bg-white p-6 md:p-8">
+                <div className="grid gap-4">
+                  <input className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0 placeholder:text-neutral-400" placeholder={t.formName} />
+                  <input className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0 placeholder:text-neutral-400" placeholder={t.formEmail} />
+                  <select value={location} onChange={(e) => setLocation(e.target.value)} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0">
+                    <option value="all">{t.formDestAny}</option>
+                    <option value="touquet">{t.filterTouquet}</option>
+                    <option value="hardelot">{t.formDestHardelot}</option>
+                    <option value="meribel">{t.filterMeribel}</option>
+                  </select>
+                  <textarea rows={5} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0 placeholder:text-neutral-400" placeholder={t.formMsg}></textarea>
+                  <button type="button" className="rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:scale-[1.01]">{t.formSubmit}</button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <footer className="border-t border-black/10 bg-white px-6 py-10 text-center text-sm text-neutral-500">
+            <img src="assets/lbh-seal.png" alt="La Belle Histoire Groupe" className="mx-auto mb-4 h-16 w-16 object-contain opacity-80" />
+            <img src="assets/lbh-wordmark.png" alt="" aria-hidden="true" className="mx-auto mb-3 h-4 object-contain opacity-70" />
+            <div>{t.footerTag}</div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<LBHHomepage />);
+  </script>
+</body>
+</html>
