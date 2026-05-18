@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réserver — La Belle Histoire Groupe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=open-sauce-sans@300,400,500,600&display=swap" rel="stylesheet">
+
+  <script src="tailwind.config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState, useMemo, useEffect } = React;
+
+    const allVenues = [
+      { name: "Flavio", year: "1949", loc: "touquet", color: "#7A4A2B",
+        fr: { type: "Restaurant gastronomique", vibe: "Iconique & chargé d'histoire" },
+        en: { type: "Fine dining", vibe: "Iconic & steeped in history" } },
+      { name: "L'Impasse", year: "1999", loc: "touquet", color: "#A6201C",
+        fr: { type: "Bar · Food · Music", vibe: "Bar fondateur du groupe" },
+        en: { type: "Bar · Food · Music", vibe: "The group's founding bar" } },
+      { name: "La Plage des Pirates", year: "2009", loc: "touquet", color: "#E30613",
+        fr: { type: "Restaurant / Bar de plage", vibe: "Bord de mer" },
+        en: { type: "Beach bar & restaurant", vibe: "Seaside" } },
+      { name: "Le Marcel", year: "2016", loc: "touquet", color: "#1A1A1A",
+        fr: { type: "Bar d'ambiance", vibe: "Rétro-chic" },
+        en: { type: "Mood bar", vibe: "Retro-chic" } },
+      { name: "L'Atelier Éphémère", year: "2017", loc: "touquet", color: "#C9B68F",
+        fr: { type: "Restaurant chef-driven", vibe: "Concept créatif" },
+        en: { type: "Chef-driven restaurant", vibe: "Creative concept" } },
+      { name: "La Base Nord", year: "2018", loc: "touquet", color: "#7E8C7C",
+        fr: { type: "Brasserie moderne", vibe: "Grands volumes & séminaires" },
+        en: { type: "Modern brasserie", vibe: "Large volumes & seminars" } },
+      { name: "Caravane", year: "2022", loc: "touquet", color: "#2F5233",
+        fr: { type: "Restaurant festif", vibe: "Lifestyle & festif" },
+        en: { type: "Festive restaurant", vibe: "Lifestyle & festive" } },
+      { name: "L'Amour", year: "2023", loc: "touquet", color: "#E2001A",
+        fr: { type: "Restaurant d'ambiance", vibe: "Intime & sensuel" },
+        en: { type: "Mood restaurant", vibe: "Intimate & sensual" } },
+      { name: "La Nonna", year: "2023", loc: "touquet", color: "#E8853A",
+        fr: { type: "Trattoria italienne", vibe: "Osteria romaine" },
+        en: { type: "Italian trattoria", vibe: "Roman osteria" } },
+      { name: "Tipi", year: "2024", loc: "meribel", color: "#C97F2A",
+        fr: { type: "Restaurant alpin", vibe: "Cuisine de montagne" },
+        en: { type: "Alpine restaurant", vibe: "Mountain cuisine" } },
+      { name: "Hardelot", year: "—", loc: "hardelot", color: "#0F766E",
+        fr: { type: "Restaurant — Ouverture prochaine", vibe: "Côte d'Opale · à venir" },
+        en: { type: "Restaurant — Opening soon", vibe: "Opal Coast · upcoming" } },
+    ];
+
+    const T = {
+      fr: {
+        title: "Réserver — La Belle Histoire Groupe",
+        headerTag: "Fondé en 1999 · Le Touquet · Hardelot · Méribel",
+        navGroup: "Le groupe", navVenues: "Établissements", navEvents: "Événements", navContact: "Contact",
+        back: "← Retour", badge: "Réservation en ligne",
+        h1: "Réservez votre table.", h1Sub: "Un lieu, une date, un souvenir à venir.",
+        intro: "Choisissez l'établissement, la date et l'heure. La connexion à notre système de gestion sera activée prochainement pour confirmer automatiquement votre réservation.",
+        step1: "Étape 1", step1Title: "Choisissez un établissement",
+        step2: "Étape 2", step2Title: "Détails de votre réservation",
+        all: "Tout", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
+        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
+        selectFirst: "Sélectionnez d'abord un établissement à gauche pour continuer.",
+        selectedLabel: "Lieu sélectionné", change: "Changer",
+        date: "Date", time: "Heure", guests: "Nombre de convives",
+        guestsSingular: "personne", guestsPlural: "personnes",
+        groupNote: "Pour un groupe de plus de 20 personnes, contactez-nous directement.",
+        firstName: "Prénom", lastName: "Nom", email: "Email", phone: "Téléphone",
+        notes: "Allergies, occasion spéciale, demandes particulières (optionnel)",
+        submit: "Réserver", sending: "Envoi en cours…", sent: "Demande envoyée ✓",
+        successPrefix: "Votre demande a bien été enregistrée. Une confirmation vous sera envoyée à",
+        successSuffix: "dès que la connexion Overfull sera activée.",
+        apiNotice: "Le formulaire est opérationnel côté front ; le payload sera envoyé à",
+        apiNoticeBold: "API Overfull — intégration à venir.",
+        apiNoticeAfter: "une fois la clé API configurée.",
+        unavailable: "Réservation indisponible — ouverture prochaine",
+        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Fondé en 1999",
+      },
+      en: {
+        title: "Book — La Belle Histoire Groupe",
+        headerTag: "Founded in 1999 · Le Touquet · Hardelot · Méribel",
+        navGroup: "The group", navVenues: "Venues", navEvents: "Events", navContact: "Contact",
+        back: "← Back", badge: "Online booking",
+        h1: "Book your table.", h1Sub: "One place, one date, a memory in the making.",
+        intro: "Choose the venue, the date and the time. Our management system connection will be activated shortly to automatically confirm your booking.",
+        step1: "Step 1", step1Title: "Choose a venue",
+        step2: "Step 2", step2Title: "Booking details",
+        all: "All", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
+        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
+        selectFirst: "First select a venue on the left to continue.",
+        selectedLabel: "Selected venue", change: "Change",
+        date: "Date", time: "Time", guests: "Number of guests",
+        guestsSingular: "guest", guestsPlural: "guests",
+        groupNote: "For a party of more than 20 guests, please contact us directly.",
+        firstName: "First name", lastName: "Last name", email: "Email", phone: "Phone",
+        notes: "Allergies, special occasion, specific requests (optional)",
+        submit: "Book", sending: "Sending…", sent: "Request sent ✓",
+        successPrefix: "Your request has been recorded. A confirmation will be sent to",
+        successSuffix: "as soon as the Overfull connection is activated.",
+        apiNotice: "The form is operational on the front-end; the payload will be sent to",
+        apiNoticeBold: "Overfull API — integration coming.",
+        apiNoticeAfter: "once the API key is configured.",
+        unavailable: "Booking unavailable — opening soon",
+        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Founded in 1999",
+      },
+    };
+
+    function ReservationPage() {
+      const [lang, setLang] = useState(() => {
+        if (typeof window === "undefined") return "fr";
+        const saved = localStorage.getItem("lbh-lang");
+        if (saved === "fr" || saved === "en") return saved;
+        return navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "fr";
+      });
+
+      useEffect(() => {
+        localStorage.setItem("lbh-lang", lang);
+        document.documentElement.lang = lang;
+        document.title = T[lang].title;
+      }, [lang]);
+
+      const t = T[lang];
+
+      const [location, setLocation] = useState("all");
+      const [selectedVenue, setSelectedVenue] = useState(null);
+      const [date, setDate] = useState("");
+      const [time, setTime] = useState("");
+      const [guests, setGuests] = useState(2);
+      const [firstName, setFirstName] = useState("");
+      const [lastName, setLastName] = useState("");
+      const [email, setEmail] = useState("");
+      const [phone, setPhone] = useState("");
+      const [notes, setNotes] = useState("");
+      const [status, setStatus] = useState(null);
+
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const etab = params.get("etab");
+        if (etab) {
+          const match = allVenues.find((v) => v.name.toLowerCase() === etab.toLowerCase());
+          if (match) { setSelectedVenue(match); setLocation(match.loc); }
+        }
+      }, []);
+
+      const venues = useMemo(() => (location === "all" ? allVenues : allVenues.filter((v) => v.loc === location)), [location]);
+      const timeSlots = ["12:00", "12:30", "13:00", "13:30", "14:00", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
+
+      const isHardelot = selectedVenue?.loc === "hardelot";
+      const canSubmit = selectedVenue && !isHardelot && date && time && guests > 0 && firstName && lastName && email && phone;
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        if (!canSubmit) return;
+        setStatus("pending");
+        // TODO: Intégration API Overfull
+        // const response = await fetch("/api/overfull/reservations", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({
+        //     venue: selectedVenue.name, venueLocation: selectedVenue.loc,
+        //     date, time, guests,
+        //     customer: { firstName, lastName, email, phone }, notes,
+        //   }),
+        // });
+        // const data = await response.json();
+        setTimeout(() => setStatus("success"), 900);
+      }
+
+      const LangToggle = () => (
+        <div className="flex items-center rounded-full border border-black/15 bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+          <button onClick={() => setLang("fr")} className={`rounded-full px-3 py-1.5 transition ${lang === "fr" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "fr"}>FR</button>
+          <button onClick={() => setLang("en")} className={`rounded-full px-3 py-1.5 transition ${lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "en"}>EN</button>
+        </div>
+      );
+
+      return (
+        <div className="min-h-screen bg-white text-neutral-900 selection:bg-black selection:text-white">
+          <header className="sticky top-0 z-50 border-b border-black/10 bg-white/80 backdrop-blur-xl">
+            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
+              <a href="index.html" className="flex items-center gap-3">
+                <img src="assets/lbh-seal.png" alt="" aria-hidden="true" className="h-11 w-11 object-contain" />
+                <div>
+                  <img src="assets/lbh-wordmark.png" alt="La Belle Histoire Groupe" className="hidden h-[18px] object-contain md:block" />
+                  <div className="text-lg font-semibold tracking-wide text-black md:hidden">La Belle Histoire Groupe</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.3em] text-neutral-500">{t.headerTag}</div>
+                </div>
+              </a>
+              <nav className="hidden items-center gap-8 text-sm text-neutral-600 lg:flex">
+                <a href="index.html#group" className="transition hover:text-black">{t.navGroup}</a>
+                <a href="index.html#venues" className="transition hover:text-black">{t.navVenues}</a>
+                <a href="index.html#events" className="transition hover:text-black">{t.navEvents}</a>
+                <a href="index.html#contact" className="transition hover:text-black">{t.navContact}</a>
+              </nav>
+              <div className="flex items-center gap-3">
+                <LangToggle />
+                <a href="index.html" className="rounded-full border border-black/15 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-neutral-100">{t.back}</a>
+              </div>
+            </div>
+          </header>
+
+          <section className="border-b border-black/10 bg-neutral-50">
+            <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white px-4 py-2 text-xs uppercase tracking-[0.28em] text-neutral-700">{t.badge}</div>
+              <h1 className="max-w-3xl text-4xl leading-[1.05] tracking-tight text-black md:text-6xl">
+                {t.h1}
+                <span className="font-subtitle mt-2 block text-3xl text-neutral-500 md:text-4xl">{t.h1Sub}</span>
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-600">
+                {t.intro.split('.')[0]}.
+                <span className="mx-1 rounded-md bg-black px-2 py-0.5 text-xs font-medium text-white">Overfull</span>
+                {t.intro.split('.').slice(1).join('.')}
+              </p>
+            </div>
+          </section>
+
+          <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+            <div className="grid gap-12 lg:grid-cols-[1fr_1fr]">
+
+              <div>
+                <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.step1}</div>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-black md:text-3xl">{t.step1Title}</h2>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <button onClick={() => setLocation("all")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "all" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.all} ({allVenues.length})</button>
+                  <button onClick={() => setLocation("touquet")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "touquet" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterTouquet} ({allVenues.filter((v) => v.loc === "touquet").length})</button>
+                  <button onClick={() => setLocation("hardelot")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "hardelot" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterHardelot} ({allVenues.filter((v) => v.loc === "hardelot").length})</button>
+                  <button onClick={() => setLocation("meribel")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "meribel" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterMeribel} ({allVenues.filter((v) => v.loc === "meribel").length})</button>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {venues.map((venue) => {
+                    const isSelected = selectedVenue?.name === venue.name;
+                    return (
+                      <button
+                        key={venue.name}
+                        type="button"
+                        onClick={() => setSelectedVenue(venue)}
+                        className={`overflow-hidden rounded-2xl border text-left transition ${isSelected ? "border-black bg-black text-white" : "border-black/10 bg-white hover:border-black/30 hover:shadow-md"}`}
+                        style={!isSelected ? { borderLeft: `2px solid ${venue.color}` } : {}}
+                      >
+                        {venue.image && (
+                          <div className="relative h-32 overflow-hidden">
+                            <img src={venue.image} alt="" aria-hidden="true" loading="lazy" className="h-full w-full object-cover" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                          </div>
+                        )}
+                        <div className="p-4">
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <div className="text-sm font-medium">{venue.name}</div>
+                              <div className={`mt-1 text-xs ${isSelected ? "text-white/60" : "text-neutral-500"}`}>{venue[lang].type}</div>
+                            </div>
+                            <div className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-[0.15em] ${isSelected ? "border-white/30 text-white/80" : "border-black/10 text-neutral-500"}`}>
+                              {t.chip[venue.loc]}
+                            </div>
+                          </div>
+                          <div className={`font-subtitle mt-3 text-sm ${isSelected ? "text-white/70" : "text-neutral-500"}`}>{venue[lang].vibe}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <div className="sticky top-24">
+                  <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.step2}</div>
+                  <h2 className="mt-3 text-2xl font-semibold tracking-tight text-black md:text-3xl">{t.step2Title}</h2>
+
+                  {selectedVenue ? (
+                    <div className="mt-6 rounded-2xl border border-black/10 bg-neutral-50 p-4" style={{ borderLeft: `3px solid ${selectedVenue.color}` }}>
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <div className="text-sm uppercase tracking-[0.2em] text-neutral-500">{t.selectedLabel}</div>
+                          <div className="mt-1 text-xl font-semibold text-black">{selectedVenue.name}</div>
+                          <div className="text-sm text-neutral-600">{selectedVenue[lang].type} · {t.chip[selectedVenue.loc]}</div>
+                        </div>
+                        <button type="button" onClick={() => setSelectedVenue(null)} className="text-xs text-neutral-500 underline underline-offset-4 hover:text-black">{t.change}</button>
+                      </div>
+                      {isHardelot && (
+                        <div className="mt-3 rounded-xl border border-amber-600/30 bg-amber-50 px-3 py-2 text-xs text-amber-800">
+                          {t.unavailable}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mt-6 rounded-2xl border border-dashed border-black/20 bg-white p-6 text-sm text-neutral-500">
+                      {t.selectFirst}
+                    </div>
+                  )}
+
+                  <form onSubmit={handleSubmit} className="mt-6 rounded-[2rem] border border-black/10 bg-white p-6 md:p-8">
+                    <div className="grid gap-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <label className="block">
+                          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">{t.date}</span>
+                          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0" />
+                        </label>
+                        <label className="block">
+                          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">{t.time}</span>
+                          <select value={time} onChange={(e) => setTime(e.target.value)} required className="mt-2 w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none ring-0">
+                            <option value="">—</option>
+                            {timeSlots.map((tslot) => (<option key={tslot} value={tslot}>{tslot}</option>))}
+                          </select>
+                        </label>
+                      </div>
+
+                      <label className="block">
+                        <span className="text-xs uppercase tracking-[0.2em] text-neutral-500">{t.guests}</span>
+                        <div className="mt-2 flex items-center gap-2 rounded-2xl border border-black/10 bg-white px-2 py-1">
+                          <button type="button" onClick={() => setGuests(Math.max(1, guests - 1))} className="h-10 w-10 rounded-xl border border-black/10 text-lg text-neutral-700 transition hover:bg-neutral-100">−</button>
+                          <div className="flex-1 text-center text-base font-medium text-black">{guests} {guests > 1 ? t.guestsPlural : t.guestsSingular}</div>
+                          <button type="button" onClick={() => setGuests(Math.min(20, guests + 1))} className="h-10 w-10 rounded-xl border border-black/10 text-lg text-neutral-700 transition hover:bg-neutral-100">+</button>
+                        </div>
+                        <div className="mt-1 text-[11px] text-neutral-500">{t.groupNote}</div>
+                      </label>
+
+                      <div className="mt-2 grid grid-cols-2 gap-3">
+                        <input value={firstName} onChange={(e) => setFirstName(e.target.value)} required className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none placeholder:text-neutral-400" placeholder={t.firstName} />
+                        <input value={lastName} onChange={(e) => setLastName(e.target.value)} required className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none placeholder:text-neutral-400" placeholder={t.lastName} />
+                      </div>
+                      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none placeholder:text-neutral-400" placeholder={t.email} />
+                      <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none placeholder:text-neutral-400" placeholder={t.phone} />
+                      <textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-black outline-none placeholder:text-neutral-400" placeholder={t.notes}></textarea>
+
+                      <button type="submit" disabled={!canSubmit || status === "pending"} className={`rounded-full px-5 py-3 text-sm font-semibold transition ${canSubmit && status !== "pending" ? "bg-black text-white hover:scale-[1.01]" : "bg-neutral-200 text-neutral-500 cursor-not-allowed"}`}>
+                        {status === "pending" ? t.sending : status === "success" ? t.sent : t.submit}
+                      </button>
+
+                      {status === "success" && (
+                        <div className="animate-slideUpFade rounded-2xl border border-emerald-600/20 bg-emerald-50 p-4 text-sm text-emerald-800">
+                          {t.successPrefix} <strong>{email}</strong> {t.successSuffix}
+                        </div>
+                      )}
+
+                      <div className="mt-2 rounded-2xl border border-black/10 bg-neutral-50 p-3 text-[11px] text-neutral-500">
+                        <span className="font-medium text-neutral-700">{t.apiNoticeBold}</span> {t.apiNotice} <code className="rounded bg-black px-1 py-0.5 text-white">/api/overfull/reservations</code> {t.apiNoticeAfter}
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <footer className="border-t border-black/10 bg-white px-6 py-10 text-center text-sm text-neutral-500">
+            <img src="assets/lbh-seal.png" alt="La Belle Histoire Groupe" className="mx-auto mb-4 h-16 w-16 object-contain opacity-80" />
+            <img src="assets/lbh-wordmark.png" alt="" aria-hidden="true" className="mx-auto mb-3 h-4 object-contain opacity-70" />
+            <div>{t.footerTag}</div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<ReservationPage />);
+  </script>
+</body>
+</html>

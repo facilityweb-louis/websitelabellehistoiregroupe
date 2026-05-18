@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="title">Événements & Séminaires — La Belle Histoire Groupe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=open-sauce-sans@300,400,500,600&display=swap" rel="stylesheet">
+
+  <script src="tailwind.config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="min-h-screen bg-white text-neutral-900 selection:bg-black selection:text-white">
+
+  <header class="sticky top-0 z-50 border-b border-black/10 bg-white/80 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/lbh-seal.png" alt="" aria-hidden="true" class="h-11 w-11 object-contain" />
+        <div>
+          <img src="assets/lbh-wordmark.png" alt="La Belle Histoire Groupe" class="hidden h-[18px] object-contain md:block" />
+          <div class="text-lg font-semibold tracking-wide text-black md:hidden">La Belle Histoire Groupe</div>
+          <div class="mt-1 text-[10px] uppercase tracking-[0.3em] text-neutral-500" data-i18n="headerTag">Fondé en 1999 · Le Touquet · Hardelot · Méribel</div>
+        </div>
+      </a>
+      <nav class="hidden items-center gap-8 text-sm text-neutral-600 lg:flex">
+        <a href="index.html#group" class="transition hover:text-black" data-i18n="navGroup">Le groupe</a>
+        <a href="index.html#venues" class="transition hover:text-black" data-i18n="navVenues">Établissements</a>
+        <a href="index.html#events" class="transition hover:text-black" data-i18n="navEvents">Événements</a>
+        <a href="index.html#contact" class="transition hover:text-black" data-i18n="navContact">Contact</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <div class="flex items-center rounded-full border border-black/15 bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
+          <button id="lang-fr" class="rounded-full px-3 py-1.5 transition">FR</button>
+          <button id="lang-en" class="rounded-full px-3 py-1.5 transition">EN</button>
+        </div>
+        <a href="reserver.html" class="rounded-full bg-black px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:scale-[1.03] md:px-7" data-i18n="reserve">Réserver</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="border-b border-black/10 bg-neutral-50">
+    <div class="mx-auto max-w-7xl px-6 py-16 lg:px-10">
+      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white px-4 py-2 text-xs uppercase tracking-[0.28em] text-neutral-700" data-i18n="badge">
+        Événements · Séminaires · Privatisations
+      </div>
+      <h1 class="max-w-3xl text-4xl leading-[1.05] tracking-tight text-black md:text-6xl">
+        <span data-i18n="h1">Votre événement,</span>
+        <span class="font-subtitle mt-2 block text-3xl text-neutral-500 md:text-4xl" data-i18n="h1Sub">dans nos lieux d'exception.</span>
+      </h1>
+      <p class="mt-5 max-w-2xl text-base leading-7 text-neutral-600" data-i18n="intro">
+        Mariages, séminaires, soirées d'entreprise, cocktails, groupes : remplissez les quelques informations ci-dessous et notre équipe événementielle revient vers vous avec une proposition sur mesure.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 py-12 lg:px-10">
+    <div class="grid gap-6 lg:grid-cols-[.35fr_.65fr]">
+
+      <aside class="space-y-4">
+        <div class="rounded-[1.75rem] border border-black/10 bg-white p-6">
+          <div class="text-xs uppercase tracking-[0.2em] text-neutral-500" data-i18n="offerTitle">Ce que nous proposons</div>
+          <ul class="mt-4 space-y-3 text-sm text-neutral-700">
+            <li class="flex gap-3"><span class="text-black">—</span> <span data-i18n="offer1">Privatisation d'un ou plusieurs lieux</span></li>
+            <li class="flex gap-3"><span class="text-black">—</span> <span data-i18n="offer2">Séminaires résidentiels (avec hébergement)</span></li>
+            <li class="flex gap-3"><span class="text-black">—</span> <span data-i18n="offer3">Mariages face à la mer ou en altitude</span></li>
+            <li class="flex gap-3"><span class="text-black">—</span> <span data-i18n="offer4">Soirées corporate & incentives</span></li>
+            <li class="flex gap-3"><span class="text-black">—</span> <span data-i18n="offer5">Groupes sur mesure</span></li>
+          </ul>
+        </div>
+
+        <div class="rounded-[1.75rem] border border-black/10 bg-neutral-50 p-6">
+          <div class="text-xs uppercase tracking-[0.2em] text-neutral-500" data-i18n="destLabel">Trois destinations</div>
+          <div class="mt-3 space-y-3 text-sm">
+            <div>
+              <div class="font-medium text-black">Le Touquet-Paris-Plage</div>
+              <div class="text-neutral-600" data-i18n="destTouquet">9 adresses, du bord de mer à la brasserie moderne.</div>
+            </div>
+            <div>
+              <div class="font-medium text-black">Hardelot <span class="ml-1 rounded-full border border-emerald-600/30 bg-emerald-600/10 px-2 py-0.5 text-[10px] uppercase tracking-wider text-emerald-700" data-i18n="soonBadge">Bientôt</span></div>
+              <div class="text-neutral-600" data-i18n="destHardelot">Une nouvelle adresse côte d'Opale, ouverture prochaine.</div>
+            </div>
+            <div>
+              <div class="font-medium text-black">Méribel</div>
+              <div class="text-neutral-600" data-i18n="destMeribel">Tipi, au cœur des 3 Vallées.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-[1.75rem] border border-black/10 bg-white p-6">
+          <div class="text-xs uppercase tracking-[0.2em] text-neutral-500" data-i18n="helpLabel">Besoin d'aide ?</div>
+          <p class="mt-3 text-sm text-neutral-600" data-i18n="helpText">Si le formulaire ne s'affiche pas correctement, vous pouvez l'ouvrir en plein écran.</p>
+          <a href="https://app.miceoperations.com/widget/b5c89fdca779" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 rounded-full border border-black/15 bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-neutral-100">
+            <span data-i18n="helpCta">Ouvrir en plein écran</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </aside>
+
+      <div class="overflow-hidden rounded-[2rem] border border-black/10 bg-white shadow-sm">
+        <div class="flex items-center justify-between border-b border-black/10 bg-neutral-50 px-5 py-3">
+          <div class="text-xs uppercase tracking-[0.2em] text-neutral-500" data-i18n="formLabel">Formulaire de demande</div>
+          <div class="flex items-center gap-2 text-xs text-neutral-500">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span data-i18n="secured">Sécurisé via MICE Operations</span>
+          </div>
+        </div>
+        <iframe
+          src="https://app.miceoperations.com/widget/b5c89fdca779"
+          title="Formulaire événements - La Belle Histoire Groupe"
+          class="block w-full"
+          style="height: 1100px; border: 0;"
+          loading="lazy"
+          allow="clipboard-write"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-black/10 bg-white px-6 py-10 text-center text-sm text-neutral-500">
+    <img src="assets/lbh-seal.png" alt="La Belle Histoire Groupe" class="mx-auto mb-4 h-16 w-16 object-contain opacity-80" />
+    <img src="assets/lbh-wordmark.png" alt="" aria-hidden="true" class="mx-auto mb-3 h-4 object-contain opacity-70" />
+    <div data-i18n="footerTag">Le Touquet-Paris-Plage · Hardelot · Méribel · Fondé en 1999</div>
+  </footer>
+
+  <script>
+    (function () {
+      const T = {
+        fr: {
+          title: "Événements & Séminaires — La Belle Histoire Groupe",
+          headerTag: "Fondé en 1999 · Le Touquet · Hardelot · Méribel",
+          navGroup: "Le groupe", navVenues: "Établissements", navEvents: "Événements", navContact: "Contact",
+          reserve: "Réserver",
+          badge: "Événements · Séminaires · Privatisations",
+          h1: "Votre événement,", h1Sub: "dans nos lieux d'exception.",
+          intro: "Mariages, séminaires, soirées d'entreprise, cocktails, groupes : remplissez les quelques informations ci-dessous et notre équipe événementielle revient vers vous avec une proposition sur mesure.",
+          offerTitle: "Ce que nous proposons",
+          offer1: "Privatisation d'un ou plusieurs lieux",
+          offer2: "Séminaires résidentiels (avec hébergement)",
+          offer3: "Mariages face à la mer ou en altitude",
+          offer4: "Soirées corporate & incentives",
+          offer5: "Groupes sur mesure",
+          destLabel: "Trois destinations",
+          destTouquet: "9 adresses, du bord de mer à la brasserie moderne.",
+          destHardelot: "Une nouvelle adresse côte d'Opale, ouverture prochaine.",
+          destMeribel: "Tipi, au cœur des 3 Vallées.",
+          soonBadge: "Bientôt",
+          helpLabel: "Besoin d'aide ?",
+          helpText: "Si le formulaire ne s'affiche pas correctement, vous pouvez l'ouvrir en plein écran.",
+          helpCta: "Ouvrir en plein écran",
+          formLabel: "Formulaire de demande",
+          secured: "Sécurisé via MICE Operations",
+          footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Fondé en 1999",
+        },
+        en: {
+          title: "Events & Seminars — La Belle Histoire Groupe",
+          headerTag: "Founded in 1999 · Le Touquet · Hardelot · Méribel",
+          navGroup: "The group", navVenues: "Venues", navEvents: "Events", navContact: "Contact",
+          reserve: "Book",
+          badge: "Events · Seminars · Private buyouts",
+          h1: "Your event,", h1Sub: "in our exceptional venues.",
+          intro: "Weddings, seminars, corporate evenings, cocktails, groups: fill in the few details below and our events team will get back to you with a tailored proposal.",
+          offerTitle: "What we offer",
+          offer1: "Buyout of one or several venues",
+          offer2: "Residential seminars (with accommodation)",
+          offer3: "Weddings by the sea or in the mountains",
+          offer4: "Corporate evenings & incentives",
+          offer5: "Bespoke groups",
+          destLabel: "Three destinations",
+          destTouquet: "9 addresses, from seafront to modern brasserie.",
+          destHardelot: "A new address on the Opal Coast, opening soon.",
+          destMeribel: "Tipi, in the heart of the 3 Vallées.",
+          soonBadge: "Soon",
+          helpLabel: "Need help?",
+          helpText: "If the form does not display correctly, you can open it full-screen.",
+          helpCta: "Open full-screen",
+          formLabel: "Request form",
+          secured: "Secured via MICE Operations",
+          footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Founded in 1999",
+        },
+      };
+
+      function getInitialLang() {
+        const saved = localStorage.getItem("lbh-lang");
+        if (saved === "fr" || saved === "en") return saved;
+        return navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "fr";
+      }
+
+      function applyLang(lang) {
+        const dict = T[lang];
+        document.documentElement.lang = lang;
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (dict[key] !== undefined) {
+            if (el.tagName === "TITLE") {
+              document.title = dict[key];
+            } else {
+              el.textContent = dict[key];
+            }
+          }
+        });
+        const fr = document.getElementById("lang-fr");
+        const en = document.getElementById("lang-en");
+        if (fr && en) {
+          if (lang === "fr") {
+            fr.className = "rounded-full px-3 py-1.5 transition bg-black text-white";
+            en.className = "rounded-full px-3 py-1.5 transition text-neutral-500 hover:text-black";
+          } else {
+            en.className = "rounded-full px-3 py-1.5 transition bg-black text-white";
+            fr.className = "rounded-full px-3 py-1.5 transition text-neutral-500 hover:text-black";
+          }
+          fr.setAttribute("aria-pressed", String(lang === "fr"));
+          en.setAttribute("aria-pressed", String(lang === "en"));
+        }
+        localStorage.setItem("lbh-lang", lang);
+      }
+
+      const initialLang = getInitialLang();
+      document.addEventListener("DOMContentLoaded", function () {
+        applyLang(initialLang);
+        document.getElementById("lang-fr").addEventListener("click", () => applyLang("fr"));
+        document.getElementById("lang-en").addEventListener("click", () => applyLang("en"));
+      });
+    })();
+  </script>
+</body>
+</html>
