@@ -172,7 +172,7 @@
 
       const overfullUrl = selectedVenue && overfullKeys[selectedVenue.name]
         ? `https://app.overfull.fr/booking-v2?key_id=${overfullKeys[selectedVenue.name]}&source=Web&lang=${lang}`
-        : `https://app.overfull.fr/booking-v2?key_id=3FTsyFWDwyo&source=Web&lang=${lang}`;
+        : null;
 
       const isHardelot = selectedVenue?.loc === "hardelot";
       const canSubmit = selectedVenue && !isHardelot && date && time && guests > 0 && firstName && lastName && email && phone;
