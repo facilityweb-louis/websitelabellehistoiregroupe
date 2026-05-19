@@ -157,6 +157,23 @@
       const venues = useMemo(() => (location === "all" ? allVenues : allVenues.filter((v) => v.loc === location)), [location]);
       const timeSlots = ["12:00", "12:30", "13:00", "13:30", "14:00", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"];
 
+      const overfullKeys = {
+        "Flavio": "5fJxzz5Thse",
+        "L'Impasse": "3FTsyFWDwyo",
+        "La Plage des Pirates": "o3qtf7adZQ8",
+        "Le Marcel": "", // À obtenir
+        "L'Atelier Éphémère": "atcwXwcX5ze",
+        "La Base Nord": "3C6LYCRZX7a",
+        "Caravane": "3Hh4iorXmYs",
+        "L'Amour": "37tvcrCQsEA",
+        "La Nonna": "T2sQVirM9vJ",
+        "Tipi": "udwEjGqE2jp",
+      };
+
+      const overfullUrl = selectedVenue && overfullKeys[selectedVenue.name]
+        ? `https://app.overfull.fr/booking-v2?key_id=${overfullKeys[selectedVenue.name]}&source=Web&lang=${lang}`
+        : `https://app.overfull.fr/booking-v2?key_id=3FTsyFWDwyo&source=Web&lang=${lang}`;
+
       const isHardelot = selectedVenue?.loc === "hardelot";
       const canSubmit = selectedVenue && !isHardelot && date && time && guests > 0 && firstName && lastName && email && phone;
 
@@ -287,7 +304,8 @@
                       </div>
                     </div>
                     <iframe
-                      src="https://app.overfull.fr/booking-v2?key_id=3FTsyFWDwyo&source=Web&lang=fr"
+                      key={selectedVenue?.name}
+                      src={overfullUrl}
                       title="Formulaire de réservation Overfull"
                       className="block w-full"
                       style={{ height: "900px", border: "0" }}
