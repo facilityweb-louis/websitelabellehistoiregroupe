@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=open-sauce-sans@300,400,500,600&display=swap" rel="stylesheet">
-  <link rel="prefetch" href="reserver.html">
+  <link rel="prefetch" href="reserver.html" as="document">
+  <link rel="prerender" href="reserver.html">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -533,7 +534,12 @@
                         {venue[lang].tags.map((tag) => (<span key={tag} className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600">{tag}</span>))}
                       </div>
                       <div className="mt-6">
-                        <a href={`reserver.html?etab=${encodeURIComponent(venue.name)}`} className="inline-flex items-center rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-900">
+                        <a
+                          href={`reserver.html?etab=${encodeURIComponent(venue.name)}`}
+                          onMouseEnter={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
+                          onFocus={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
+                          className="inline-flex items-center rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-900"
+                        >
                           {t.ctaReserve}
                         </a>
                       </div>
@@ -585,6 +591,18 @@
           </footer>
         </div>
       );
+    }
+
+    function prefetchReserver(url) {
+      if (typeof window === "undefined") return;
+      if (!window.__lbhPrefetchedUrls) window.__lbhPrefetchedUrls = new Set();
+      if (window.__lbhPrefetchedUrls.has(url)) return;
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "document";
+      link.href = url;
+      document.head.appendChild(link);
+      window.__lbhPrefetchedUrls.add(url);
     }
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
