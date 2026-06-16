@@ -3,1070 +3,246 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>La Belle Histoire Groupe</title>
-
+  <title>La Belle Histoire Groupe — Des lieux, des histoires, des expériences à partager</title>
+  <meta name="description" content="La Belle Histoire Groupe — 10+1 maisons au Touquet-Paris-Plage, à Hardelot et à Méribel. Restaurants, bars, plage et altitude. Depuis 1999." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <link href="https://api.fontshare.com/v2/css?f[]=open-sauce-sans@300,400,500,600&display=swap" rel="stylesheet">
-  <link rel="prefetch" href="reserver.html" as="document">
-  <link rel="prerender" href="reserver.html">
-
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { white: '#fffdfd', black: '#262726' },
-          fontFamily: {
-            display: ['"DM Serif Display"', 'Georgia', 'serif'],
-            serif:   ['Lora', 'Georgia', 'serif'],
-            sans:    ['"Open Sauce Sans"', 'Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
-
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    :root {
-      --cream: #F4EEE7; /* plus doux, moodboard */
-      --dark:  #261912; /* riche et chaud */
-      --mid:   #6A4A2D; /* brun intermédiaire */
-      --green: #234931;
-      --bordeaux: #7A1F1F;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top left, rgba(255,255,255,.92), rgba(244,238,231,1) 36%);
-      font-family: 'Open Sauce Sans', 'Inter', system-ui, -apple-system, sans-serif;
-      font-weight: 300;
-      color: var(--dark);
-      -webkit-font-smoothing: antialiased;
-    }
-    html { scroll-behavior: smooth; }
-
-    a { color: inherit; }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
-      font-weight: 400 !important;
-      letter-spacing: -0.02em;
-      margin: 0;
-    }
-    .font-subtitle {
-      font-family: 'Lora', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-    }
-    .logo-chip {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-style: italic;
-      letter-spacing: 0.01em;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: .5rem;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .28em;
-      color: rgba(38,25,18,.45);
-    }
-
-    .btn-solid {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      background: var(--dark);
-      color: var(--cream);
-      padding: 14px 26px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 12px;
-      font-weight: 600;
-      border: none;
-      text-decoration: none;
-      transition: transform .2s, background .2s, color .2s;
-    }
-    .btn-solid:hover { transform: translateY(-1px); background: var(--mid); }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: .6rem;
-      background: transparent;
-      color: var(--cream);
-      border: 1px solid rgba(255,255,255,.28);
-      padding: 14px 26px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 12px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: transform .2s, border-color .2s, color .2s;
-    }
-    .btn-ghost:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.55); }
-
-    .pill-filter {
-      border: 1px solid rgba(38,25,18,.12);
-      background: rgba(255,255,255,.92);
-      color: var(--dark);
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 11px;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: border-color .2s, background .2s, color .2s;
-    }
-    .pill-filter.active {
-      background: var(--dark);
-      color: var(--cream);
-      border-color: var(--dark);
-    }
-
-    .hero-panel {
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 32px;
-      padding: 2rem;
-      min-width: 240px;
-    }
-
-    .hero-panel h3 {
-      margin: 0;
-      font-size: 2.75rem;
-      line-height: 1;
-      color: var(--cream);
-    }
-
-    .hero-panel p {
-      margin: 1rem 0 0;
-      color: rgba(255,255,255,.65);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .marquee-mask {
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-              mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-    }
-
-    .venue-grid {
-      display: grid;
-      gap: 1px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .95fr);
-      gap: 2.5rem;
-      align-items: end;
-      width: 100%;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
-
-    .text-contrast {
-      color: rgba(255,255,255,.75);
-    }
-
-    .section-block {
-      padding: 4rem 3rem;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
-
-    .section-block.dark {
-      background: var(--dark);
-    }
-
-    .section-title {
-      font-size: clamp(2.1rem, 4vw, 4.5rem);
-      color: var(--dark);
-      max-width: 720px;
-      line-height: 1.02;
-    }
-
-    .section-subtitle {
-      margin-top: 1rem;
-      max-width: 520px;
-      color: rgba(38,25,18,.56);
-      line-height: 1.8;
-      font-size: 14px;
-    }
-
-    .hero-caption {
-      text-transform: uppercase;
-      letter-spacing: .3em;
-      font-size: 10px;
-      color: rgba(255,255,255,.55);
-    }
-
-    .overline-dark {
-      text-transform: uppercase;
-      letter-spacing: .28em;
-      font-size: 10px;
-      color: rgba(255,255,255,.45);
-    }
-
-    body {
-      margin: 0;
-      background: var(--cream);
-      font-family: 'Open Sauce Sans', 'Inter', system-ui, -apple-system, sans-serif;
-      font-weight: 300;
-      color: var(--dark);
-      -webkit-font-smoothing: antialiased;
-    }
-    html { scroll-behavior: smooth; }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
-      font-weight: 400 !important;
-      letter-spacing: -0.02em;
-      margin: 0;
-    }
-    .font-subtitle {
-      font-family: 'Lora', Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-    }
-    .logo-chip {
-      font-family: 'DM Serif Display', Georgia, serif;
-      font-style: italic;
-      letter-spacing: 0.01em;
-    }
-
-    /* ── Animations ── */
-    @keyframes marquee     { from { transform: translateX(0); }       to { transform: translateX(-50%); } }
-    @keyframes slideUpFade { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes pulseGlow   { 0%,100% { opacity: .3; transform: scale(1); }  50% { opacity: .5; transform: scale(1.07); } }
-
-    .animate-marquee     { animation: marquee 55s linear infinite; }
-    .animate-slideUpFade { animation: slideUpFade .85s ease forwards; }
-    .animate-pulseGlow   { animation: pulseGlow 8s ease-in-out infinite; }
-
-    .marquee-mask {
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-              mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-    }
-
-    /* ── Scroll reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-
-    /* ── Venue mosaic card ── */
-    .venue-card { position: relative; overflow: hidden; cursor: pointer; }
-    .venue-card-img {
-      transition: transform .65s cubic-bezier(.25,.46,.45,.94),
-                  opacity   .45s ease;
-    }
-    .venue-card:hover .venue-card-img { transform: scale(1.07); opacity: .9 !important; }
-
-    .venue-card-overlay {
-      position: absolute; inset: 0;
-      background: rgba(26,16,8,.75);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 1.5rem;
-      opacity: 0;
-      transition: opacity .4s ease;
-    }
-    .venue-card:hover .venue-card-overlay { opacity: 1; }
-
-    .venue-card-label {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 1.25rem 1.25rem .9rem;
-      background: linear-gradient(to top, rgba(26,16,8,.65) 0%, transparent 100%);
-      transition: opacity .35s ease;
-    }
-    .venue-card:hover .venue-card-label { opacity: 0; }
-
-    /* ── Tag pill ── */
-    .tag-pill {
-      display: inline-block;
-      border: 1px solid rgba(255,255,255,.18);
-      padding: 2px 8px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: rgba(255,255,255,.55);
-    }
-
-    /* ── Stat band first cell dark ── */
-    .stat-dark  { background: var(--dark); }
-    .stat-light { background: var(--cream); }
-
-    /* ── Journey step ── */
-    .journey-step {
-      display: flex; align-items: flex-start; gap: 1.25rem;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .journey-step:last-child { border-bottom: none; }
-
-    input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); cursor: pointer; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="root"></div>
 
-  <script type="text/babel" data-presets="react">
-    const { useState, useMemo, useEffect, useRef } = React;
+  <!-- ============ HEADER ============ -->
+  <header class="site-header header-light">
+    <div class="container nav">
+      <ul class="nav-links left">
+        <li><a href="#groupe">Le Groupe</a></li>
+        <li><a href="#etablissements">Nos Établissements</a></li>
+        <li><a href="evenements.html">Événements</a></li>
+      </ul>
+      <a class="brand" href="index.html" aria-label="La Belle Histoire Groupe — accueil">
+        <img class="brand-seal" src="assets/logos/lbh-seal.png" alt="" />
+        <span class="word">La Belle Histoire</span>
+      </a>
+      <ul class="nav-links right">
+        <li class="nav-only"><a href="#destinations">Destinations</a></li>
+        <li class="nav-only"><a href="#contact">Contact</a></li>
+        <li><a href="reserver.html" class="btn btn-light">Réserver</a></li>
+      </ul>
+      <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
 
-    /* ============================================================
-       DATA — Établissements (11)
-       ============================================================ */
-    const allVenues = (lang) => [
-      { name: "Flavio", year: "1949", loc: "touquet", color: "#7A4A2B", image: "assets/logos/logo-flavio.png",
-        fr: { type: "Restaurant gastronomique", vibe: "Iconique & chargé d'histoire", description: "La légende du Touquet. Lieu où Serge Gainsbourg pianotait à ses débuts. Cuisine gastronomique dans un cadre chargé d'histoire.", tags: ["Iconique", "Gastronomique", "Patrimoine"] },
-        en: { type: "Fine dining", vibe: "Iconic & steeped in history", description: "Le Touquet's legend. Where Serge Gainsbourg played piano in his early days. Fine cuisine in a setting steeped in history.", tags: ["Iconic", "Fine dining", "Heritage"] },
-      },
-      { name: "L'Impasse", year: "1999", loc: "touquet", color: "#A6201C", image: "assets/logos/logo-impasse.png",
-        fr: { type: "Bar · Food · Music", vibe: "Le bar fondateur du groupe", description: "Le bar fondateur du groupe. Ambiance festive, tapas, cocktails et musique live. Cœur battant de La Belle Histoire depuis plus de 24 ans.", tags: ["Bar", "Musique", "Fondateur"] },
-        en: { type: "Bar · Food · Music", vibe: "The group's founding bar", description: "The bar that founded the group. Festive vibe, tapas, cocktails and live music. La Belle Histoire's beating heart for over 24 years.", tags: ["Bar", "Music", "Founder"] },
-      },
-      { name: "La Plage des Pirates", year: "2009", loc: "touquet", color: "#E30613", image: "assets/logos/logo-pirates.png",
-        fr: { type: "Restaurant / Bar de plage", vibe: "Esprit bord de mer & convivialité", description: "Bar-restaurant en bord de plage. Ambiance décontractée, fruits de mer, cocktails les pieds dans le sable.", tags: ["Plage", "Famille", "Terrasse"] },
-        en: { type: "Beach bar & restaurant", vibe: "Seaside spirit & conviviality", description: "Beachfront bar-restaurant. Relaxed atmosphere, seafood, cocktails with your feet in the sand.", tags: ["Beach", "Family", "Terrace"] },
-      },
-      { name: "Le Marcel", year: "2016", loc: "touquet", color: "#1A1A1A", image: "assets/logos/logo-marcel.png",
-        fr: { type: "Bar d'ambiance", vibe: "Rétro-chic & cocktails élaborés", description: "Bar au style rétro-chic. Cocktails élaborés, ambiance soignée, clientèle stylée. Le spot du soir par excellence.", tags: ["Cocktails", "Ambiance", "Soir"] },
-        en: { type: "Mood bar", vibe: "Retro-chic & crafted cocktails", description: "A retro-chic bar. Crafted cocktails, refined ambience, stylish crowd. The go-to evening spot.", tags: ["Cocktails", "Ambience", "Evening"] },
-      },
-      { name: "L'Atelier Éphémère", year: "2017", loc: "touquet", color: "#C9B68F", image: "assets/logos/logo-atelier.png",
-        fr: { type: "Restaurant chef-driven", vibe: "Concept créatif & changeant", description: "Concept créatif et changeant. Carte courte, produits du marché, cuisine inventive. L'établissement le plus chef-driven du groupe.", tags: ["Créatif", "Saison", "Chef"] },
-        en: { type: "Chef-driven restaurant", vibe: "Creative & ever-changing concept", description: "A creative, ever-changing concept. Short menu, market produce, inventive cuisine. The group's most chef-driven venue.", tags: ["Creative", "Seasonal", "Chef"] },
-      },
-      { name: "La Base Nord", year: "2018", loc: "touquet", color: "#7E8C7C", image: "assets/logos/logo-basenord.png",
-        fr: { type: "Brasserie moderne", vibe: "Brasserie moderne & grands volumes", description: "Brasserie moderne avec une belle carte de viandes et poissons frais. Cadre design industriel, idéal pour les séminaires et événements privés.", tags: ["Brasserie", "Événements", "Séminaires"] },
-        en: { type: "Modern brasserie", vibe: "Modern brasserie & large volumes", description: "Modern brasserie with a strong selection of meats and fresh fish. Industrial design, ideal for seminars and private events.", tags: ["Brasserie", "Events", "Seminars"] },
-      },
-      { name: "Caravane", year: "2022", loc: "touquet", color: "#2F5233", image: "assets/logos/logo-caravane.png",
-        fr: { type: "Restaurant festif", vibe: "Lifestyle, spontanéité & plaisir", description: "Concept voyageur et festif. Carte généreuse, couleurs chaudes, ambiance latine. L'un des plus récents succès du groupe.", tags: ["Festif", "Lifestyle", "Food"] },
-        en: { type: "Festive restaurant", vibe: "Lifestyle, spontaneity & pleasure", description: "A traveler's festive concept. Generous menu, warm colors, latin vibe. One of the group's most recent successes.", tags: ["Festive", "Lifestyle", "Food"] },
-      },
-      { name: "L'Amour", year: "2023", loc: "touquet", color: "#E2001A", image: "assets/logos/logo-amour.png",
-        fr: { type: "Restaurant d'ambiance", vibe: "Intime, sensuel & premium", description: "Restaurant intime et sensuel. Décor sombre, partage de plats, accords mets-vins. Pour les soirées en amoureux.", tags: ["Signature", "Expérience", "Premium"] },
-        en: { type: "Mood restaurant", vibe: "Intimate, sensual & premium", description: "Intimate and sensual restaurant. Dark décor, shared plates, wine pairings. For lovers' evenings.", tags: ["Signature", "Experience", "Premium"] },
-      },
-      { name: "La Nonna", year: "2023", loc: "touquet", color: "#E8853A", image: "assets/logos/logo-nonna.png",
-        fr: { type: "Trattoria italienne", vibe: "Trattoria authentique romaine", description: "Trattoria authentique : pizzas, pastas fraîches, burrata. Décor chaleureux façon osteria romaine.", tags: ["Italien", "Nouveau", "Trattoria"] },
-        en: { type: "Italian trattoria", vibe: "Authentic Roman trattoria", description: "Authentic trattoria: pizzas, fresh pastas, burrata. Warm Roman osteria décor.", tags: ["Italian", "New", "Trattoria"] },
-      },
-      { name: "Tipi", year: "2024", loc: "meribel", color: "#C97F2A", image: "assets/logos/logo-tipi.png",
-        fr: { type: "Restaurant alpin", vibe: "Cuisine de montagne & cadre alpin", description: "Première expansion hors-Touquet. Restaurant alpin à Méribel, ouvert en 2024. Cuisine de montagne dans un cadre typique au cœur des pistes.", tags: ["Alpin", "Montagne", "Méribel"] },
-        en: { type: "Alpine restaurant", vibe: "Mountain cuisine & alpine setting", description: "First expansion outside Le Touquet. Alpine restaurant in Méribel, opened in 2024. Mountain cuisine in a typical setting at the heart of the slopes.", tags: ["Alpine", "Mountain", "Méribel"] },
-      },
-      { name: "Hardelot", year: lang === "en" ? "Soon" : "Bientôt", loc: "hardelot", color: "#0F766E",
-        fr: { type: "Restaurant — Ouverture prochaine", vibe: "Nouveau chapitre côte d'Opale", description: "Première implantation à Hardelot. Un restaurant signé La Belle Histoire Groupe verra prochainement le jour sur la côte d'Opale, dans l'esprit qui fait l'identité de la maison : élégance, hospitalité et générosité.", tags: ["Bientôt", "Côte d'Opale", "À venir"] },
-        en: { type: "Restaurant — Opening soon", vibe: "New Opal Coast chapter", description: "First location in Hardelot. A new restaurant by La Belle Histoire Groupe will soon open on the Opal Coast, in the spirit that defines the house: elegance, hospitality and generosity.", tags: ["Soon", "Opal Coast", "Upcoming"] },
-      },
-    ];
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <!-- VIDÉO DE FOND : déposez assets/hero.mp4 et elle se lance automatiquement.
+         Sans fichier, le dégradé du hero reste affiché. -->
+    <video class="hero-video" autoplay muted loop playsinline poster="">
+      <source src="assets/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-grain"></div>
+    <div class="container hero-inner">
+      <div class="hero-top">
+        <span class="label" style="color:var(--cuivre)">La Belle Histoire Groupe</span>
+      </div>
+      <h1 class="hero-quote">
+        « Tu ne peux pas tout manger dans la vie, on ne mange que <span class="accent">trois fois par jour</span>. »
+      </h1>
+      <p class="hero-sub">Sauf que dans nos restaurants, vous pouvez le faire en excellente compagnie — entouré de vos amis et sur les notes de la musique qu’on vous aura choisie.</p>
+    </div>
+    <button class="hero-play" aria-label="Lire la vidéo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <span class="hero-videonote">Vidéo immersive · à venir</span>
+    <div class="scroll-cue"><span></span>Découvrir</div>
+  </section>
 
-    /* ============================================================
-       I18N
-       ============================================================ */
-    const T = {
-      fr: {
-        headerTag: "Fondé en 1999 · Le Touquet · Hardelot · Méribel",
-        navGroup: "Le groupe", navVenues: "Établissements", navEvents: "Événements", navContact: "Contact",
-        ctaReserve: "Réserver", soon: "Bientôt",
-        filterAll: "Tout le groupe", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
-        discover: "Découvrir les lieux", eventsCta: "Privatisations & événements",
-        immersiveView: "Vue immersive",
-        immersiveSubtitle: { all: "Écosystème LBH", touquet: "Univers Le Touquet", hardelot: "Univers Hardelot", meribel: "Univers Méribel" },
-        venueWord: (n) => `${n} ${n > 1 ? "lieux" : "lieu"}`,
-        marqueeTitle: "Nos maisons", marqueeDest: "Le Touquet · Hardelot · Méribel",
-        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
-        venuesEyebrow: { all: "Les établissements", touquet: "Les établissements du Touquet", hardelot: "Hardelot · à venir", meribel: "L'adresse alpine" },
-        shortAll: "Tout",
-        eventsBadge: "Événements & groupes",
-        eventsTitle: {
-          all: "Un groupe, trois destinations, mille possibilités.",
-          touquet: "Le Touquet, terrain de jeu événementiel.",
-          hardelot: "Hardelot, l'événement avant tout le monde.",
-          meribel: "Votre événement en altitude.",
-        },
-        eventsDesc: {
-          all: "Du front de mer du Touquet aux sommets de Méribel, en passant par la côte d'Opale, le groupe accompagne mariages, séminaires, soirées privées et groupes sur mesure.",
-          touquet: "Mariages face à la mer, séminaires MICE, privatisations de plage ou de brasserie : le Touquet et ses 9 adresses du groupe couvrent tous les formats d'événement.",
-          hardelot: "Notre future adresse à Hardelot accueillera dès l'ouverture événements privés, mariages intimistes et soirées d'entreprise. Inscrivez-vous pour être informé en avant-première.",
-          meribel: "Séminaires au sommet, soirées d'entreprise dans un cadre alpin, privatisation de Tipi pour un moment hors du temps au cœur des 3 Vallées.",
-        },
-        eventsItems: {
-          all: ["Mer, côte d'Opale ou montagne", "Mariages, séminaires, incentives", "Offre cross-lieux coordonnée", "Formulaires contextualisés"],
-          touquet: ["Privatisation de La Base Nord", "Mariages à La Plage des Pirates", "Séminaires MICE", "Soirées privées multi-lieux"],
-          hardelot: ["Soirée de lancement", "Pré-réservations événements", "Mariages côte d'Opale", "Privatisation à l'ouverture"],
-          meribel: ["Privatisation de Tipi", "Séminaires au cœur des 3V", "Soirées corporate ski", "Groupes & incentives"],
-        },
-        parcoursLabel: "Exemple de parcours",
-        parcoursTitle: "Demande de privatisation",
-        parcoursDest: {
-          all: "1. Destination : Le Touquet, Hardelot ou Méribel",
-          touquet: "1. Destination : Le Touquet",
-          hardelot: "1. Destination : Hardelot (à venir)",
-          meribel: "1. Destination : Méribel",
-        },
-        parcoursStep2: "2. L'utilisateur choisit un établissement",
-        parcoursStep3: "3. Capacités & types d'événements disponibles",
-        parcoursStep4: "4. Formulaire contextualisé au lieu choisi",
-        eventsRequest: "Faire une demande d'événement",
-        contactEyebrow: "Contact",
-        contactTitle: "Donnons une identité digitale forte au groupe.",
-        contactDesc: "Une base Next.js connectée à un CMS, des pages établissements détaillées, des animations premium en GSAP et une filtration intelligente par destination : Le Touquet, Hardelot ou Méribel.",
-        formName: "Nom", formEmail: "Email",
-        formDestAny: "Destination — Indifférent",
-        formDestHardelot: "Hardelot (ouverture prochaine)",
-        formMsg: "Parlez-nous du projet", formSubmit: "Envoyer la demande",
-        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Fondé en 1999",
-        locContent: {
-          all: {
-            badge: "Le Touquet • Hardelot • Méribel • Collection d'expériences",
-            title: "Des lieux où l'on ne vient pas seulement consommer,",
-            subtitle: "mais vivre.",
-            intro: "Chaque établissement possède son identité, son rythme, son atmosphère. Du déjeuner au dernier verre, de la plage à la nuit, tout est pensé pour créer des moments forts, sincères et mémorables.",
-            stats: [{ value: "10+1", label: "maisons & ouverture prochaine" }, { value: "25+", label: "années d'histoire depuis 1999" }, { value: "3", label: "destinations : Le Touquet, Hardelot & Méribel" }],
-            sectionTitle: "Une collection de lieux avec leurs propres codes.",
-            sectionDesc: "Chaque adresse possède sa personnalité, son rythme, son ambiance et sa promesse. Explorez l'ensemble du groupe ou filtrez par destination.",
-          },
-          touquet: {
-            badge: "Le Touquet-Paris-Plage • Depuis 1949",
-            title: "Le Touquet,", subtitle: "le berceau d'une belle histoire.",
-            intro: "Station balnéaire premium, le Touquet-Paris-Plage est le territoire historique du groupe. De Flavio (1949) à La Nonna (2023), neuf adresses complémentaires rythment la vie de la station.",
-            stats: [{ value: "9", label: "adresses au Touquet" }, { value: "1949", label: "la légende Flavio" }, { value: "1999", label: "fondation du groupe" }],
-            sectionTitle: "Les établissements du Touquet.",
-            sectionDesc: "Plage, gastronomie, bars, brasseries : le Touquet est un écosystème à part entière, où chaque lieu a trouvé sa place et son public.",
-          },
-          meribel: {
-            badge: "Méribel • Savoie • Depuis 2024",
-            title: "Méribel,", subtitle: "l'écriture d'un nouveau chapitre.",
-            intro: "Avec l'ouverture de Tipi en 2024, La Belle Histoire Groupe signe sa première expansion hors du Touquet. Direction les Alpes, au cœur du domaine des 3 Vallées.",
-            stats: [{ value: "1", label: "adresse alpine : Tipi" }, { value: "2024", label: "année d'ouverture" }, { value: "3V", label: "au cœur des 3 Vallées" }],
-            sectionTitle: "L'expansion alpine du groupe.",
-            sectionDesc: "Méribel marque une nouvelle page : l'esprit La Belle Histoire appliqué à la montagne, avec la même exigence et la même envie de créer des souvenirs.",
-          },
-          hardelot: {
-            badge: "Hardelot • Côte d'Opale • Ouverture prochaine",
-            title: "Hardelot,", subtitle: "le prochain chapitre s'écrit ici.",
-            intro: "À quelques kilomètres au sud du Touquet, Hardelot accueillera prochainement une nouvelle adresse du groupe. Une station confidentielle, des dunes, des pins, et bientôt un lieu signé LBH.",
-            stats: [{ value: "Bientôt", label: "ouverture du restaurant" }, { value: "1", label: "adresse à venir" }, { value: "62", label: "côte d'Opale · Pas-de-Calais" }],
-            sectionTitle: "Hardelot, l'adresse en préparation.",
-            sectionDesc: "Le projet est en cours. Inscrivez-vous via le formulaire de contact pour être informé en avant-première de l'ouverture et des soirées de lancement.",
-          },
-        },
-      },
-      en: {
-        headerTag: "Founded in 1999 · Le Touquet · Hardelot · Méribel",
-        navGroup: "The group", navVenues: "Venues", navEvents: "Events", navContact: "Contact",
-        ctaReserve: "Book", soon: "Soon",
-        filterAll: "All venues", filterTouquet: "Le Touquet", filterHardelot: "Hardelot", filterMeribel: "Méribel",
-        discover: "Discover venues", eventsCta: "Private events & MICE",
-        immersiveView: "Immersive view",
-        immersiveSubtitle: { all: "LBH Ecosystem", touquet: "Le Touquet world", hardelot: "Hardelot world", meribel: "Méribel world" },
-        venueWord: (n) => `${n} ${n > 1 ? "venues" : "venue"}`,
-        marqueeTitle: "Our houses", marqueeDest: "Le Touquet · Hardelot · Méribel",
-        chip: { touquet: "Le Touquet", hardelot: "Hardelot", meribel: "Méribel" },
-        venuesEyebrow: { all: "The venues", touquet: "Le Touquet venues", hardelot: "Hardelot · upcoming", meribel: "The alpine address" },
-        shortAll: "All",
-        eventsBadge: "Events & groups",
-        eventsTitle: {
-          all: "One group, three destinations, endless possibilities.",
-          touquet: "Le Touquet, an events playground.",
-          hardelot: "Hardelot, host your event before anyone else.",
-          meribel: "Your event at altitude.",
-        },
-        eventsDesc: {
-          all: "From Le Touquet's seafront to the peaks of Méribel, including the Opal Coast, the group hosts weddings, seminars, private parties and bespoke groups.",
-          touquet: "Weddings by the sea, MICE seminars, private buyouts of a beach or brasserie: Le Touquet and its 9 venues cover every event format.",
-          hardelot: "Our upcoming Hardelot venue will host private events, intimate weddings and corporate evenings from day one. Sign up for early access.",
-          meribel: "Seminars at the summit, corporate evenings in an alpine setting, full buyout of Tipi for a timeless moment in the heart of the 3 Vallées.",
-        },
-        eventsItems: {
-          all: ["Sea, Opal Coast or mountain", "Weddings, seminars, incentives", "Coordinated multi-venue offer", "Context-aware forms"],
-          touquet: ["Buyout of La Base Nord", "Weddings at La Plage des Pirates", "MICE seminars", "Multi-venue private evenings"],
-          hardelot: ["Launch party", "Event pre-bookings", "Opal Coast weddings", "Opening-day buyout"],
-          meribel: ["Buyout of Tipi", "Seminars in the 3 Valleys", "Corporate ski evenings", "Groups & incentives"],
-        },
-        parcoursLabel: "Example journey",
-        parcoursTitle: "Private event request",
-        parcoursDest: {
-          all: "1. Destination: Le Touquet, Hardelot or Méribel",
-          touquet: "1. Destination: Le Touquet",
-          hardelot: "1. Destination: Hardelot (upcoming)",
-          meribel: "1. Destination: Méribel",
-        },
-        parcoursStep2: "2. User chooses a venue",
-        parcoursStep3: "3. Capacities & available event types",
-        parcoursStep4: "4. Form tailored to the chosen venue",
-        eventsRequest: "Submit an event request",
-        contactEyebrow: "Contact",
-        contactTitle: "Let's give the group a powerful digital identity.",
-        contactDesc: "A Next.js base connected to a CMS, detailed venue pages, premium GSAP animations and smart filtering by destination: Le Touquet, Hardelot or Méribel.",
-        formName: "Name", formEmail: "Email",
-        formDestAny: "Destination — Any",
-        formDestHardelot: "Hardelot (upcoming)",
-        formMsg: "Tell us about the project", formSubmit: "Send request",
-        footerTag: "Le Touquet-Paris-Plage · Hardelot · Méribel · Founded in 1999",
-        locContent: {
-          all: {
-            badge: "Le Touquet • Hardelot • Méribel • A collection of experiences",
-            title: "Places you don't just go to consume,", subtitle: "but to live.",
-            intro: "Each venue has its own identity, rhythm and atmosphere. From lunch to the last drink, from the beach to the night, everything is designed to create strong, sincere and memorable moments.",
-            stats: [{ value: "10+1", label: "houses & upcoming opening" }, { value: "25+", label: "years of history since 1999" }, { value: "3", label: "destinations: Le Touquet, Hardelot & Méribel" }],
-            sectionTitle: "A collection of places with their own codes.",
-            sectionDesc: "Each address has its own personality, rhythm, atmosphere and promise. Explore the entire group or filter by destination.",
-          },
-          touquet: {
-            badge: "Le Touquet-Paris-Plage • Since 1949",
-            title: "Le Touquet,", subtitle: "where the beautiful story began.",
-            intro: "A premium seaside resort, Le Touquet-Paris-Plage is the group's historic territory. From Flavio (1949) to La Nonna (2023), nine complementary venues animate the resort.",
-            stats: [{ value: "9", label: "venues in Le Touquet" }, { value: "1949", label: "the Flavio legend" }, { value: "1999", label: "the group's founding" }],
-            sectionTitle: "The venues of Le Touquet.",
-            sectionDesc: "Beach, fine dining, bars, brasseries: Le Touquet is its own ecosystem, where every venue has found its place and its audience.",
-          },
-          meribel: {
-            badge: "Méribel • Savoie • Since 2024",
-            title: "Méribel,", subtitle: "writing a new chapter.",
-            intro: "With Tipi opening in 2024, La Belle Histoire Groupe signed its first expansion outside Le Touquet. Off to the Alps, in the heart of the 3 Vallées.",
-            stats: [{ value: "1", label: "alpine venue: Tipi" }, { value: "2024", label: "year of opening" }, { value: "3V", label: "in the 3 Vallées" }],
-            sectionTitle: "The group's alpine expansion.",
-            sectionDesc: "Méribel turns a new page: the La Belle Histoire spirit applied to the mountain, with the same standards and the same desire to create memories.",
-          },
-          hardelot: {
-            badge: "Hardelot • Opal Coast • Opening soon",
-            title: "Hardelot,", subtitle: "the next chapter starts here.",
-            intro: "A few kilometers south of Le Touquet, Hardelot will soon host a new venue from the group. A confidential resort, dunes, pines — and soon a place signed LBH.",
-            stats: [{ value: "Soon", label: "restaurant opening" }, { value: "1", label: "upcoming venue" }, { value: "62", label: "Opal Coast · Pas-de-Calais" }],
-            sectionTitle: "Hardelot, the venue in preparation.",
-            sectionDesc: "The project is underway. Sign up via the contact form to be notified first about the opening and launch parties.",
-          },
-        },
-      },
-    };
+  <!-- ============ CHIFFRES CLÉS ============ -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal"><div class="num">10<sup>+1</sup></div><div class="cap">Maisons &amp;<br>ouverture prochaine</div></div>
+        <div class="stat reveal"><div class="num">25<sup>+</sup></div><div class="cap">Années d’histoire<br>depuis 1999</div></div>
+        <div class="stat reveal"><div class="num">3</div><div class="cap">Destinations · Le Touquet,<br>Hardelot &amp; Méribel</div></div>
+        <div class="stat reveal"><div class="num">100<sup>%</sup></div><div class="cap">Passion hospitalité<br>&amp; expériences</div></div>
+      </div>
+    </div>
+  </section>
 
-    /* ============================================================
-       COMPONENT
-       ============================================================ */
-    function LBHHomepage() {
-      const [location, setLocation] = useState("all");
-      const [lang, setLang] = useState(() => {
-        if (typeof window === "undefined") return "fr";
-        const saved = localStorage.getItem("lbh-lang");
-        if (saved === "fr" || saved === "en") return saved;
-        return navigator.language && navigator.language.toLowerCase().startsWith("en") ? "en" : "fr";
-      });
-
-      useEffect(() => {
-        localStorage.setItem("lbh-lang", lang);
-        document.documentElement.lang = lang;
-      }, [lang]);
-
-      /* Scroll reveal observer */
-      useEffect(() => {
-        const obs = new IntersectionObserver(
-          (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); }),
-          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
-        );
-        document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
-        return () => obs.disconnect();
-      });
-
-      const t = T[lang];
-      const venuesData = allVenues(lang);
-      const venues = useMemo(
-        () => (location === "all" ? venuesData : venuesData.filter((v) => v.loc === location)),
-        [location, lang]
-      );
-      const content = t.locContent[location];
-
-      const LangToggle = () => (
-        <div style={{ display:"flex", alignItems:"center", border:"1px solid rgba(26,16,8,.15)", borderRadius:"999px", padding:"2px", gap:0 }}>
-          <button onClick={() => setLang("fr")}
-            style={{ borderRadius:"999px", padding:"5px 12px", fontSize:"11px", fontWeight:500, cursor:"pointer", border:"none", transition:"all .2s",
-              background: lang==="fr" ? "var(--dark)" : "transparent",
-              color:       lang==="fr" ? "var(--cream)" : "rgba(26,16,8,.4)" }}>FR</button>
-          <button onClick={() => setLang("en")}
-            style={{ borderRadius:"999px", padding:"5px 12px", fontSize:"11px", fontWeight:500, cursor:"pointer", border:"none", transition:"all .2s",
-              background: lang==="en" ? "var(--dark)" : "transparent",
-              color:       lang==="en" ? "var(--cream)" : "rgba(26,16,8,.4)" }}>EN</button>
+  <!-- ============ LE GROUPE ============ -->
+  <section class="section" id="groupe">
+    <div class="container intro">
+      <div class="intro-visual reveal">
+        <div class="media-ph"><span class="mono">BH</span></div>
+        <span class="vlabel">Des lieux, des histoires.</span>
+      </div>
+      <div class="reveal">
+        <span class="label sec-index">01 — Le Groupe</span>
+        <h2>Depuis 1999, nous imaginons des lieux de vie et de partage.</h2>
+        <p class="editorial" style="margin-top:24px">Où l’hospitalité, la cuisine et l’ambiance créent les souvenirs. De la table gastronomique au bar de plage, de la trattoria à la table d’altitude : chaque maison raconte sa propre histoire, réunies par une même passion.</p>
+        <div class="values">
+          <div class="value"><h4>Immersif</h4><p>Une expérience visuelle et sonore qui plonge dès l’arrivée dans nos univers.</p></div>
+          <div class="value"><h4>Éditorial</h4><p>Un ton élégant et narratif pour valoriser l’histoire et les lieux.</p></div>
+          <div class="value"><h4>Multi-établissements</h4><p>Mettre en lumière la diversité des maisons et faciliter la découverte.</p></div>
+          <div class="value"><h4>Hospitalité</h4><p>Simplicité, chaleur et confort pour réserver, explorer et partager.</p></div>
         </div>
-      );
+      </div>
+    </div>
+  </section>
 
-      const FilterBar = ({ dark = false }) => (
-        <div style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-          {[
-            { key:"all",      label: t.filterAll },
-            { key:"touquet",  label: t.filterTouquet },
-            { key:"hardelot", label: t.filterHardelot },
-            { key:"meribel",  label: t.filterMeribel },
-          ].map((f) => (
-            <button key={f.key} onClick={() => setLocation(f.key)}
-              style={{
-                padding: "10px 18px",
-                fontSize: "11px",
-                textTransform: "uppercase",
-                letterSpacing: ".22em",
-                fontWeight: 500,
-                cursor: "pointer",
-                border: location === f.key ? `1px solid var(--dark)` : "1px solid rgba(26,16,8,.14)",
-                borderRadius: "999px",
-                transition: "all .2s",
-                background: location === f.key ? (dark ? "rgba(255,255,255,.12)" : "rgba(26,16,8,.98)") : "rgba(255,255,255,.95)",
-                color: location === f.key ? (dark ? "var(--cream)" : "var(--cream)") : (dark ? "rgba(255,255,255,.65)" : "rgba(26,16,8,.7)"),
-                boxShadow: location === f.key ? "0 10px 30px rgba(0,0,0,.08)" : "none",
-              }}>
-              {f.label}
-            </button>
-          ))}
+  <!-- ============ ÉTABLISSEMENTS ============ -->
+  <section class="section venues" id="etablissements">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="label sec-index">02 — Nos Établissements</span>
+        <h2>Dix maisons, une même Belle Histoire.</h2>
+        <p class="editorial">Filtrez par destination pour explorer nos univers — du Touquet-Paris-Plage aux cimes de Méribel.</p>
+      </div>
+      <div class="filter-bar" id="filter-bar">
+        <button class="chip active" data-filter="all">Tout <span class="cnt">10</span></button>
+        <button class="chip" data-filter="letouquet">Le Touquet <span class="cnt">9</span></button>
+        <button class="chip" data-filter="meribel">Méribel <span class="cnt">1</span></button>
+      </div>
+      <div class="grid" id="venue-grid"><!-- injected by app.js --></div>
+    </div>
+  </section>
+
+  <!-- ============ DESTINATIONS ============ -->
+  <section class="section" id="destinations">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="label sec-index">03 — Nos Destinations</span>
+        <h2>Trois territoires, trois atmosphères.</h2>
+      </div>
+      <div class="dest-grid">
+        <a class="dest dest-letouquet reveal" href="#etablissements">
+          <div><div class="d-name">Le Touquet</div><div class="d-meta">9 établissements · Paris-Plage</div></div>
+        </a>
+        <a class="dest dest-hardelot reveal" href="#etablissements">
+          <div><div class="d-name">Hardelot</div><div class="d-meta">Destination · à venir</div></div>
+        </a>
+        <a class="dest dest-meribel reveal" href="#etablissements">
+          <div><div class="d-name">Méribel</div><div class="d-meta">1 établissement · 3 Vallées</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÉVÉNEMENTS ============ -->
+  <section class="section events" id="evenements">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="label sec-index">04 — Événements &amp; Privatisations</span>
+        <h2>Vos plus belles soirées commencent ici.</h2>
+      </div>
+      <div class="events-wrap">
+        <div class="event-list reveal">
+          <div class="event-row">
+            <div class="event-date"><div class="d">15</div><div class="m">Juin</div></div>
+            <div class="event-info"><h4>Soirée Jazz</h4><p>Le Marcel · 20h00 → 00h00</p></div>
+            <a class="event-cta" href="evenements.html">Découvrir →</a>
+          </div>
+          <div class="event-row">
+            <div class="event-date"><div class="d">28</div><div class="m">Juin</div></div>
+            <div class="event-info"><h4>DJ Set &amp; Cocktails</h4><p>Caravane · 19h00 → 01h00</p></div>
+            <a class="event-cta" href="evenements.html">Découvrir →</a>
+          </div>
+          <div class="event-row">
+            <div class="event-date"><div class="d">06</div><div class="m">Juil</div></div>
+            <div class="event-info"><h4>Brunch de la Plage</h4><p>La Plage des Pirates · 11h00 → 16h00</p></div>
+            <a class="event-cta" href="evenements.html">Découvrir →</a>
+          </div>
         </div>
-      );
-
-      return (
-        <div style={{ background:"var(--cream)", minHeight:"100vh", color:"var(--dark)" }}>
-
-          {/* ══════════════════════════════════════
-              HEADER
-          ══════════════════════════════════════ */}
-          <header style={{
-            position:"sticky", top:0, zIndex:50,
-            background:"rgba(248,244,237,.92)",
-            backdropFilter:"blur(14px)",
-            borderBottom:"1px solid rgba(26,16,8,.1)",
-          }}>
-            <div style={{ maxWidth:"none", margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"1rem", padding:"0 3rem" }}>
-              <a href="#" style={{ display:"flex", alignItems:"center", gap:"12px", textDecoration:"none" }}>
-                <img src="assets/logos/lbh-seal.png" style={{ height:"56px", width:"56px", objectFit:"contain" }} alt="" aria-hidden="true" />
-                <div>
-                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"22px", objectFit:"contain", display:"block" }} alt="La Belle Histoire Groupe" />
-                  <div style={{ marginTop:"3px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".3em", color:"rgba(26,16,8,.35)" }}>{t.headerTag}</div>
-                </div>
-              </a>
-
-              <nav style={{ display:"flex", alignItems:"center", gap:"2.5rem" }}>
-                {[
-                  { href:"#group",  label:t.navGroup },
-                  { href:"#venues", label:t.navVenues },
-                  { href:"#events", label:t.navEvents },
-                ].map(n => (
-                  <a key={n.href} href={n.href} style={{ fontSize:"13px", color:"rgba(26,16,8,.5)", textDecoration:"none", transition:"color .2s", fontWeight:400 }}
-                     onMouseEnter={e=>e.target.style.color="var(--dark)"} onMouseLeave={e=>e.target.style.color="rgba(26,16,8,.5)"}>
-                    {n.label}
-                  </a>
-                ))}
-              </nav>
-
-              <div style={{ display:"flex", alignItems:"center", gap:"12px", padding:"14px 0" }}>
-                <LangToggle />
-                <a href="reserver.html" style={{
-                  background:"var(--dark)", color:"var(--cream)",
-                  padding:"10px 22px", fontSize:"12px", fontWeight:600,
-                  letterSpacing:".1em", textTransform:"uppercase",
-                  textDecoration:"none", borderRadius:"3px", transition:"background .2s"
-                }}
-                onMouseEnter={e=>e.currentTarget.style.background="var(--mid)"}
-                onMouseLeave={e=>e.currentTarget.style.background="var(--dark)"}>
-                  {t.ctaReserve}
-                </a>
-              </div>
-            </div>
-          </header>
-
-          {/* ══════════════════════════════════════
-              HERO — plein écran, sombre, immersif
-          ══════════════════════════════════════ */}
-          <section style={{ position:"relative", minHeight:"100vh", overflow:"hidden", background:"var(--dark)" }}>
-            {/* Vidéo */}
-            <video autoPlay muted loop playsInline
-              poster="https://images.pexels.com/videos/36805136/pictures/preview-0.jpg"
-              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", opacity:.28 }}>
-              <source src="https://videos.pexels.com/video-files/36805136/15596007_1920_1080_50fps.mp4" type="video/mp4" />
-            </video>
-            {/* Dégradé sombre */}
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(26,16,8,.15) 0%, rgba(26,16,8,.55) 60%, rgba(26,16,8,.9) 100%)" }} />
-            {/* Sceau watermark */}
-            <img src="assets/logos/lbh-seal.png" aria-hidden="true"
-              style={{ position:"absolute", right:"-8%", top:"50%", transform:"translateY(-50%)", height:"90vh", width:"auto", objectFit:"contain", opacity:.04, pointerEvents:"none", filter:"invert(1)", userSelect:"none" }} />
-
-            {/* Contenu héro */}
-            <div key={`${location}-${lang}`}
-              style={{ position:"relative", display:"grid", gridTemplateRows:"1fr auto", minHeight:"100vh", justifyContent:"space-between" }}
-              className="animate-slideUpFade">
-
-              <div className="hero-grid" style={{ padding:"3rem 3rem 0" }}>
-                <div>
-                  <div className="hero-caption">{content.badge}</div>
-                  <h1 style={{ marginTop:"1.2rem", fontSize:"clamp(3rem,8vw,7rem)", lineHeight:".95", color:"var(--cream)" }}>
-                    {content.title}
-                    <span className="font-subtitle" style={{ display:"block", color:"rgba(248,244,237,.62)", marginTop:".25em", fontSize:"1.35rem", lineHeight:1.35 }}>
-                      {content.subtitle}
-                    </span>
-                  </h1>
-                  <p style={{ marginTop:"1.8rem", maxWidth:"560px", fontSize:"15px", lineHeight:1.85, color:"rgba(255,255,255,.68)", fontWeight:300 }}>
-                    {content.intro}
-                  </p>
-                  <div style={{ marginTop:"2.75rem", display:"flex", flexWrap:"wrap", gap:"1rem" }}>
-                    <a href="#venues" className="btn-solid">{t.discover} →</a>
-                    <a href="#events" className="btn-ghost">{t.eventsCta}</a>
-                  </div>
-                </div>
-
-                <div className="hero-panel">
-                  {content.stats.map((item, i) => (
-                    <div key={item.label} style={{ marginBottom: i < content.stats.length - 1 ? "1.5rem" : 0 }}>
-                      <h3>{item.value}</h3>
-                      <p>{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ padding:"0 3rem 3rem" }}>
-                <div style={{ display:"flex", flexWrap:"wrap", alignItems:"center", justifyContent:"space-between", gap:"1rem" }}>
-                  <div className="overline-dark">Filtres par destination</div>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-                    <FilterBar dark={true} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════
-              MARQUEE — logos sur fond sombre
-          ══════════════════════════════════════ */}
-          <section style={{ background:"linear-gradient(135deg, rgba(38,25,18,.98), rgba(20,12,6,.95))", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
-            <div style={{ padding:"3rem 0", overflow:"hidden" }} className="marquee-mask">
-              <div style={{ padding:"1.5rem 2rem", background:"rgba(255,255,255,.04)", borderRadius:"36px", margin:"0 auto", maxWidth:"1440px" }}>
-                <div className="animate-marquee" style={{ display:"flex", alignItems:"center", gap:"4rem", whiteSpace:"nowrap", width:"max-content" }}>
-                  {[...venuesData, ...venuesData].map((v, i) => (
-                    <div key={`mq-${i}`} style={{ display:"flex", alignItems:"center", gap:"3rem" }}>
-                      {v.image ? (
-                        <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"72px", width:"190px" }}>
-                          <img src={v.image} alt={v.name} style={{ maxHeight:"100%", maxWidth:"100%", objectFit:"contain", filter:"invert(1)", opacity:.55, transition:"opacity .3s" }}
-                               onMouseEnter={e=>e.target.style.opacity=".9"} onMouseLeave={e=>e.target.style.opacity=".55"} />
-                        </div>
-                      ) : (
-                        <span className="logo-chip" style={{ fontSize:"1.7rem", color:"rgba(255,255,255,.55)", borderBottom:`1px solid ${v.color}70`, paddingBottom:"2px" }}>
-                          {v.name}
-                        </span>
-                      )}
-                      <span style={{ color:"rgba(255,255,255,.18)", fontSize:"10px" }} aria-hidden="true">✦</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════
-              STATS BAND — éditorial
-          ══════════════════════════════════════ */}
-          <section id="group" style={{ borderBottom:"1px solid rgba(26,16,8,.1)" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", divideColor:"rgba(26,16,8,.1)" }}>
-              {content.stats.map((item, i) => (
-                <div key={item.label} className="reveal"
-                  style={{
-                    padding:"4.5rem 3rem",
-                    background: i === 0 ? "var(--dark)" : "var(--cream)",
-                    borderRight: i < 2 ? `1px solid ${i===0?"rgba(255,255,255,.08)":"rgba(26,16,8,.1)"}` : "none",
-                    animationDelay:`${i*.1}s`
-                  }}>
-                  <div style={{
-                    fontSize:"clamp(3.5rem,6vw,6rem)", lineHeight:1,
-                    color: i === 0 ? "var(--cream)" : "var(--dark)",
-                    fontFamily:"'DM Serif Display',Georgia,serif", fontWeight:400
-                  }}>{item.value}</div>
-                  <div style={{
-                    marginTop:"1rem", fontSize:"10px", textTransform:"uppercase", letterSpacing:".25em",
-                    color: i === 0 ? "rgba(255,255,255,.38)" : "rgba(26,16,8,.38)"
-                  }}>{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════
-              VENUES — mosaïque plein écran
-          ══════════════════════════════════════ */}
-          <section id="venues" style={{ background:"var(--cream)" }}>
-            {/* En-tête section */}
-            <div className="section-block">
-              <div style={{ display:"flex", flexWrap:"wrap", alignItems:"flex-start", justifyContent:"space-between", gap:"2rem" }}>
-                <div className="reveal" style={{ maxWidth:"720px" }}>
-                  <div className="section-label">{t.venuesEyebrow[location]}</div>
-                  <h2 className="section-title" style={{ marginTop:"1rem" }}>{content.sectionTitle}</h2>
-                  <p className="section-subtitle">{content.sectionDesc}</p>
-                </div>
-
-                <div style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
-                  {[
-                    { key:"all",      label:`${t.shortAll} (${venuesData.length})` },
-                    { key:"touquet",  label:`${t.filterTouquet} (${venuesData.filter(v=>v.loc==="touquet").length})` },
-                    { key:"hardelot", label:`${t.filterHardelot} (${venuesData.filter(v=>v.loc==="hardelot").length})` },
-                    { key:"meribel",  label:`${t.filterMeribel} (${venuesData.filter(v=>v.loc==="meribel").length})` },
-                  ].map(f => (
-                    <button key={f.key} onClick={() => setLocation(f.key)}
-                      style={{
-                        border: location===f.key ? "1px solid var(--dark)" : "1px solid rgba(26,16,8,.14)",
-                        background: location===f.key ? "var(--dark)" : "rgba(255,255,255,.95)",
-                        color: location===f.key ? "var(--cream)" : "rgba(26,16,8,.75)",
-                        padding:"10px 18px", fontSize:"11px", textTransform:"uppercase",
-                        letterSpacing:".22em", cursor:"pointer", fontWeight:500, transition:"all .2s", borderRadius:"999px",
-                        boxShadow: location===f.key ? "0 14px 42px rgba(38,25,18,.08)" : "none"
-                      }}>
-                      {f.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Mosaïque — grille plein écran */}
-            <div key={`grid-${location}-${lang}`} style={{
-              display:"grid",
-              gridTemplateColumns: venues.length === 1 ? "1fr" : venues.length <= 4 ? "repeat(2,1fr)" : "repeat(4,1fr)",
-            }}>
-              {venues.map((venue, i) => {
-                const isDouble = venues.length > 4 && (i === 0 || (venues.length % 4 !== 0 && i === venues.length - 1));
-                return (
-                  <div key={venue.name} className="venue-card"
-                    style={{
-                      background: venue.color,
-                      aspectRatio: isDouble ? "2/1" : "1/1",
-                      gridColumn: isDouble ? "span 2" : "span 1",
-                      borderRight: (i+1) % 4 !== 0 ? "1px solid rgba(255,255,255,.06)" : "none",
-                      borderBottom: "1px solid rgba(255,255,255,.06)",
-                    }}>
-                    {/* Image logo */}
-                    {venue.image ? (
-                      <img src={venue.image} alt={venue.name} loading="lazy"
-                        className="venue-card-img"
-                        style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", padding:"8%", mixBlendMode:"luminosity", opacity:.55 }} />
-                    ) : (
-                      <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
-                        <span className="logo-chip" style={{ fontSize:"3rem", color:"rgba(255,255,255,.18)" }}>{venue.name}</span>
-                      </div>
-                    )}
-
-                    {/* Overlay hover */}
-                    <div className="venue-card-overlay">
-                      <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".25em", color:"rgba(255,255,255,.45)", marginBottom:"8px", display:"block" }}>
-                        {venue[lang].type}
-                      </span>
-                      <p style={{ fontSize:"13px", color:"rgba(255,255,255,.78)", lineHeight:1.65, margin:"0 0 14px" }}>
-                        {venue[lang].description}
-                      </p>
-                      <div style={{ display:"flex", flexWrap:"wrap", gap:"6px", marginBottom:"16px" }}>
-                        {venue[lang].tags.map(tag => <span key={tag} className="tag-pill">{tag}</span>)}
-                      </div>
-                      <a href={`reserver.html?etab=${encodeURIComponent(venue.name)}`}
-                        onMouseEnter={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
-                        style={{
-                          display:"inline-flex", alignItems:"center", gap:"6px",
-                          background:"var(--cream)", color:"var(--dark)",
-                          padding:"9px 18px", fontSize:"11px", fontWeight:600,
-                          letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none",
-                          borderRadius:"3px", alignSelf:"flex-start", transition:"background .2s"
-                        }}>
-                        {t.ctaReserve} →
-                      </a>
-                    </div>
-
-                    {/* Label toujours visible */}
-                    <div className="venue-card-label">
-                      <div style={{ fontSize:"clamp(1.2rem,2.5vw,1.8rem)", color:"#fff", fontFamily:"'DM Serif Display',Georgia,serif" }}>
-                        {venue.name}
-                      </div>
-                      <div style={{ marginTop:"3px", fontSize:"10px", textTransform:"uppercase", letterSpacing:".18em", color:"rgba(255,255,255,.5)" }}>
-                        {venue.year} · {t.chip[venue.loc]}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════
-              ÉVÉNEMENTS — section sombre
-          ══════════════════════════════════════ */}
-          <section id="events" style={{ background:"var(--dark)" }}>
-            <div key={`ev-${location}-${lang}`} style={{
-              display:"grid", gridTemplateColumns:"1fr 1fr",
-              borderTop:"1px solid rgba(255,255,255,.06)"
-            }}>
-              {/* Gauche : pitch */}
-              <div className="reveal" style={{ padding:"5rem 4rem", borderRight:"1px solid rgba(255,255,255,.07)" }}>
-                <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".38em", color:"rgba(255,255,255,.35)" }}>
-                  {t.eventsBadge}
-                </span>
-                <h2 style={{ marginTop:"1rem", fontSize:"clamp(2rem,3.5vw,3.5rem)", color:"var(--cream)", lineHeight:1.1 }}>
-                  {t.eventsTitle[location]}
-                </h2>
-                <p style={{ marginTop:"1.5rem", maxWidth:"480px", fontSize:"14px", lineHeight:1.8, color:"rgba(255,255,255,.5)", fontWeight:300 }}>
-                  {t.eventsDesc[location]}
-                </p>
-                <div style={{ marginTop:"2rem", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px" }}>
-                  {t.eventsItems[location].map(item => (
-                    <div key={item} style={{
-                      border:"1px solid rgba(255,255,255,.08)", padding:"14px 16px",
-                      fontSize:"13px", color:"rgba(255,255,255,.6)", lineHeight:1.5, transition:"border-color .2s"
-                    }}
-                    onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,.25)"}
-                    onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,.08)"}>
-                      <span style={{ color:"rgba(255,255,255,.2)", marginRight:"8px" }}>—</span>{item}
-                    </div>
-                  ))}
-                </div>
-                <a href="evenements.html" style={{
-                  display:"inline-flex", alignItems:"center", gap:"10px",
-                  marginTop:"2.5rem", background:"var(--cream)", color:"var(--dark)",
-                  padding:"14px 32px", fontSize:"12px", fontWeight:600,
-                  letterSpacing:".12em", textTransform:"uppercase", textDecoration:"none",
-                  borderRadius:"3px", transition:"background .2s"
-                }}
-                onMouseEnter={e=>e.currentTarget.style.background="#fff"}
-                onMouseLeave={e=>e.currentTarget.style.background="var(--cream)"}>
-                  {t.eventsRequest} →
-                </a>
-              </div>
-
-              {/* Droite : parcours */}
-              <div style={{ padding:"5rem 4rem" }}>
-                <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".38em", color:"rgba(255,255,255,.35)" }}>
-                  {t.parcoursLabel}
-                </span>
-                <div style={{ marginTop:"12px", fontSize:"1.6rem", color:"var(--cream)", fontFamily:"'DM Serif Display',Georgia,serif" }}>
-                  {t.parcoursTitle}
-                </div>
-                <div style={{ marginTop:"2rem" }}>
-                  {[t.parcoursDest[location], t.parcoursStep2, t.parcoursStep3, t.parcoursStep4].map((step, i) => (
-                    <div key={step} className="journey-step">
-                      <span style={{ fontSize:"10px", color:"rgba(255,255,255,.18)", fontFamily:"monospace", marginTop:"2px", minWidth:"18px" }}>
-                        {String(i+1).padStart(2,"0")}
-                      </span>
-                      <span style={{ fontSize:"13px", color:"rgba(255,255,255,.6)", lineHeight:1.6 }}>{step}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* ══════════════════════════════════════
-              FOOTER — dense & sombre
-          ══════════════════════════════════════ */}
-          <footer style={{ background:"var(--dark)" }}>
-            {/* Bande logo + CTA */}
-            <div style={{
-              borderTop:"1px solid rgba(255,255,255,.08)",
-              borderBottom:"1px solid rgba(255,255,255,.08)",
-              padding:"2.5rem 3rem",
-              display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"1.5rem"
-            }}>
-              <div style={{ display:"flex", alignItems:"center", gap:"16px" }}>
-                <img src="assets/logos/lbh-seal.png" style={{ height:"52px", width:"52px", objectFit:"contain", filter:"invert(1)", opacity:.6 }} alt="LBH" />
-                <div>
-                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"15px", objectFit:"contain", filter:"invert(1)", opacity:.55 }} alt="" aria-hidden="true" />
-                  <div style={{ marginTop:"5px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".3em", color:"rgba(255,255,255,.25)" }}>
-                    {t.footerTag}
-                  </div>
-                </div>
-              </div>
-              <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
-                <a href="reserver.html" style={{
-                  background:"var(--cream)", color:"var(--dark)",
-                  padding:"10px 22px", fontSize:"11px", fontWeight:600,
-                  letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none",
-                  borderRadius:"3px"
-                }}>{t.ctaReserve}</a>
-                <a href="evenements.html" style={{
-                  border:"1px solid rgba(255,255,255,.18)", color:"rgba(255,255,255,.6)",
-                  padding:"10px 22px", fontSize:"11px", fontWeight:400,
-                  letterSpacing:".08em", textDecoration:"none",
-                  borderRadius:"3px"
-                }}>{t.eventsCta}</a>
-              </div>
-            </div>
-
-            {/* Colonnes établissements */}
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", padding:"2.5rem 3rem", gap:"0", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
-              <div style={{ paddingRight:"2rem" }}>
-                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Le Touquet</div>
-                {venuesData.filter(v=>v.loc==="touquet").map(v => (
-                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)", cursor:"pointer", transition:"color .2s" }}
-                       onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.7)"} onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.38)"}>
-                    {v.name}
-                  </div>
-                ))}
-              </div>
-              <div style={{ borderLeft:"1px solid rgba(255,255,255,.06)", padding:"0 2rem" }}>
-                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Méribel</div>
-                {venuesData.filter(v=>v.loc==="meribel").map(v => (
-                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)" }}>{v.name}</div>
-                ))}
-                <div style={{ marginTop:"1.5rem", fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Hardelot</div>
-                {venuesData.filter(v=>v.loc==="hardelot").map(v => (
-                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)" }}>{v.name}</div>
-                ))}
-              </div>
-              <div style={{ borderLeft:"1px solid rgba(255,255,255,.06)", padding:"0 0 0 2rem" }}>
-                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Navigation</div>
-                {[
-                  { href:"#group",       label:t.navGroup },
-                  { href:"#venues",      label:t.navVenues },
-                  { href:"#events",      label:t.navEvents },
-                  { href:"reserver.html",label:t.ctaReserve },
-                  { href:"evenements.html", label:t.eventsCta },
-                ].map(n => (
-                  <a key={n.href} href={n.href} style={{ display:"block", padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)", textDecoration:"none", transition:"color .2s" }}
-                     onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.7)"} onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.38)"}>
-                    {n.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Copyright */}
-            <div style={{ padding:"1.5rem 3rem" }}>
-              <div style={{ fontSize:"11px", color:"rgba(255,255,255,.18)" }}>
-                © {new Date().getFullYear()} La Belle Histoire Groupe — Fondé en 1999
-              </div>
-            </div>
-          </footer>
-
+        <div class="mice-card reveal">
+          <span class="api-tag">Connecté à l’API Mice Operations</span>
+          <h3 class="serif">Privatisations &amp; Mice</h3>
+          <p style="color:rgba(246,241,231,.78); font-family:var(--body); font-size:1.2rem">Des lieux d’exception pour vos événements professionnels et privés.</p>
+          <ul>
+            <li>Réunions &amp; séminaires</li>
+            <li>Team building</li>
+            <li>Soirées d’entreprise</li>
+            <li>Mariages &amp; célébrations</li>
+          </ul>
+          <a href="evenements.html" class="btn btn-light btn-arrow"><span>Demander un devis</span></a>
         </div>
-      );
-    }
+      </div>
+    </div>
+  </section>
 
-    function prefetchReserver(url) {
-      if (typeof window === "undefined") return;
-      if (!window.__lbhPrefetchedUrls) window.__lbhPrefetchedUrls = new Set();
-      if (window.__lbhPrefetchedUrls.has(url)) return;
-      const link = document.createElement("link");
-      link.rel = "prefetch"; link.as = "document"; link.href = url;
-      document.head.appendChild(link);
-      window.__lbhPrefetchedUrls.add(url);
-    }
+  <!-- ============ RÉSERVATION CTA ============ -->
+  <section class="section" id="reservation">
+    <div class="container reserve-cta reveal">
+      <span class="label sec-index" style="justify-content:center">05 — Réservation</span>
+      <h2 class="big">Réservez votre table <em>en ligne</em></h2>
+      <p>Disponibilité en temps réel, confirmation immédiate et gestion simplifiée — pour toutes nos maisons.</p>
+      <a href="reserver.html" class="btn btn-dark btn-arrow"><span>Réserver une table</span></a>
+      <div style="margin-top:22px; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--cuivre-2)">Réservation gérée via Overfull</div>
+    </div>
+  </section>
 
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<LBHHomepage />);
-  </script>
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="word">La Belle Histoire</div>
+          <p class="tag">Des lieux, des histoires, des expériences à partager. Depuis 1999.</p>
+        </div>
+        <div>
+          <h5>Maisons</h5>
+          <ul>
+            <li><a href="#etablissements">Flavio</a></li>
+            <li><a href="#etablissements">L’Amour</a></li>
+            <li><a href="#etablissements">La Nonna</a></li>
+            <li><a href="#etablissements">Tipi · Méribel</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="#groupe">Le Groupe</a></li>
+            <li><a href="#etablissements">Nos Établissements</a></li>
+            <li><a href="evenements.html">Événements</a></li>
+            <li><a href="reserver.html">Réservation</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5>Contact</h5>
+          <ul>
+            <li><a href="tel:+33321055255">03 21 05 25 55</a></li>
+            <li><a href="mailto:contact@labellehistoire.fr">contact@labellehistoire.fr</a></li>
+            <li><a href="#">Le Touquet-Paris-Plage</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 1999—2026 La Belle Histoire Groupe</span>
+        <span>Des lieux · Des histoires · Des expériences</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ MODAL FICHE ============ -->
+  <div class="modal-overlay" id="modal" aria-hidden="true">
+    <div class="modal t-chocolat" role="dialog" aria-modal="true">
+      <div class="modal-visual"><img class="modal-logo" src="" alt="" /><span class="mono"></span></div>
+      <div class="modal-body">
+        <button class="modal-close" onclick="closeVenue()" aria-label="Fermer">✕</button>
+        <div class="m-year" id="m-year"></div>
+        <h2 id="m-name"></h2>
+        <p class="m-type" id="m-type"></p>
+        <div class="m-tags" id="m-tags"></div>
+        <p class="m-desc" id="m-desc"></p>
+        <div class="m-info" id="m-info"></div>
+        <div class="modal-actions">
+          <a href="reserver.html" class="btn btn-dark">Réserver</a>
+          <a href="#" class="btn btn-ghost">Notre carte</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
