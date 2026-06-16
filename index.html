@@ -33,17 +33,20 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    /* ============================================================
-       LA BELLE HISTOIRE GROUPE — Feuille de style intégrée
-       ============================================================ */
+    :root {
+      --cream: #F8F4ED;
+      --dark:  #1A1008;
+      --mid:   #5C3D1E;
+    }
 
-    /* ---------- Base ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: #fffdfd;
+      background: var(--cream);
       font-family: 'Open Sauce Sans', 'Inter', system-ui, -apple-system, sans-serif;
       font-weight: 300;
-      color: #262726;
+      color: var(--dark);
       -webkit-font-smoothing: antialiased;
     }
     html { scroll-behavior: smooth; }
@@ -51,7 +54,8 @@
     h1, h2, h3, h4, h5, h6 {
       font-family: 'DM Serif Display', Georgia, 'Times New Roman', serif;
       font-weight: 400 !important;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
+      margin: 0;
     }
     .font-subtitle {
       font-family: 'Lora', Georgia, serif;
@@ -61,24 +65,79 @@
     .logo-chip {
       font-family: 'DM Serif Display', Georgia, serif;
       font-style: italic;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
 
-    /* ---------- Animations ---------- */
-    @keyframes floatSlow  { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    @keyframes pulseGlow  { 0%,100% { opacity: .35; transform: scale(1); } 50% { opacity: .55; transform: scale(1.08); } }
-    @keyframes slideUpFade{ from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes marquee    { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    /* ── Animations ── */
+    @keyframes marquee     { from { transform: translateX(0); }       to { transform: translateX(-50%); } }
+    @keyframes slideUpFade { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseGlow   { 0%,100% { opacity: .3; transform: scale(1); }  50% { opacity: .5; transform: scale(1.07); } }
 
-    .animate-floatSlow    { animation: floatSlow 6s ease-in-out infinite; }
-    .animate-pulseGlow    { animation: pulseGlow 7s ease-in-out infinite; }
-    .animate-slideUpFade  { animation: slideUpFade .9s ease forwards; }
-    .animate-marquee      { animation: marquee 45s linear infinite; }
+    .animate-marquee     { animation: marquee 55s linear infinite; }
+    .animate-slideUpFade { animation: slideUpFade .85s ease forwards; }
+    .animate-pulseGlow   { animation: pulseGlow 8s ease-in-out infinite; }
 
     .marquee-mask {
-      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
-              mask-image: linear-gradient(to right, transparent 0, #000 10%, #000 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
     }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* ── Venue mosaic card ── */
+    .venue-card { position: relative; overflow: hidden; cursor: pointer; }
+    .venue-card-img {
+      transition: transform .65s cubic-bezier(.25,.46,.45,.94),
+                  opacity   .45s ease;
+    }
+    .venue-card:hover .venue-card-img { transform: scale(1.07); opacity: .9 !important; }
+
+    .venue-card-overlay {
+      position: absolute; inset: 0;
+      background: rgba(26,16,8,.75);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+    .venue-card:hover .venue-card-overlay { opacity: 1; }
+
+    .venue-card-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.25rem 1.25rem .9rem;
+      background: linear-gradient(to top, rgba(26,16,8,.65) 0%, transparent 100%);
+      transition: opacity .35s ease;
+    }
+    .venue-card:hover .venue-card-label { opacity: 0; }
+
+    /* ── Tag pill ── */
+    .tag-pill {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.18);
+      padding: 2px 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.55);
+    }
+
+    /* ── Stat band first cell dark ── */
+    .stat-dark  { background: var(--dark); }
+    .stat-light { background: var(--cream); }
+
+    /* ── Journey step ── */
+    .journey-step {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .journey-step:last-child { border-bottom: none; }
 
     input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0); cursor: pointer; }
   </style>
@@ -87,12 +146,10 @@
   <div id="root"></div>
 
   <script type="text/babel" data-presets="react">
-    const { useState, useMemo, useEffect } = React;
+    const { useState, useMemo, useEffect, useRef } = React;
 
     /* ============================================================
        DATA — Établissements (11)
-       Pour ajouter une photo : décommenter / ajouter
-       image: "assets/venues/<nom>.jpg"  juste après color
        ============================================================ */
     const allVenues = (lang) => [
       { name: "Flavio", year: "1949", loc: "touquet", color: "#7A4A2B", image: "assets/logos/logo-flavio.png",
@@ -142,7 +199,7 @@
     ];
 
     /* ============================================================
-       I18N — Dictionnaire FR / EN
+       I18N
        ============================================================ */
     const T = {
       fr: {
@@ -202,15 +259,15 @@
             badge: "Le Touquet • Hardelot • Méribel • Collection d'expériences",
             title: "Des lieux où l'on ne vient pas seulement consommer,",
             subtitle: "mais vivre.",
-            intro: "Chaque établissement possède son identité, son rythme, son atmosphère. Du déjeuner au dernier verre, de la plage à la nuit, tout est pensé pour créer des moments forts, sincères et mémorables. Plus qu'un groupe, c'est une collection d'expériences.",
-            stats: [{ value: "10 +1", label: "maisons & ouverture prochaine" }, { value: "25+", label: "années d'histoire depuis 1999" }, { value: "3", label: "destinations : Le Touquet, Hardelot & Méribel" }],
+            intro: "Chaque établissement possède son identité, son rythme, son atmosphère. Du déjeuner au dernier verre, de la plage à la nuit, tout est pensé pour créer des moments forts, sincères et mémorables.",
+            stats: [{ value: "10+1", label: "maisons & ouverture prochaine" }, { value: "25+", label: "années d'histoire depuis 1999" }, { value: "3", label: "destinations : Le Touquet, Hardelot & Méribel" }],
             sectionTitle: "Une collection de lieux avec leurs propres codes.",
             sectionDesc: "Chaque adresse possède sa personnalité, son rythme, son ambiance et sa promesse. Explorez l'ensemble du groupe ou filtrez par destination.",
           },
           touquet: {
             badge: "Le Touquet-Paris-Plage • Depuis 1949",
             title: "Le Touquet,", subtitle: "le berceau d'une belle histoire.",
-            intro: "Station balnéaire premium, le Touquet-Paris-Plage est le territoire historique du groupe. De Flavio (1949) à La Nonna (2023), neuf adresses complémentaires rythment la vie de la station, entre front de mer, gastronomie, bars d'ambiance et lieux festifs.",
+            intro: "Station balnéaire premium, le Touquet-Paris-Plage est le territoire historique du groupe. De Flavio (1949) à La Nonna (2023), neuf adresses complémentaires rythment la vie de la station.",
             stats: [{ value: "9", label: "adresses au Touquet" }, { value: "1949", label: "la légende Flavio" }, { value: "1999", label: "fondation du groupe" }],
             sectionTitle: "Les établissements du Touquet.",
             sectionDesc: "Plage, gastronomie, bars, brasseries : le Touquet est un écosystème à part entière, où chaque lieu a trouvé sa place et son public.",
@@ -218,7 +275,7 @@
           meribel: {
             badge: "Méribel • Savoie • Depuis 2024",
             title: "Méribel,", subtitle: "l'écriture d'un nouveau chapitre.",
-            intro: "Avec l'ouverture de Tipi en 2024, La Belle Histoire Groupe signe sa première expansion hors du Touquet. Direction les Alpes, au cœur du domaine des 3 Vallées, pour proposer l'hospitalité du groupe dans un cadre alpin d'exception.",
+            intro: "Avec l'ouverture de Tipi en 2024, La Belle Histoire Groupe signe sa première expansion hors du Touquet. Direction les Alpes, au cœur du domaine des 3 Vallées.",
             stats: [{ value: "1", label: "adresse alpine : Tipi" }, { value: "2024", label: "année d'ouverture" }, { value: "3V", label: "au cœur des 3 Vallées" }],
             sectionTitle: "L'expansion alpine du groupe.",
             sectionDesc: "Méribel marque une nouvelle page : l'esprit La Belle Histoire appliqué à la montagne, avec la même exigence et la même envie de créer des souvenirs.",
@@ -226,7 +283,7 @@
           hardelot: {
             badge: "Hardelot • Côte d'Opale • Ouverture prochaine",
             title: "Hardelot,", subtitle: "le prochain chapitre s'écrit ici.",
-            intro: "À quelques kilomètres au sud du Touquet, Hardelot accueillera prochainement une nouvelle adresse du groupe. Une station confidentielle, des dunes, des pins, et bientôt un lieu signé La Belle Histoire Groupe.",
+            intro: "À quelques kilomètres au sud du Touquet, Hardelot accueillera prochainement une nouvelle adresse du groupe. Une station confidentielle, des dunes, des pins, et bientôt un lieu signé LBH.",
             stats: [{ value: "Bientôt", label: "ouverture du restaurant" }, { value: "1", label: "adresse à venir" }, { value: "62", label: "côte d'Opale · Pas-de-Calais" }],
             sectionTitle: "Hardelot, l'adresse en préparation.",
             sectionDesc: "Le projet est en cours. Inscrivez-vous via le formulaire de contact pour être informé en avant-première de l'ouverture et des soirées de lancement.",
@@ -289,15 +346,15 @@
           all: {
             badge: "Le Touquet • Hardelot • Méribel • A collection of experiences",
             title: "Places you don't just go to consume,", subtitle: "but to live.",
-            intro: "Each venue has its own identity, rhythm and atmosphere. From lunch to the last drink, from the beach to the night, everything is designed to create strong, sincere and memorable moments. More than a group, it's a collection of experiences.",
-            stats: [{ value: "10 +1", label: "houses & upcoming opening" }, { value: "25+", label: "years of history since 1999" }, { value: "3", label: "destinations: Le Touquet, Hardelot & Méribel" }],
+            intro: "Each venue has its own identity, rhythm and atmosphere. From lunch to the last drink, from the beach to the night, everything is designed to create strong, sincere and memorable moments.",
+            stats: [{ value: "10+1", label: "houses & upcoming opening" }, { value: "25+", label: "years of history since 1999" }, { value: "3", label: "destinations: Le Touquet, Hardelot & Méribel" }],
             sectionTitle: "A collection of places with their own codes.",
             sectionDesc: "Each address has its own personality, rhythm, atmosphere and promise. Explore the entire group or filter by destination.",
           },
           touquet: {
             badge: "Le Touquet-Paris-Plage • Since 1949",
             title: "Le Touquet,", subtitle: "where the beautiful story began.",
-            intro: "A premium seaside resort, Le Touquet-Paris-Plage is the group's historic territory. From Flavio (1949) to La Nonna (2023), nine complementary venues animate the resort — from seafront to fine dining, ambient bars and festive spots.",
+            intro: "A premium seaside resort, Le Touquet-Paris-Plage is the group's historic territory. From Flavio (1949) to La Nonna (2023), nine complementary venues animate the resort.",
             stats: [{ value: "9", label: "venues in Le Touquet" }, { value: "1949", label: "the Flavio legend" }, { value: "1999", label: "the group's founding" }],
             sectionTitle: "The venues of Le Touquet.",
             sectionDesc: "Beach, fine dining, bars, brasseries: Le Touquet is its own ecosystem, where every venue has found its place and its audience.",
@@ -305,7 +362,7 @@
           meribel: {
             badge: "Méribel • Savoie • Since 2024",
             title: "Méribel,", subtitle: "writing a new chapter.",
-            intro: "With Tipi opening in 2024, La Belle Histoire Groupe signed its first expansion outside Le Touquet. Off to the Alps, in the heart of the 3 Vallées, bringing the group's hospitality to an exceptional alpine setting.",
+            intro: "With Tipi opening in 2024, La Belle Histoire Groupe signed its first expansion outside Le Touquet. Off to the Alps, in the heart of the 3 Vallées.",
             stats: [{ value: "1", label: "alpine venue: Tipi" }, { value: "2024", label: "year of opening" }, { value: "3V", label: "in the 3 Vallées" }],
             sectionTitle: "The group's alpine expansion.",
             sectionDesc: "Méribel turns a new page: the La Belle Histoire spirit applied to the mountain, with the same standards and the same desire to create memories.",
@@ -313,7 +370,7 @@
           hardelot: {
             badge: "Hardelot • Opal Coast • Opening soon",
             title: "Hardelot,", subtitle: "the next chapter starts here.",
-            intro: "A few kilometers south of Le Touquet, Hardelot will soon host a new venue from the group. A confidential resort, dunes, pines — and soon a place signed La Belle Histoire Groupe.",
+            intro: "A few kilometers south of Le Touquet, Hardelot will soon host a new venue from the group. A confidential resort, dunes, pines — and soon a place signed LBH.",
             stats: [{ value: "Soon", label: "restaurant opening" }, { value: "1", label: "upcoming venue" }, { value: "62", label: "Opal Coast · Pas-de-Calais" }],
             sectionTitle: "Hardelot, the venue in preparation.",
             sectionDesc: "The project is underway. Sign up via the contact form to be notified first about the opening and launch parties.",
@@ -339,141 +396,430 @@
         document.documentElement.lang = lang;
       }, [lang]);
 
+      /* Scroll reveal observer */
+      useEffect(() => {
+        const obs = new IntersectionObserver(
+          (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in"); }),
+          { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+        );
+        document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+        return () => obs.disconnect();
+      });
+
       const t = T[lang];
       const venuesData = allVenues(lang);
-      const venues = useMemo(() => (location === "all" ? venuesData : venuesData.filter((v) => v.loc === location)), [location, lang]);
+      const venues = useMemo(
+        () => (location === "all" ? venuesData : venuesData.filter((v) => v.loc === location)),
+        [location, lang]
+      );
       const content = t.locContent[location];
 
       const LangToggle = () => (
-        <div className="flex items-center rounded-full border border-black/15 bg-white p-0.5 text-xs font-semibold" role="group" aria-label="Language">
-          <button onClick={() => setLang("fr")} className={`rounded-full px-3 py-1.5 transition ${lang === "fr" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "fr"}>FR</button>
-          <button onClick={() => setLang("en")} className={`rounded-full px-3 py-1.5 transition ${lang === "en" ? "bg-black text-white" : "text-neutral-500 hover:text-black"}`} aria-pressed={lang === "en"}>EN</button>
+        <div style={{ display:"flex", alignItems:"center", border:"1px solid rgba(26,16,8,.15)", borderRadius:"999px", padding:"2px", gap:0 }}>
+          <button onClick={() => setLang("fr")}
+            style={{ borderRadius:"999px", padding:"5px 12px", fontSize:"11px", fontWeight:500, cursor:"pointer", border:"none", transition:"all .2s",
+              background: lang==="fr" ? "var(--dark)" : "transparent",
+              color:       lang==="fr" ? "var(--cream)" : "rgba(26,16,8,.4)" }}>FR</button>
+          <button onClick={() => setLang("en")}
+            style={{ borderRadius:"999px", padding:"5px 12px", fontSize:"11px", fontWeight:500, cursor:"pointer", border:"none", transition:"all .2s",
+              background: lang==="en" ? "var(--dark)" : "transparent",
+              color:       lang==="en" ? "var(--cream)" : "rgba(26,16,8,.4)" }}>EN</button>
+        </div>
+      );
+
+      const FilterBar = ({ dark = false }) => (
+        <div style={{ display:"flex", flexWrap:"wrap" }}>
+          {[
+            { key:"all",      label: t.filterAll },
+            { key:"touquet",  label: t.filterTouquet },
+            { key:"hardelot", label: t.filterHardelot },
+            { key:"meribel",  label: t.filterMeribel },
+          ].map((f, i) => (
+            <button key={f.key} onClick={() => setLocation(f.key)}
+              style={{
+                padding: "14px 24px",
+                fontSize: "10px",
+                textTransform: "uppercase",
+                letterSpacing: ".25em",
+                fontWeight: 500,
+                cursor: "pointer",
+                border: "none",
+                borderLeft: i > 0 ? `1px solid ${dark ? "rgba(255,255,255,.08)" : "rgba(26,16,8,.08)"}` : "none",
+                transition: "all .2s",
+                background: location === f.key
+                  ? (dark ? "rgba(248,244,237,.12)" : "var(--dark)")
+                  : "transparent",
+                color: location === f.key
+                  ? (dark ? "var(--cream)" : "var(--cream)")
+                  : (dark ? "rgba(255,255,255,.38)" : "rgba(26,16,8,.4)"),
+              }}>
+              {f.label}
+            </button>
+          ))}
         </div>
       );
 
       return (
-        <div className="min-h-screen bg-white text-neutral-900 selection:bg-black selection:text-white">
+        <div style={{ background:"var(--cream)", minHeight:"100vh", color:"var(--dark)" }}>
 
-          <header className="sticky top-0 z-50 border-b border-black/10 bg-white/80 backdrop-blur-xl">
-            <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4 lg:px-10">
-              <a href="#" className="flex items-center gap-3">
-                <img src="assets/logos/lbh-seal.png" alt="" aria-hidden="true" className="h-11 w-11 object-contain" />
+          {/* ══════════════════════════════════════
+              HEADER
+          ══════════════════════════════════════ */}
+          <header style={{
+            position:"sticky", top:0, zIndex:50,
+            background:"rgba(248,244,237,.92)",
+            backdropFilter:"blur(14px)",
+            borderBottom:"1px solid rgba(26,16,8,.1)",
+          }}>
+            <div style={{ maxWidth:"none", margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"1rem", padding:"0 3rem" }}>
+              <a href="#" style={{ display:"flex", alignItems:"center", gap:"12px", textDecoration:"none" }}>
+                <img src="assets/logos/lbh-seal.png" style={{ height:"40px", width:"40px", objectFit:"contain" }} alt="" aria-hidden="true" />
                 <div>
-                  <img src="assets/logos/lbh-wordmark.png" alt="La Belle Histoire Groupe" className="hidden h-[18px] object-contain md:block" />
-                  <div className="text-lg font-semibold tracking-wide text-black md:hidden">La Belle Histoire Groupe</div>
-                  <div className="mt-1 text-[10px] uppercase tracking-[0.3em] text-neutral-500">{t.headerTag}</div>
+                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"17px", objectFit:"contain", display:"block" }} alt="La Belle Histoire Groupe" />
+                  <div style={{ marginTop:"3px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".3em", color:"rgba(26,16,8,.35)" }}>{t.headerTag}</div>
                 </div>
               </a>
-              <nav className="hidden items-center gap-8 text-sm text-neutral-600 lg:flex">
-                <a href="#group" className="transition hover:text-black">{t.navGroup}</a>
-                <a href="#venues" className="transition hover:text-black">{t.navVenues}</a>
-                <a href="#events" className="transition hover:text-black">{t.navEvents}</a>
+
+              <nav style={{ display:"flex", alignItems:"center", gap:"2.5rem" }}>
+                {[
+                  { href:"#group",  label:t.navGroup },
+                  { href:"#venues", label:t.navVenues },
+                  { href:"#events", label:t.navEvents },
+                ].map(n => (
+                  <a key={n.href} href={n.href} style={{ fontSize:"13px", color:"rgba(26,16,8,.5)", textDecoration:"none", transition:"color .2s", fontWeight:400 }}
+                     onMouseEnter={e=>e.target.style.color="var(--dark)"} onMouseLeave={e=>e.target.style.color="rgba(26,16,8,.5)"}>
+                    {n.label}
+                  </a>
+                ))}
               </nav>
-              <div className="flex items-center gap-3">
+
+              <div style={{ display:"flex", alignItems:"center", gap:"12px", padding:"14px 0" }}>
                 <LangToggle />
-                <a href="reserver.html" className="rounded-full bg-black px-5 py-3 text-base font-semibold text-white shadow-lg transition hover:scale-[1.03] hover:shadow-xl md:px-7">{t.ctaReserve}</a>
+                <a href="reserver.html" style={{
+                  background:"var(--dark)", color:"var(--cream)",
+                  padding:"10px 22px", fontSize:"12px", fontWeight:600,
+                  letterSpacing:".1em", textTransform:"uppercase",
+                  textDecoration:"none", borderRadius:"3px", transition:"background .2s"
+                }}
+                onMouseEnter={e=>e.currentTarget.style.background="var(--mid)"}
+                onMouseLeave={e=>e.currentTarget.style.background="var(--dark)"}>
+                  {t.ctaReserve}
+                </a>
               </div>
             </div>
           </header>
 
-          <section className="relative overflow-hidden">
-            <video autoPlay muted loop playsInline poster="https://images.pexels.com/videos/36805136/pictures/preview-0.jpg" className="absolute inset-0 h-full w-full object-cover">
+          {/* ══════════════════════════════════════
+              HERO — plein écran, sombre, immersif
+          ══════════════════════════════════════ */}
+          <section style={{ position:"relative", minHeight:"100vh", overflow:"hidden", background:"var(--dark)" }}>
+            {/* Vidéo */}
+            <video autoPlay muted loop playsInline
+              poster="https://images.pexels.com/videos/36805136/pictures/preview-0.jpg"
+              style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", opacity:.28 }}>
               <source src="https://videos.pexels.com/video-files/36805136/15596007_1920_1080_50fps.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-white/70 backdrop-blur-[2px]" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.4),transparent_30%),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.3),transparent_25%)]" />
-            <div className="absolute left-[10%] top-24 h-56 w-56 rounded-full bg-white/50 blur-3xl animate-pulseGlow" />
-            <div className="absolute bottom-8 right-[10%] h-64 w-64 rounded-full bg-white/40 blur-3xl animate-pulseGlow" />
-            <img src="assets/logos/lbh-seal.png" alt="" aria-hidden="true" className="pointer-events-none absolute -left-40 top-1/2 hidden w-[520px] -translate-y-1/2 select-none opacity-[0.07] lg:block" />
+            {/* Dégradé sombre */}
+            <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom, rgba(26,16,8,.15) 0%, rgba(26,16,8,.55) 60%, rgba(26,16,8,.9) 100%)" }} />
+            {/* Sceau watermark */}
+            <img src="assets/logos/lbh-seal.png" aria-hidden="true"
+              style={{ position:"absolute", right:"-8%", top:"50%", transform:"translateY(-50%)", height:"90vh", width:"auto", objectFit:"contain", opacity:.04, pointerEvents:"none", filter:"invert(1)", userSelect:"none" }} />
 
-            <div className="relative mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.2fr_.8fr] lg:px-10">
-              <div key={`${location}-${lang}`} className="animate-slideUpFade">
-                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-black/15 bg-black/5 px-4 py-2 text-xs uppercase tracking-[0.28em] text-neutral-700">{content.badge}</div>
-                <h1 className="max-w-4xl text-5xl leading-[1] tracking-tight text-black md:text-7xl">
-                  {content.title}
-                  <span className="font-subtitle mt-2 block text-4xl text-neutral-500 md:text-5xl">{content.subtitle}</span>
-                </h1>
-                <p className="mt-6 max-w-2xl text-base leading-7 text-neutral-600 md:text-lg">{content.intro}</p>
+            {/* Contenu héro */}
+            <div key={`${location}-${lang}`}
+              style={{ position:"relative", display:"flex", flexDirection:"column", minHeight:"100vh", justifyContent:"space-between" }}
+              className="animate-slideUpFade">
 
-                <div className="mt-8 flex flex-wrap gap-3">
-                  <button onClick={() => setLocation("all")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "all" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterAll}</button>
-                  <button onClick={() => setLocation("touquet")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "touquet" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterTouquet}</button>
-                  <button onClick={() => setLocation("hardelot")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "hardelot" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterHardelot} <span className="ml-1 text-[10px] uppercase tracking-wider opacity-70">{t.soon}</span></button>
-                  <button onClick={() => setLocation("meribel")} className={`rounded-full border px-5 py-2 text-sm font-medium transition ${location === "meribel" ? "border-black bg-black text-white" : "border-black/15 bg-white text-neutral-700 hover:bg-neutral-100"}`}>{t.filterMeribel}</button>
+              {/* Badge destination */}
+              <div style={{ padding:"2.5rem 3rem 0" }}>
+                <span style={{
+                  display:"inline-block", border:"1px solid rgba(255,255,255,.18)",
+                  padding:"7px 18px", fontSize:"9px", textTransform:"uppercase",
+                  letterSpacing:".35em", color:"rgba(255,255,255,.5)"
+                }}>{content.badge}</span>
+              </div>
+
+              {/* Titre géant + intro */}
+              <div style={{ padding:"0 3rem 2.5rem", display:"grid", gridTemplateColumns:"1fr auto", gap:"2rem", alignItems:"flex-end" }}>
+                <div>
+                  <h1 style={{
+                    fontSize:"clamp(3rem,8vw,8rem)", lineHeight:".95",
+                    color:"var(--cream)", margin:0
+                  }}>
+                    {content.title}
+                    <span className="font-subtitle" style={{ display:"block", color:"rgba(248,244,237,.52)", marginTop:".1em" }}>
+                      {content.subtitle}
+                    </span>
+                  </h1>
+                  <p style={{ marginTop:"1.5rem", maxWidth:"540px", fontSize:"15px", lineHeight:1.75, color:"rgba(255,255,255,.52)", fontWeight:300 }}>
+                    {content.intro}
+                  </p>
+                  <div style={{ marginTop:"2rem", display:"flex", gap:"12px", flexWrap:"wrap" }}>
+                    <a href="#venues" style={{
+                      display:"inline-flex", alignItems:"center", gap:"8px",
+                      background:"var(--cream)", color:"var(--dark)",
+                      padding:"13px 28px", fontSize:"12px", fontWeight:600,
+                      letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none",
+                      borderRadius:"3px", transition:"background .2s"
+                    }}
+                    onMouseEnter={e=>e.currentTarget.style.background="#fff"}
+                    onMouseLeave={e=>e.currentTarget.style.background="var(--cream)"}>
+                      {t.discover} →
+                    </a>
+                    <a href="#events" style={{
+                      display:"inline-flex", alignItems:"center", gap:"8px",
+                      border:"1px solid rgba(255,255,255,.25)", color:"rgba(255,255,255,.75)",
+                      padding:"13px 28px", fontSize:"12px", fontWeight:400,
+                      letterSpacing:".08em", textDecoration:"none",
+                      borderRadius:"3px", transition:"all .2s"
+                    }}
+                    onMouseEnter={e=>{ e.currentTarget.style.borderColor="rgba(255,255,255,.6)"; e.currentTarget.style.color="#fff"; }}
+                    onMouseLeave={e=>{ e.currentTarget.style.borderColor="rgba(255,255,255,.25)"; e.currentTarget.style.color="rgba(255,255,255,.75)"; }}>
+                      {t.eventsCta}
+                    </a>
+                  </div>
                 </div>
 
-                <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                  <a href="#venues" className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:translate-y-[-1px]">{t.discover}</a>
-                  <a href="#events" className="rounded-full border border-black/15 bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-neutral-100">{t.eventsCta}</a>
+                {/* Stats verticales */}
+                <div style={{ border:"1px solid rgba(255,255,255,.1)", minWidth:"220px" }}>
+                  {content.stats.map((item, i) => (
+                    <div key={item.label} style={{
+                      padding:"1.2rem 1.5rem",
+                      borderBottom: i < content.stats.length - 1 ? "1px solid rgba(255,255,255,.08)" : "none"
+                    }}>
+                      <div style={{ fontSize:"2.2rem", color:"var(--cream)", lineHeight:1, fontFamily:"'DM Serif Display',Georgia,serif" }}>{item.value}</div>
+                      <div style={{ marginTop:"5px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".22em", color:"rgba(255,255,255,.35)" }}>{item.label}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="animate-floatSlow rounded-[2rem] border border-black/10 bg-white p-4 shadow-2xl">
-                  <div className="rounded-[1.75rem] border border-black/10 bg-neutral-50 p-4">
-                    <div className="mb-4 flex items-center justify-between">
-                      <div>
-                        <div className="text-xs uppercase tracking-[0.25em] text-neutral-500">{t.immersiveView}</div>
-                        <div className="mt-1 text-xl font-medium text-black">{t.immersiveSubtitle[location]}</div>
-                      </div>
-                      <div className="rounded-full border border-emerald-600/30 bg-emerald-600/10 px-3 py-1 text-xs text-emerald-700">{t.venueWord(venues.length)}</div>
-                    </div>
-
-                    <div className="grid gap-3">
-                      {venues.slice(0, 3).map((venue) => (
-                        <details key={venue.name} className="group rounded-2xl border border-black/10 bg-white p-4 transition open:bg-neutral-50" style={{ borderLeft: `2px solid ${venue.color}` }}>
-                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
-                            <div className="flex items-center gap-3">
-                              {venue.image ? (
-                                <img src={venue.image} alt="" aria-hidden="true" loading="lazy" className="h-12 w-12 flex-shrink-0 rounded-xl object-cover" />
-                              ) : (
-                                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: `${venue.color}1a` }}>
-                                  <span className="logo-chip text-xs" style={{ color: venue.color }}>{venue.name.slice(0, 2)}</span>
-                                </div>
-                              )}
-                              <div>
-                                <div className="text-lg text-black">{venue.name}</div>
-                                <div className="font-subtitle text-sm text-neutral-500">{venue[lang].vibe}</div>
-                              </div>
-                            </div>
-                            <div className="rounded-full border border-black/10 px-3 py-1 text-xs text-neutral-500 transition group-open:rotate-45">+</div>
-                          </summary>
-                          <div className="pt-4 text-sm leading-6 text-neutral-700">
-                            {venue[lang].description}
-                            <div className="mt-3 flex flex-wrap gap-2">
-                              {venue[lang].tags.map((tag) => (<span key={tag} className="rounded-full border border-black/10 px-3 py-1 text-xs text-neutral-600">{tag}</span>))}
-                            </div>
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+              {/* Barre filtres destinations — bas du héro */}
+              <div style={{ borderTop:"1px solid rgba(255,255,255,.08)", background:"rgba(26,16,8,.35)", backdropFilter:"blur(8px)" }}>
+                <FilterBar dark={true} />
               </div>
             </div>
           </section>
 
-          <section aria-label={t.marqueeTitle} className="border-y border-black/10 bg-white">
-            <div className="mx-auto max-w-7xl px-6 py-6 lg:px-10">
-              <div className="mb-4 flex items-center justify-between gap-6">
-                <div className="text-[10px] uppercase tracking-[0.3em] text-neutral-500">{t.marqueeTitle}</div>
-                <div className="hidden h-px flex-1 bg-black/10 md:block" />
-                <div className="hidden text-[10px] uppercase tracking-[0.3em] text-neutral-500 md:block">{t.marqueeDest}</div>
+          {/* ══════════════════════════════════════
+              MARQUEE — logos sur fond sombre
+          ══════════════════════════════════════ */}
+          <section style={{ background:"var(--dark)", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
+            <div style={{ padding:"2rem 0", overflow:"hidden" }} className="marquee-mask">
+              <div className="animate-marquee" style={{ display:"flex", alignItems:"center", gap:"3.5rem", whiteSpace:"nowrap", width:"max-content" }}>
+                {[...venuesData, ...venuesData].map((v, i) => (
+                  <div key={`mq-${i}`} style={{ display:"flex", alignItems:"center", gap:"3.5rem" }}>
+                    {v.image ? (
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"44px", width:"120px" }}>
+                        <img src={v.image} alt={v.name} style={{ maxHeight:"100%", maxWidth:"100%", objectFit:"contain", filter:"invert(1)", opacity:.45, transition:"opacity .3s" }}
+                             onMouseEnter={e=>e.target.style.opacity=".85"} onMouseLeave={e=>e.target.style.opacity=".45"} />
+                      </div>
+                    ) : (
+                      <span className="logo-chip" style={{ fontSize:"1.5rem", color:"rgba(255,255,255,.4)", borderBottom:`1px solid ${v.color}70`, paddingBottom:"2px" }}>
+                        {v.name}
+                      </span>
+                    )}
+                    <span style={{ color:"rgba(255,255,255,.15)", fontSize:"10px" }} aria-hidden="true">✦</span>
+                  </div>
+                ))}
               </div>
-              <div className="marquee-mask relative overflow-hidden">
-                <div className="animate-marquee flex w-max items-center gap-12 whitespace-nowrap py-3">
-                  {[...venuesData, ...venuesData].map((v, i) => (
-                    <div key={`mq-${i}`} className="flex items-center gap-12">
-                      {v.image ? (
-                        <div className="flex h-32 w-64 items-center justify-center overflow-hidden rounded-2xl bg-white/90 p-4 shadow-sm">
-                          <img src={v.image} alt={v.name} className="max-h-full max-w-full object-contain" />
-                        </div>
-                      ) : (
-                        <span className="logo-chip text-2xl text-black md:text-3xl" style={{ borderBottom: `2px solid ${v.color}`, paddingBottom: '2px' }}>
-                          {v.name}
-                        </span>
-                      )}
-                      <span className="text-neutral-300" aria-hidden="true">✦</span>
+            </div>
+          </section>
+
+          {/* ══════════════════════════════════════
+              STATS BAND — éditorial
+          ══════════════════════════════════════ */}
+          <section id="group" style={{ borderBottom:"1px solid rgba(26,16,8,.1)" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", divideColor:"rgba(26,16,8,.1)" }}>
+              {content.stats.map((item, i) => (
+                <div key={item.label} className="reveal"
+                  style={{
+                    padding:"4.5rem 3rem",
+                    background: i === 0 ? "var(--dark)" : "var(--cream)",
+                    borderRight: i < 2 ? `1px solid ${i===0?"rgba(255,255,255,.08)":"rgba(26,16,8,.1)"}` : "none",
+                    animationDelay:`${i*.1}s`
+                  }}>
+                  <div style={{
+                    fontSize:"clamp(3.5rem,6vw,6rem)", lineHeight:1,
+                    color: i === 0 ? "var(--cream)" : "var(--dark)",
+                    fontFamily:"'DM Serif Display',Georgia,serif", fontWeight:400
+                  }}>{item.value}</div>
+                  <div style={{
+                    marginTop:"1rem", fontSize:"10px", textTransform:"uppercase", letterSpacing:".25em",
+                    color: i === 0 ? "rgba(255,255,255,.38)" : "rgba(26,16,8,.38)"
+                  }}>{item.label}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ══════════════════════════════════════
+              VENUES — mosaïque plein écran
+          ══════════════════════════════════════ */}
+          <section id="venues" style={{ background:"var(--cream)" }}>
+            {/* En-tête section */}
+            <div style={{ borderBottom:"1px solid rgba(26,16,8,.1)", padding:"4rem 3rem" }}>
+              <div style={{ display:"flex", flexWrap:"wrap", alignItems:"flex-end", justifyContent:"space-between", gap:"2rem" }}>
+                <div className="reveal">
+                  <span style={{ fontSize:"10px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(26,16,8,.38)" }}>
+                    {t.venuesEyebrow[location]}
+                  </span>
+                  <h2 style={{ marginTop:"10px", fontSize:"clamp(2.2rem,5vw,5rem)", color:"var(--dark)", maxWidth:"700px" }}>
+                    {content.sectionTitle}
+                  </h2>
+                  <p style={{ marginTop:"1rem", maxWidth:"460px", fontSize:"14px", lineHeight:1.75, color:"rgba(26,16,8,.52)" }}>
+                    {content.sectionDesc}
+                  </p>
+                </div>
+
+                {/* Filtres */}
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"8px" }}>
+                  {[
+                    { key:"all",      label:`${t.shortAll} (${venuesData.length})` },
+                    { key:"touquet",  label:`${t.filterTouquet} (${venuesData.filter(v=>v.loc==="touquet").length})` },
+                    { key:"hardelot", label:`${t.filterHardelot} (${venuesData.filter(v=>v.loc==="hardelot").length})` },
+                    { key:"meribel",  label:`${t.filterMeribel} (${venuesData.filter(v=>v.loc==="meribel").length})` },
+                  ].map(f => (
+                    <button key={f.key} onClick={() => setLocation(f.key)}
+                      style={{
+                        border: location===f.key ? "1px solid var(--dark)" : "1px solid rgba(26,16,8,.18)",
+                        background: location===f.key ? "var(--dark)" : "transparent",
+                        color: location===f.key ? "var(--cream)" : "rgba(26,16,8,.5)",
+                        padding:"8px 16px", fontSize:"10px", textTransform:"uppercase",
+                        letterSpacing:".2em", cursor:"pointer", fontWeight:500, transition:"all .2s", borderRadius:"3px"
+                      }}>
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Mosaïque — grille plein écran */}
+            <div key={`grid-${location}-${lang}`} style={{
+              display:"grid",
+              gridTemplateColumns: venues.length === 1 ? "1fr" : venues.length <= 4 ? "repeat(2,1fr)" : "repeat(4,1fr)",
+            }}>
+              {venues.map((venue, i) => {
+                const isDouble = venues.length > 4 && (i === 0 || (venues.length % 4 !== 0 && i === venues.length - 1));
+                return (
+                  <div key={venue.name} className="venue-card"
+                    style={{
+                      background: venue.color,
+                      aspectRatio: isDouble ? "2/1" : "1/1",
+                      gridColumn: isDouble ? "span 2" : "span 1",
+                      borderRight: (i+1) % 4 !== 0 ? "1px solid rgba(255,255,255,.06)" : "none",
+                      borderBottom: "1px solid rgba(255,255,255,.06)",
+                    }}>
+                    {/* Image logo */}
+                    {venue.image ? (
+                      <img src={venue.image} alt={venue.name} loading="lazy"
+                        className="venue-card-img"
+                        style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", padding:"14%", mixBlendMode:"luminosity", opacity:.45 }} />
+                    ) : (
+                      <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                        <span className="logo-chip" style={{ fontSize:"3rem", color:"rgba(255,255,255,.18)" }}>{venue.name}</span>
+                      </div>
+                    )}
+
+                    {/* Overlay hover */}
+                    <div className="venue-card-overlay">
+                      <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".25em", color:"rgba(255,255,255,.45)", marginBottom:"8px", display:"block" }}>
+                        {venue[lang].type}
+                      </span>
+                      <p style={{ fontSize:"13px", color:"rgba(255,255,255,.78)", lineHeight:1.65, margin:"0 0 14px" }}>
+                        {venue[lang].description}
+                      </p>
+                      <div style={{ display:"flex", flexWrap:"wrap", gap:"6px", marginBottom:"16px" }}>
+                        {venue[lang].tags.map(tag => <span key={tag} className="tag-pill">{tag}</span>)}
+                      </div>
+                      <a href={`reserver.html?etab=${encodeURIComponent(venue.name)}`}
+                        onMouseEnter={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
+                        style={{
+                          display:"inline-flex", alignItems:"center", gap:"6px",
+                          background:"var(--cream)", color:"var(--dark)",
+                          padding:"9px 18px", fontSize:"11px", fontWeight:600,
+                          letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none",
+                          borderRadius:"3px", alignSelf:"flex-start", transition:"background .2s"
+                        }}>
+                        {t.ctaReserve} →
+                      </a>
+                    </div>
+
+                    {/* Label toujours visible */}
+                    <div className="venue-card-label">
+                      <div style={{ fontSize:"clamp(1.2rem,2.5vw,1.8rem)", color:"#fff", fontFamily:"'DM Serif Display',Georgia,serif" }}>
+                        {venue.name}
+                      </div>
+                      <div style={{ marginTop:"3px", fontSize:"10px", textTransform:"uppercase", letterSpacing:".18em", color:"rgba(255,255,255,.5)" }}>
+                        {venue.year} · {t.chip[venue.loc]}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* ══════════════════════════════════════
+              ÉVÉNEMENTS — section sombre
+          ══════════════════════════════════════ */}
+          <section id="events" style={{ background:"var(--dark)" }}>
+            <div key={`ev-${location}-${lang}`} style={{
+              display:"grid", gridTemplateColumns:"1fr 1fr",
+              borderTop:"1px solid rgba(255,255,255,.06)"
+            }}>
+              {/* Gauche : pitch */}
+              <div className="reveal" style={{ padding:"5rem 4rem", borderRight:"1px solid rgba(255,255,255,.07)" }}>
+                <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".38em", color:"rgba(255,255,255,.35)" }}>
+                  {t.eventsBadge}
+                </span>
+                <h2 style={{ marginTop:"1rem", fontSize:"clamp(2rem,3.5vw,3.5rem)", color:"var(--cream)", lineHeight:1.1 }}>
+                  {t.eventsTitle[location]}
+                </h2>
+                <p style={{ marginTop:"1.5rem", maxWidth:"480px", fontSize:"14px", lineHeight:1.8, color:"rgba(255,255,255,.5)", fontWeight:300 }}>
+                  {t.eventsDesc[location]}
+                </p>
+                <div style={{ marginTop:"2rem", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px" }}>
+                  {t.eventsItems[location].map(item => (
+                    <div key={item} style={{
+                      border:"1px solid rgba(255,255,255,.08)", padding:"14px 16px",
+                      fontSize:"13px", color:"rgba(255,255,255,.6)", lineHeight:1.5, transition:"border-color .2s"
+                    }}
+                    onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,.25)"}
+                    onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,.08)"}>
+                      <span style={{ color:"rgba(255,255,255,.2)", marginRight:"8px" }}>—</span>{item}
+                    </div>
+                  ))}
+                </div>
+                <a href="evenements.html" style={{
+                  display:"inline-flex", alignItems:"center", gap:"10px",
+                  marginTop:"2.5rem", background:"var(--cream)", color:"var(--dark)",
+                  padding:"14px 32px", fontSize:"12px", fontWeight:600,
+                  letterSpacing:".12em", textTransform:"uppercase", textDecoration:"none",
+                  borderRadius:"3px", transition:"background .2s"
+                }}
+                onMouseEnter={e=>e.currentTarget.style.background="#fff"}
+                onMouseLeave={e=>e.currentTarget.style.background="var(--cream)"}>
+                  {t.eventsRequest} →
+                </a>
+              </div>
+
+              {/* Droite : parcours */}
+              <div style={{ padding:"5rem 4rem" }}>
+                <span style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".38em", color:"rgba(255,255,255,.35)" }}>
+                  {t.parcoursLabel}
+                </span>
+                <div style={{ marginTop:"12px", fontSize:"1.6rem", color:"var(--cream)", fontFamily:"'DM Serif Display',Georgia,serif" }}>
+                  {t.parcoursTitle}
+                </div>
+                <div style={{ marginTop:"2rem" }}>
+                  {[t.parcoursDest[location], t.parcoursStep2, t.parcoursStep3, t.parcoursStep4].map((step, i) => (
+                    <div key={step} className="journey-step">
+                      <span style={{ fontSize:"10px", color:"rgba(255,255,255,.18)", fontFamily:"monospace", marginTop:"2px", minWidth:"18px" }}>
+                        {String(i+1).padStart(2,"0")}
+                      </span>
+                      <span style={{ fontSize:"13px", color:"rgba(255,255,255,.6)", lineHeight:1.6 }}>{step}</span>
                     </div>
                   ))}
                 </div>
@@ -481,114 +827,88 @@
             </div>
           </section>
 
-          <section id="group" className="border-y border-black/10 bg-neutral-50">
-            <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 md:grid-cols-3 lg:px-10">
-              {content.stats.map((item) => (
-                <div key={item.label} className="rounded-3xl border border-black/10 bg-white p-6">
-                  <div className="text-4xl font-semibold tracking-tight text-black">{item.value}</div>
-                  <div className="mt-2 text-sm uppercase tracking-[0.2em] text-neutral-500">{item.label}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section id="venues" className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
-            <div className="grid gap-10 lg:grid-cols-[.9fr_1.1fr]">
-              <div>
-                <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.venuesEyebrow[location]}</div>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-black md:text-5xl">{content.sectionTitle}</h2>
-                <p className="mt-5 max-w-xl text-base leading-7 text-neutral-600">{content.sectionDesc}</p>
-
-                <div className="mt-8 flex flex-wrap gap-2">
-                  <button onClick={() => setLocation("all")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "all" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.shortAll} ({venuesData.length})</button>
-                  <button onClick={() => setLocation("touquet")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "touquet" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterTouquet} ({venuesData.filter((v) => v.loc === "touquet").length})</button>
-                  <button onClick={() => setLocation("hardelot")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "hardelot" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterHardelot} ({venuesData.filter((v) => v.loc === "hardelot").length})</button>
-                  <button onClick={() => setLocation("meribel")} className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.2em] transition ${location === "meribel" ? "border-black bg-black text-white" : "border-black/15 text-neutral-600 hover:border-black/40"}`}>{t.filterMeribel} ({venuesData.filter((v) => v.loc === "meribel").length})</button>
+          {/* ══════════════════════════════════════
+              FOOTER — dense & sombre
+          ══════════════════════════════════════ */}
+          <footer style={{ background:"var(--dark)" }}>
+            {/* Bande logo + CTA */}
+            <div style={{
+              borderTop:"1px solid rgba(255,255,255,.08)",
+              borderBottom:"1px solid rgba(255,255,255,.08)",
+              padding:"2.5rem 3rem",
+              display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"1.5rem"
+            }}>
+              <div style={{ display:"flex", alignItems:"center", gap:"16px" }}>
+                <img src="assets/logos/lbh-seal.png" style={{ height:"52px", width:"52px", objectFit:"contain", filter:"invert(1)", opacity:.6 }} alt="LBH" />
+                <div>
+                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"15px", objectFit:"contain", filter:"invert(1)", opacity:.55 }} alt="" aria-hidden="true" />
+                  <div style={{ marginTop:"5px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".3em", color:"rgba(255,255,255,.25)" }}>
+                    {t.footerTag}
+                  </div>
                 </div>
               </div>
+              <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
+                <a href="reserver.html" style={{
+                  background:"var(--cream)", color:"var(--dark)",
+                  padding:"10px 22px", fontSize:"11px", fontWeight:600,
+                  letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none",
+                  borderRadius:"3px"
+                }}>{t.ctaReserve}</a>
+                <a href="evenements.html" style={{
+                  border:"1px solid rgba(255,255,255,.18)", color:"rgba(255,255,255,.6)",
+                  padding:"10px 22px", fontSize:"11px", fontWeight:400,
+                  letterSpacing:".08em", textDecoration:"none",
+                  borderRadius:"3px"
+                }}>{t.eventsCta}</a>
+              </div>
+            </div>
 
-              <div key={`grid-${location}-${lang}`} className="grid gap-4 md:grid-cols-2">
-                {venues.map((venue) => (
-                  <div key={venue.name} className="group animate-slideUpFade overflow-hidden rounded-[1.75rem] border border-black/10 bg-white transition duration-300 hover:-translate-y-1 hover:border-black/30 hover:shadow-lg" style={{ borderTop: `2px solid ${venue.color}` }}>
-                    {venue.image ? (
-                      <div className="relative h-56 overflow-hidden">
-                        <img src={venue.image} alt={venue.name} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                        <div className="absolute left-4 top-4 rounded-full bg-white/85 px-3 py-1 text-xs text-neutral-700 backdrop-blur-sm">{venue.year}</div>
-                        <div className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-xs text-white backdrop-blur-sm">{t.chip[venue.loc]}</div>
-                      </div>
-                    ) : (
-                      <div className="relative h-56 overflow-hidden" style={{ background: `linear-gradient(135deg, ${venue.color}22 0%, ${venue.color}11 100%)` }}>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="logo-chip text-4xl" style={{ color: venue.color, opacity: 0.55 }}>{venue.name}</span>
-                        </div>
-                        <div className="absolute left-4 top-4 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-500">{venue.year}</div>
-                        <div className="absolute right-4 top-4 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-neutral-500">{t.chip[venue.loc]}</div>
-                      </div>
-                    )}
-                    <div className="p-5">
-                      <h3 className="text-3xl tracking-tight text-black">{venue.name}</h3>
-                      <div className="font-subtitle mt-2 text-sm text-neutral-500">{venue[lang].type}</div>
-                      <p className="mt-4 text-sm leading-6 text-neutral-700">{venue[lang].description}</p>
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {venue[lang].tags.map((tag) => (<span key={tag} className="rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600">{tag}</span>))}
-                      </div>
-                      <div className="mt-6">
-                        <a
-                          href={`reserver.html?etab=${encodeURIComponent(venue.name)}`}
-                          onMouseEnter={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
-                          onFocus={() => prefetchReserver(`reserver.html?etab=${encodeURIComponent(venue.name)}`)}
-                          className="inline-flex items-center rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-neutral-900"
-                        >
-                          {t.ctaReserve}
-                        </a>
-                      </div>
-                    </div>
+            {/* Colonnes établissements */}
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", padding:"2.5rem 3rem", gap:"0", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
+              <div style={{ paddingRight:"2rem" }}>
+                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Le Touquet</div>
+                {venuesData.filter(v=>v.loc==="touquet").map(v => (
+                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)", cursor:"pointer", transition:"color .2s" }}
+                       onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.7)"} onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.38)"}>
+                    {v.name}
                   </div>
                 ))}
               </div>
-            </div>
-          </section>
-
-          <section id="events" className="mx-auto max-w-7xl px-6 pb-24 lg:px-10">
-            <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-neutral-50">
-              <div className="grid lg:grid-cols-[1fr_.9fr]">
-                <div className="p-8 md:p-12">
-                  <div className="text-xs uppercase tracking-[0.3em] text-neutral-500">{t.eventsBadge}</div>
-                  <h2 className="mt-4 text-3xl font-semibold tracking-tight text-black md:text-5xl">{t.eventsTitle[location]}</h2>
-                  <p className="mt-5 max-w-2xl text-base leading-7 text-neutral-600">{t.eventsDesc[location]}</p>
-
-                  <div className="mt-8 grid gap-4 md:grid-cols-2">
-                    {t.eventsItems[location].map((item) => (
-                      <div key={item} className="rounded-2xl border border-black/10 bg-white p-4 text-sm text-neutral-700">{item}</div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="border-t border-black/10 bg-white p-8 lg:border-l lg:border-t-0 md:p-12">
-                  <div className="rounded-[1.5rem] border border-black/10 bg-neutral-50 p-5">
-                    <div className="text-sm text-neutral-500">{t.parcoursLabel}</div>
-                    <div className="mt-2 text-2xl font-medium text-black">{t.parcoursTitle}</div>
-                    <div className="mt-6 space-y-3">
-                      {[t.parcoursDest[location], t.parcoursStep2, t.parcoursStep3, t.parcoursStep4].map((step) => (
-                        <div key={step} className="rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm text-neutral-700">{step}</div>
-                      ))}
-                    </div>
-                    <a href="evenements.html" className="mt-6 inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-semibold text-white transition hover:translate-y-[-1px]">
-                      {t.eventsRequest}
-                      <span aria-hidden="true">→</span>
-                    </a>
-                  </div>
-                </div>
+              <div style={{ borderLeft:"1px solid rgba(255,255,255,.06)", padding:"0 2rem" }}>
+                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Méribel</div>
+                {venuesData.filter(v=>v.loc==="meribel").map(v => (
+                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)" }}>{v.name}</div>
+                ))}
+                <div style={{ marginTop:"1.5rem", fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Hardelot</div>
+                {venuesData.filter(v=>v.loc==="hardelot").map(v => (
+                  <div key={v.name} style={{ padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)" }}>{v.name}</div>
+                ))}
+              </div>
+              <div style={{ borderLeft:"1px solid rgba(255,255,255,.06)", padding:"0 0 0 2rem" }}>
+                <div style={{ fontSize:"9px", textTransform:"uppercase", letterSpacing:".35em", color:"rgba(255,255,255,.25)", marginBottom:"1rem" }}>Navigation</div>
+                {[
+                  { href:"#group",       label:t.navGroup },
+                  { href:"#venues",      label:t.navVenues },
+                  { href:"#events",      label:t.navEvents },
+                  { href:"reserver.html",label:t.ctaReserve },
+                  { href:"evenements.html", label:t.eventsCta },
+                ].map(n => (
+                  <a key={n.href} href={n.href} style={{ display:"block", padding:"4px 0", fontSize:"13px", color:"rgba(255,255,255,.38)", textDecoration:"none", transition:"color .2s" }}
+                     onMouseEnter={e=>e.target.style.color="rgba(255,255,255,.7)"} onMouseLeave={e=>e.target.style.color="rgba(255,255,255,.38)"}>
+                    {n.label}
+                  </a>
+                ))}
               </div>
             </div>
-          </section>
 
-          <footer className="border-t border-black/10 bg-white px-6 py-10 text-center text-sm text-neutral-500">
-            <img src="assets/logos/lbh-seal.png" alt="La Belle Histoire Groupe" className="mx-auto mb-4 h-16 w-16 object-contain opacity-80" />
-            <img src="assets/logos/lbh-wordmark.png" alt="" aria-hidden="true" className="mx-auto mb-3 h-4 object-contain opacity-70" />
-            <div>{t.footerTag}</div>
+            {/* Copyright */}
+            <div style={{ padding:"1.5rem 3rem" }}>
+              <div style={{ fontSize:"11px", color:"rgba(255,255,255,.18)" }}>
+                © {new Date().getFullYear()} La Belle Histoire Groupe — Fondé en 1999
+              </div>
+            </div>
           </footer>
+
         </div>
       );
     }
@@ -598,9 +918,7 @@
       if (!window.__lbhPrefetchedUrls) window.__lbhPrefetchedUrls = new Set();
       if (window.__lbhPrefetchedUrls.has(url)) return;
       const link = document.createElement("link");
-      link.rel = "prefetch";
-      link.as = "document";
-      link.href = url;
+      link.rel = "prefetch"; link.as = "document"; link.href = url;
       document.head.appendChild(link);
       window.__lbhPrefetchedUrls.add(url);
     }
