@@ -34,9 +34,11 @@
 
   <style>
     :root {
-      --cream: #F8F4ED;
-      --dark:  #1A1008;
-      --mid:   #5C3D1E;
+      --cream: #F4EEE7; /* plus doux, moodboard */
+      --dark:  #261912; /* riche et chaud */
+      --mid:   #6A4A2D; /* brun intermédiaire */
+      --green: #234931;
+      --bordeaux: #7A1F1F;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -473,9 +475,9 @@
           }}>
             <div style={{ maxWidth:"none", margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", gap:"1rem", padding:"0 3rem" }}>
               <a href="#" style={{ display:"flex", alignItems:"center", gap:"12px", textDecoration:"none" }}>
-                <img src="assets/logos/lbh-seal.png" style={{ height:"40px", width:"40px", objectFit:"contain" }} alt="" aria-hidden="true" />
+                <img src="assets/logos/lbh-seal.png" style={{ height:"56px", width:"56px", objectFit:"contain" }} alt="" aria-hidden="true" />
                 <div>
-                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"17px", objectFit:"contain", display:"block" }} alt="La Belle Histoire Groupe" />
+                  <img src="assets/logos/lbh-wordmark.png" style={{ height:"22px", objectFit:"contain", display:"block" }} alt="La Belle Histoire Groupe" />
                   <div style={{ marginTop:"3px", fontSize:"9px", textTransform:"uppercase", letterSpacing:".3em", color:"rgba(26,16,8,.35)" }}>{t.headerTag}</div>
                 </div>
               </a>
@@ -606,11 +608,11 @@
           ══════════════════════════════════════ */}
           <section style={{ background:"var(--dark)", borderBottom:"1px solid rgba(255,255,255,.06)" }}>
             <div style={{ padding:"2rem 0", overflow:"hidden" }} className="marquee-mask">
-              <div className="animate-marquee" style={{ display:"flex", alignItems:"center", gap:"3.5rem", whiteSpace:"nowrap", width:"max-content" }}>
+              <div className="animate-marquee" style={{ display:"flex", alignItems:"center", gap:"4rem", whiteSpace:"nowrap", width:"max-content" }}>
                 {[...venuesData, ...venuesData].map((v, i) => (
-                  <div key={`mq-${i}`} style={{ display:"flex", alignItems:"center", gap:"3.5rem" }}>
+                  <div key={`mq-${i}`} style={{ display:"flex", alignItems:"center", gap:"4rem" }}>
                     {v.image ? (
-                      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"44px", width:"120px" }}>
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"66px", width:"180px" }}>
                         <img src={v.image} alt={v.name} style={{ maxHeight:"100%", maxWidth:"100%", objectFit:"contain", filter:"invert(1)", opacity:.45, transition:"opacity .3s" }}
                              onMouseEnter={e=>e.target.style.opacity=".85"} onMouseLeave={e=>e.target.style.opacity=".45"} />
                       </div>
@@ -715,7 +717,7 @@
                     {venue.image ? (
                       <img src={venue.image} alt={venue.name} loading="lazy"
                         className="venue-card-img"
-                        style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", padding:"14%", mixBlendMode:"luminosity", opacity:.45 }} />
+                        style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"contain", padding:"8%", mixBlendMode:"luminosity", opacity:.55 }} />
                     ) : (
                       <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center" }}>
                         <span className="logo-chip" style={{ fontSize:"3rem", color:"rgba(255,255,255,.18)" }}>{venue.name}</span>
