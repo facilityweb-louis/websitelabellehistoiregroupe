@@ -174,28 +174,6 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 }
 .hero-quote .accent { color: var(--cuivre); font-style: italic; }
 .hero-sub {
-
-/* -----------------------------
-   HERO — swap label & quote sizes
-   The small uppercase label in the hero becomes the large quote size,
-   and the large quote is reduced to the label size for a reversed look.
-   ----------------------------- */
-.hero .label {
-  font-family: var(--serif);
-  font-size: clamp(1.9rem, 4.2vw, 3.7rem);
-  font-weight: 400;
-  letter-spacing: -.01em;
-  text-transform: none;
-  line-height: 1.12;
-}
-.hero .hero-quote {
-  font-family: var(--sans);
-  font-size: .68rem;
-  font-weight: 500;
-  letter-spacing: .32em;
-  text-transform: uppercase;
-  max-width: none;
-}
   margin-top: 28px; font-family: var(--body); font-size: 1.35rem; max-width: 46ch;
   color: rgba(246,241,231,.82);
 }
@@ -221,6 +199,24 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 }
 .scroll-cue span { width:1px; height:42px; background: linear-gradient(rgba(246,241,231,.6), transparent); animation: cue 2s var(--ease) infinite; }
 @keyframes cue { 0%{transform:scaleY(0); transform-origin:top} 45%{transform:scaleY(1); transform-origin:top} 55%{transform:scaleY(1); transform-origin:bottom} 100%{transform:scaleY(0); transform-origin:bottom} }
+
+/* HERO — make label larger than quote */
+.hero .label {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 400;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  line-height: 1.02;
+}
+.hero .hero-quote {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.08;
+  max-width: 22ch;
+  letter-spacing: -.01em;
+}
 
 /* =========================================================
    CHIFFRES CLÉS
