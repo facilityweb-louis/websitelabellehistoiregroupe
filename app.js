@@ -102,24 +102,42 @@ const LOGO_FILE = {
 };
 function logoSrc(v) { return `assets/logos/logo-${LOGO_FILE[v.id] || v.id}.png`; }
 
+/* ---------- Liens vers les pages Wix des établissements ----------
+   Le site tourne dans une iframe github.io : un chemin relatif (/flavio) pointerait
+   vers github.io. On résout donc contre le domaine Wix parent.
+   WIX_BASE : renseignez le domaine exact (ex: "https://www.labellehistoire.fr").
+   Si laissé vide, on le déduit automatiquement de document.referrer. */
+const WIX_BASE = "https://www.labellehistoiregroupe.com";
+const VENUE_URL = {
+  flavio: "/flavio", impasse: "/limpasse", plage: "/plagedespirates",
+  marcel: "/lemarcel", atelier: "/latelierephemere", basenord: "/labasenord",
+  caravane: "/caravane", amour: "/lamour", nonna: "/la-nonna",
+  tipi: "https://www.tipi-meribel.com"
+};
+function venueHref(v) {
+  const path = VENUE_URL[v.id] || "#";
+  if (/^https?:/.test(path)) return path;
+  let base = WIX_BASE;
+  if (!base) { try { base = new URL(document.referrer).origin; } catch (e) {} }
+  return base ? base.replace(/\/$/, "") + path : path;
+}
+
 /* ---------- Render venue cards ---------- */
 function venueCard(v) {
   // Si une photo est fournie, elle remplace le dégradé de la carte.
   const imgStyle = v.image ? ` style="--card-grad:url('${v.image}') center/cover no-repeat"` : "";
+  const url = venueHref(v);
+  const ext = /^https?:/.test(url) ? ' rel="noopener"' : "";
   return `
-  <article class="card ${v.theme}" data-dest="${v.dest}" data-id="${v.id}" tabindex="0"${imgStyle} aria-label="${v.name}">
+  <a class="card ${v.theme}" href="${url}" target="_top"${ext} data-dest="${v.dest}" data-id="${v.id}"${imgStyle} aria-label="${v.name}">
     <span class="c-year">Depuis ${v.year}</span>
     <span class="c-dest">${v.destLabel}</span>
     <img class="card-logo" src="${logoSrc(v)}" alt="${v.name}" loading="lazy" />
     <div class="c-bottom">
       <p class="c-type">${v.type}</p>
       <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
-      <div class="c-actions">
-        <a href="reserver.html" class="mini solid" onclick="event.stopPropagation()">Réserver</a>
-        <button class="mini line" onclick="event.stopPropagation(); openVenue('${v.id}')">Notre carte</button>
-      </div>
     </div>
-  </article>`;
+  </a>`;
 }
 
 function renderVenues(filter = "all") {
@@ -134,10 +152,6 @@ function renderVenues(filter = "all") {
         <a href="#etablissements" class="btn btn-ghost btn-arrow" style="margin-top:22px"><span>Voir toutes</span></a>
       </div>
     </article>`;
-  grid.querySelectorAll(".card:not(.discover)").forEach(c => {
-    c.addEventListener("click", () => openVenue(c.dataset.id));
-    c.addEventListener("keydown", e => { if (e.key === "Enter") openVenue(c.dataset.id); });
-  });
   observeReveal();
 }
 
@@ -281,7 +295,7 @@ function initAutoResize() {
   if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
   const sendHeight = () => {
     const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-    window.parent.postMessage({ type: 'wix-height', height }, '*');
+    window.parent.postMessage({ type: 'lbh-resize', lbhHeight: height }, '*');
   };
   if (typeof ResizeObserver !== 'undefined') {
     const observer = new ResizeObserver(sendHeight);

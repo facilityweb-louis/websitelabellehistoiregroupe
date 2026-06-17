@@ -266,6 +266,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .card {
   position: relative; aspect-ratio: 3/3.5; border-radius: 3px; overflow: hidden;
   color: var(--creme); cursor: pointer; isolation: isolate;
+  text-decoration: none;
   transition: transform .55s var(--ease), box-shadow .55s var(--ease);
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 28px;
