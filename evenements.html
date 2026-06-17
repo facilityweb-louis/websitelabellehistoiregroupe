@@ -94,28 +94,15 @@
         <h2>Demander un devis</h2>
         <p class="editorial">Décrivez votre projet, notre équipe événementielle vous recontacte sous 48h.</p>
       </div>
-      <form class="resa-form" style="max-width:680px;margin:0 auto" onsubmit="event.preventDefault(); this.reset(); alert('Demande envoyée — transmise à Mice Operations. Nous vous recontactons sous 48h.');">
-        <div class="field-row">
-          <div class="field"><label>Nom &amp; prénom</label><input required placeholder="Votre nom" /></div>
-          <div class="field"><label>Type d’événement</label>
-            <select><option>Séminaire</option><option>Soirée d’entreprise</option><option>Mariage</option><option>Privatisation</option><option>Autre</option></select>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Email</label><input type="email" required placeholder="vous@email.com" /></div>
-          <div class="field"><label>Nombre de convives</label><input type="number" min="1" placeholder="50" /></div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Établissement souhaité</label>
-            <select>
-              <option>Indifférent</option><option>Flavio</option><option>Le Marcel</option><option>Caravane</option>
-              <option>L’Amour</option><option>La Nonna</option><option>La Plage des Pirates</option><option>Tipi · Méribel</option>
-            </select>
-          </div>
-          <div class="field"><label>Date envisagée</label><input type="date" /></div>
-        </div>
-        <button class="btn btn-dark btn-arrow" type="submit" style="justify-self:start;margin-top:6px"><span>Envoyer ma demande</span></button>
-      </form>
+      <div class="mice-widget" style="max-width:880px;margin:0 auto">
+        <iframe
+          id="mice-quote"
+          src="https://app.miceoperations.com/widget/b5c89fdca779"
+          title="Demander un devis — Mice Operations"
+          loading="lazy"
+          style="width:100%;min-height:1000px;border:0;border-radius:3px;background:#fff;display:block"
+          allow="payment"></iframe>
+      </div>
     </div>
   </section>
 
