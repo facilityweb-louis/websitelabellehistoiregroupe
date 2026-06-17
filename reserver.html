@@ -41,42 +41,31 @@
 
   <section class="section">
     <div class="container resa-wrap">
-      <form class="resa-form" onsubmit="event.preventDefault(); handleBooking(this);">
+      <form class="resa-form" onsubmit="return false">
         <div class="field">
           <label>Établissement</label>
-          <select id="r-venue">
-            <option>Flavio — gastronomique</option>
-            <option>L’Impasse — bar &amp; musique</option>
-            <option>La Plage des Pirates — plage</option>
-            <option selected>Le Marcel — cocktails</option>
-            <option>L’Atelier Éphémère</option>
-            <option>La Base Nord</option>
-            <option>Caravane</option>
-            <option>L’Amour — romantique</option>
-            <option>La Nonna — italien</option>
-            <option>Tipi — Méribel</option>
+          <select id="r-venue" onchange="loadOverfull(this.value)">
+            <option value="">— Choisissez votre maison —</option>
+            <option value="flavio">Flavio — gastronomique</option>
+            <option value="impasse">L’Impasse — bar &amp; musique</option>
+            <option value="plage">La Plage des Pirates — plage</option>
+            <option value="marcel">Le Marcel — cocktails</option>
+            <option value="atelier">L’Atelier Éphémère</option>
+            <option value="basenord">La Base Nord</option>
+            <option value="caravane">Caravane</option>
+            <option value="amour">L’Amour — romantique</option>
+            <option value="nonna">La Nonna — italien</option>
+            <option value="tipi">Tipi — Méribel</option>
           </select>
         </div>
-        <div class="field-row">
-          <div class="field"><label>Date</label><input type="date" id="r-date" required /></div>
-          <div class="field"><label>Heure</label>
-            <select id="r-time">
-              <option>18:30</option><option selected>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option>
-            </select>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field"><label>Nombre de couverts</label>
-            <select><option>1 personne</option><option selected>2 personnes</option><option>3 personnes</option><option>4 personnes</option><option>5 personnes</option><option>6 + personnes</option></select>
-          </div>
-          <div class="field"><label>Téléphone</label><input type="tel" placeholder="06 00 00 00 00" required /></div>
-        </div>
-        <div class="field"><label>Nom de la réservation</label><input placeholder="Votre nom" required /></div>
-        <button class="btn btn-dark btn-arrow" type="submit" style="justify-self:start;margin-top:6px"><span>Confirmer la réservation</span></button>
 
-        <div id="resa-ok" style="display:none;margin-top:10px;padding:18px 22px;border:1px solid var(--vert);border-radius:3px;background:rgba(31,74,60,.06)">
-          <strong style="font-family:var(--serif);font-size:1.2rem;color:var(--vert)">Réservation confirmée ✓</strong>
-          <p style="margin-top:6px;font-family:var(--body);font-size:1.1rem">Confirmation immédiate envoyée — réservation gérée via Overfull.</p>
+        <p id="overfull-empty" style="margin-top:20px;font-family:var(--body);font-size:1.18rem;color:var(--cuivre-2)">Choisissez une maison pour accéder à la réservation en temps réel.</p>
+
+        <p id="overfull-none" style="display:none;margin-top:20px;font-family:var(--body);font-size:1.18rem;color:var(--cuivre-2)">Le Marcel ne propose pas la réservation en ligne — venez profiter du bar sans réserver, ou contactez-nous directement.</p>
+
+        <div id="overfull-wrap" style="display:none;margin-top:22px">
+          <iframe id="overfull-frame" title="Réservation Overfull" src="about:blank" style="width:100%;min-height:780px;border:0;border-radius:3px;background:#fff;display:block"></iframe>
+          <p style="margin-top:12px"><a id="overfull-link" href="#" target="_blank" rel="noopener" class="label" style="color:var(--cuivre-2)">Ouvrir la réservation en plein écran →</a></p>
         </div>
       </form>
 
@@ -112,6 +101,39 @@
 
   <script src="app.js"></script>
   <script>
+    // Overfull : un key_id par établissement (Le Marcel ne propose pas la réservation en ligne)
+    const OVERFULL = {
+      flavio:   "5fJxzz5Thse",
+      impasse:  "3FTsyFWDwyo",
+      plage:    "o3qtf7adZQ8",
+      atelier:  "atcwXwcX5ze",
+      basenord: "3C6LYCRZX7a",
+      caravane: "3Hh4iorXmYs",
+      amour:    "37tvcrCQsEA",
+      nonna:    "T2sQVirM9vJ",
+      tipi:     "udwEjGqE2jp"
+    };
+    function overfullUrl(id) {
+      return "https://app.overfull.fr/booking-v2?key_id=" + id + "&source=Web&lang=fr";
+    }
+    function loadOverfull(venue) {
+      const empty = document.getElementById("overfull-empty");
+      const none  = document.getElementById("overfull-none");
+      const wrap  = document.getElementById("overfull-wrap");
+      const frame = document.getElementById("overfull-frame");
+      const link  = document.getElementById("overfull-link");
+      empty.style.display = "none";
+      none.style.display  = "none";
+      wrap.style.display  = "none";
+      if (!venue) { empty.style.display = "block"; frame.src = "about:blank"; return; }
+      const key = OVERFULL[venue];
+      if (!key) { none.style.display = "block"; frame.src = "about:blank"; return; }
+      const url = overfullUrl(key);
+      frame.src = url;
+      link.href = url;
+      wrap.style.display = "block";
+    }
+
     // mini calendar (June 2026 starts on Monday)
     (function () {
       const cal = document.getElementById("cal");
