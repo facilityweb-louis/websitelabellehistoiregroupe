@@ -277,6 +277,23 @@ async function handleBooking(form) {
   finally { if (btn) btn.disabled = false; }
 }
 
+function initAutoResize() {
+  if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
+  const sendHeight = () => {
+    const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    window.parent.postMessage({ type: 'wix-height', height }, '*');
+  };
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer = new ResizeObserver(sendHeight);
+    observer.observe(document.body);
+  }
+  const mutationObserver = new MutationObserver(sendHeight);
+  mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
+  window.addEventListener('resize', sendHeight);
+  window.addEventListener('load', sendHeight);
+  sendHeight();
+}
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
@@ -285,6 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBurger();
   observeReveal();
   loadEvents();
+  initAutoResize();
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeVenue(); });
   const ov = document.getElementById("modal");
   if (ov) ov.addEventListener("click", e => { if (e.target === ov) closeVenue(); });
