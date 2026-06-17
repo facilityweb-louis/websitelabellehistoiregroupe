@@ -191,6 +191,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .hero-videonote {
   position: absolute; right: 32px; bottom: calc(18vh - 30px); z-index: 4;
   font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(246,241,231,.5);
+  display: none;
 }
 .scroll-cue {
   position:absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 4;
