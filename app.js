@@ -25,6 +25,7 @@ const VENUES = [
     id: "flavio", name: "Flavio", year: 1949, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-chocolat", type: "Gastronomique — Club de la Forêt",
     tags: ["Gastronomique", "Cave 100 réf.", "Sommelier"],
+    image: "assets/logos/flavio 2.JPG",
     desc: "L’institution historique du groupe. Une cuisine classique servie par une brigade complète, une cave de près de cent références et un sommelier pour vous accompagner. Le « Club de la Forêt » incarne l’art de recevoir à la française.",
     info: { "Cuisine": "Gastronomique traditionnelle", "Adresse": "Le Touquet-Paris-Plage", "Esprit": "Institution · brigade · cave" }
   },
@@ -32,6 +33,7 @@ const VENUES = [
     id: "impasse", name: "L’Impasse", year: 1999, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-night", type: "Bar · Food · Music & Drinks",
     tags: ["Bar", "Musique", "Food"],
+    image: "assets/logos/Impasse.JPG",
     desc: "Le concept mixte du groupe : un bar à l’ambiance soirée où la cuisine, les cocktails et la musique se répondent. Un lieu pensé pour prolonger la nuit en excellente compagnie.",
     info: { "Concept": "Resto · Bar · Musique", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Soirée" }
   },
@@ -39,6 +41,7 @@ const VENUES = [
     id: "plage", name: "La Plage des Pirates", year: 2009, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-sable", type: "Restaurant-bar de plage",
     tags: ["Plage", "DJ week-end", "9h → 22h30"],
+    image: "assets/logos/pirates.jpg",
     desc: "Sur la digue, du petit-déjeuner au dîner. Transats à louer, pieds dans le sable et DJs le week-end dès 18h. Le spot beach festif du Touquet, ouvert de mars à octobre.",
     info: { "Saison": "Mars → Octobre", "Horaires": "9h00 → 22h30", "Adresse": "Sur la digue, Le Touquet" }
   },
@@ -46,6 +49,7 @@ const VENUES = [
     id: "marcel", name: "Le Marcel", year: 2016, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-chocolat", type: "Bar · Cocktails",
     tags: ["Bar", "Cocktails", "Terrasse"],
+    image: "assets/logos/MARCEL  OCT-43.jpg",
     desc: "Un bar pur au positionnement cocktails affirmé. Cadre soigné, sélection pointue et atmosphère idéale pour l’apéritif comme pour les fins de soirée entre amis.",
     info: { "Type": "Bar à cocktails", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Cocktails · apéritif" }
   },
@@ -53,6 +57,7 @@ const VENUES = [
     id: "atelier", name: "L’Atelier Éphémère", year: 2017, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-vert", type: "Restaurant éphémère",
     tags: ["Restaurant", "Éphémère", "Saisonnier"],
+    image: "assets/logos/Atelier ephemere.JPG",
     desc: "Un restaurant au concept mouvant, qui se réinvente au fil des saisons et des envies. Une carte qui change, des collaborations, des éditions limitées : l’éphémère comme signature.",
     info: { "Concept": "Carte évolutive", "Adresse": "Le Touquet-Paris-Plage", "Esprit": "Éphémère · saisonnier" }
   },
@@ -60,6 +65,7 @@ const VENUES = [
     id: "basenord", name: "La Base Nord", year: 2018, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-night", type: "Restaurant",
     tags: ["Restaurant", "Convivial"],
+    image: "assets/logos/labasenord.JPG",
     desc: "Une table conviviale et généreuse au cœur du Touquet. Un cadre chaleureux pour partager de bons moments, midi et soir.",
     info: { "Type": "Restaurant", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Convivial" }
   },
@@ -67,6 +73,7 @@ const VENUES = [
     id: "caravane", name: "Caravane", year: 2022, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-vert", type: "Restaurant",
     tags: ["Restaurant", "Terrasse", "Musique"],
+    image: "assets/logos/caravane 1.JPG",
     desc: "La dernière génération des tables du groupe : une cuisine voyageuse, une ambiance vivante et une terrasse pour profiter des beaux jours touquettois.",
     info: { "Type": "Restaurant", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Vivante · terrasse" }
   },
@@ -74,6 +81,7 @@ const VENUES = [
     id: "amour", name: "L’Amour", year: 2023, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-bordeaux", type: "Restaurant romantique", heart: true,
     tags: ["Romantique", "Dîner aux chandelles", "Nappe blanche"],
+    image: "assets/logos/AMOUR1.jpg",
     desc: "L’adresse romantique du Touquet. Convivial le midi, intimiste le soir avec sa nappe blanche et ses dîners aux chandelles. Le lieu des grandes occasions et des déclarations.",
     info: { "Cuisine": "Romantique · soignée", "Adresse": "74 rue de Metz, Le Touquet", "Soir": "Dîner aux chandelles" }
   },
@@ -81,6 +89,7 @@ const VENUES = [
     id: "nonna", name: "La Nonna", year: 2023, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-cuivre", type: "Trattoria · Pizzeria napolitaine",
     tags: ["Italien", "Pizza napolitaine", "Aperitivo"],
+    image: "assets/logos/NONNA FEV-07.jpg",
     desc: "Une trattoria à l’italienne : pizza napolitaine signée le pizzaïolo Lucas, pasta maison et aperitivo. Au centre tennistique Pierre de Coubertin, rond-point des Sports.",
     info: { "Cuisine": "Italienne · napolitaine", "Horaires": "10h00 → 22h30", "Adresse": "Centre P. de Coubertin, rond-point des Sports" }
   },
@@ -88,6 +97,7 @@ const VENUES = [
     id: "tipi", name: "Tipi", year: 2024, dest: "meribel", destLabel: "Méribel",
     theme: "t-mountain", type: "Restaurant d’altitude · piste",
     tags: ["Altitude", "Bistronomie", "After-ski"],
+    image: "assets/logos/tipi.jpg",
     desc: "Sur la Piste de l’Aigle à Méribel-Mottaret, au cœur des 3 Vallées. Le chef Fabien François (ex-Robuchon, Alléno) signe une bistronomie et des spécialités montagnardes. After-ski festif et soirées du jeudi jusqu’à 23h30.",
     info: { "Chef": "Fabien François", "Lieu": "Piste de l’Aigle, Méribel-Mottaret", "Jeudi": "Soirées jusqu’à 23h30" }
   }
