@@ -134,7 +134,7 @@ function venueHref(v) {
 
 /* ---------- Render venue cards ---------- */
 function venueCard(v) {
-  const media = v.image ? `<div class="card-media" style="background-image:url('${v.image}')"></div>` : "";
+  const media = v.image ? `<img class="card-media-img" loading="lazy" src="${encodeURI(v.image)}" alt="${v.name}"/>` : "";
   const url = venueHref(v);
   const ext = /^https?:/.test(url) ? ' rel="noopener"' : "";
   return `

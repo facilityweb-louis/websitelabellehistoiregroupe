@@ -288,6 +288,8 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   text-decoration: none;
   transition: transform .55s var(--ease), box-shadow .55s var(--ease);
   display: flex; flex-direction: column; justify-content: flex-end;
+  transform: translateZ(0);
+  will-change: transform;
   padding: 28px;
 }
 .card-media {
@@ -295,6 +297,10 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+.card-media-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: -3;
+  object-fit: cover; object-position: center; display: block;
 }
 .card::before { /* base gradient set by theme */
   content:""; position:absolute; inset:0; z-index:-2;
