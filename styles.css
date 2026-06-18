@@ -290,6 +290,12 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 28px;
 }
+.card-media {
+  position:absolute; inset:0; z-index:-3;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 .card::before { /* base gradient set by theme */
   content:""; position:absolute; inset:0; z-index:-2;
   background: var(--card-grad, linear-gradient(160deg,#3a2519,#1a1009));
@@ -302,13 +308,14 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .card:hover { transform: translateY(-8px); box-shadow: 0 40px 70px -35px rgba(26,16,9,.7); }
 .card:hover::before { transform: scale(1.07); }
 .card-logo {
-  position:absolute; top: 17%; left: 50%; transform: translateX(-50%);
+  position: absolute; z-index: 2;
+  top: 17%; left: 50%; transform: translateX(-50%);
   width: 64%; max-height: 32%; object-fit: contain; object-position: center;
   filter: brightness(0) invert(1); opacity: .96;
   transition: transform .6s var(--ease); pointer-events:none;
 }
 .card:hover .card-logo { transform: translateX(-50%) scale(1.04); }
-.card .c-bottom { position: relative; z-index: 1; }
+.card .c-bottom { position: relative; z-index: 2; }
 .card .c-year {
   position:absolute; top: 26px; left: 28px;
   font-size: .64rem; letter-spacing: .2em; border: 1px solid rgba(246,241,231,.4);

@@ -134,12 +134,12 @@ function venueHref(v) {
 
 /* ---------- Render venue cards ---------- */
 function venueCard(v) {
-  // Si une photo est fournie, elle remplace le dégradé de la carte.
-  const imgStyle = v.image ? ` style="--card-grad:url('${v.image}') center/cover no-repeat"` : "";
+  const media = v.image ? `<div class="card-media" style="background-image:url('${v.image}')"></div>` : "";
   const url = venueHref(v);
   const ext = /^https?:/.test(url) ? ' rel="noopener"' : "";
   return `
-  <a class="card ${v.theme}" href="${url}" target="_top"${ext} data-dest="${v.dest}" data-id="${v.id}"${imgStyle} aria-label="${v.name}">
+  <a class="card ${v.theme}" href="${url}" target="_top"${ext} data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
+    ${media}
     <span class="c-year">Depuis ${v.year}</span>
     <span class="c-dest">${v.destLabel}</span>
     <img class="card-logo" src="${logoSrc(v)}" alt="${v.name}" loading="lazy" />
