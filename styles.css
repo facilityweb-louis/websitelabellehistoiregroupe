@@ -299,17 +299,19 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   background-repeat: no-repeat;
 }
 .card-media-img {
-  position: absolute; inset: 0; width: 100%; height: 100%; z-index: -3;
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2;
   object-fit: cover; object-position: center; display: block;
+  transition: transform .9s var(--ease);
 }
-.card::before { /* base gradient set by theme */
-  content:""; position:absolute; inset:0; z-index:-2;
+.card:hover .card-media-img { transform: scale(1.07); }
+.card::before { /* fallback gradient (visible si pas de photo) set by theme */
+  content:""; position:absolute; inset:0; z-index:-3;
   background: var(--card-grad, linear-gradient(160deg,#3a2519,#1a1009));
   transition: transform .9s var(--ease);
 }
-.card::after { /* darkening for legibility */
+.card::after { /* darkening for legibility (logo en haut, texte en bas) */
   content:""; position:absolute; inset:0; z-index:-1;
-  background: linear-gradient(180deg, rgba(10,6,3,.12) 0%, rgba(10,6,3,.05) 40%, rgba(10,6,3,.72) 100%);
+  background: linear-gradient(180deg, rgba(10,6,3,.48) 0%, rgba(10,6,3,.14) 38%, rgba(10,6,3,.8) 100%);
 }
 .card:hover { transform: translateY(-8px); box-shadow: 0 40px 70px -35px rgba(26,16,9,.7); }
 .card:hover::before { transform: scale(1.07); }
