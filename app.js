@@ -337,8 +337,14 @@ function initAutoResize() {
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(sendHeight).observe(document.body);
   new MutationObserver(sendHeight).observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
   window.addEventListener('resize', sendHeight);
+  window.addEventListener('orientationchange', () => setTimeout(sendHeight, 250)); // mobile : rotation
   window.addEventListener('load', sendHeight);
-  window.addEventListener('load', () => setTimeout(sendHeight, 300)); // recale après chargement des images
+  // recale plusieurs fois après chargement : sur mobile les images/polices arrivent tard
+  window.addEventListener('load', () => { [150, 400, 900, 1800].forEach(t => setTimeout(sendHeight, t)); });
+  // chaque image qui finit de charger peut changer la hauteur (surtout sur mobile lent)
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.complete) img.addEventListener('load', sendHeight, { once: true });
+  });
   sendHeight();
 }
 
