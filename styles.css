@@ -349,17 +349,19 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   padding: 5px 10px; border: 1px solid rgba(246,241,231,.32); border-radius: 30px;
 }
 .card .c-actions {
-  display:flex; gap: 10px; margin-top: 22px;
-  max-height: 0; opacity: 0; overflow: hidden;
-  transition: max-height .5s var(--ease), opacity .4s var(--ease), margin-top .4s var(--ease);
+  display:flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;
 }
-.card:hover .c-actions, .card:focus-within .c-actions { max-height: 60px; opacity: 1; }
 .card .c-actions .mini {
   font-size: .62rem; letter-spacing: .16em; text-transform: uppercase;
-  padding: 10px 16px; border-radius: 2px;
+  padding: 11px 18px; border-radius: 2px;
+  text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+  transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
 }
+.card .c-actions .mini:hover { transform: translateY(-2px); }
 .mini.solid { background: var(--creme); color: var(--chocolat); }
-.mini.line { border: 1px solid rgba(246,241,231,.5); }
+.mini.solid:hover { background: #fff; }
+.mini.line { border: 1px solid rgba(246,241,231,.55); color: var(--creme); }
+.mini.line:hover { background: rgba(246,241,231,.14); border-color: rgba(246,241,231,.9); }
 
 /* discover-all card */
 .card.discover {

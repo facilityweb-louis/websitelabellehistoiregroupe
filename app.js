@@ -150,9 +150,11 @@ function venueHref(v) {
 function venueCard(v) {
   const media = v.image ? `<img class="card-media-img" loading="lazy" src="${encodeURI(v.image)}" alt="${v.name}"/>` : "";
   const url = venueHref(v);
-  const ext = /^https?:/.test(url) ? ' rel="noopener"' : "";
+  const external = /^https?:/.test(url);
+  const discoverAttrs = external ? ' target="_blank" rel="noopener"' : "";
+  const resaHref = `reserver.html?venue=${v.id}`; // ouvre la page Réserver sur le widget de cet établissement
   return `
-  <a class="card ${v.theme}" href="${url}" target="_top"${ext} data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
+  <article class="card ${v.theme}" data-dest="${v.dest}" data-id="${v.id}" data-href="${url}" aria-label="${v.name}">
     ${media}
     <span class="c-year">Depuis ${v.year}</span>
     <span class="c-dest">${v.destLabel}</span>
@@ -160,8 +162,12 @@ function venueCard(v) {
     <div class="c-bottom">
       <p class="c-type">${v.type}</p>
       <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
+      <div class="c-actions">
+        <a class="mini line" href="${url}"${discoverAttrs}>Découvrir</a>
+        <a class="mini solid" href="${resaHref}">Réserver</a>
+      </div>
     </div>
-  </a>`;
+  </article>`;
 }
 
 function renderVenues(filter = "all") {
@@ -177,6 +183,19 @@ function renderVenues(filter = "all") {
       </div>
     </article>`;
   observeReveal();
+}
+
+/* ---------- Clic sur toute la carte = Découvrir (sauf sur les 2 boutons) ---------- */
+function initCardNav() {
+  const grid = document.getElementById("venue-grid");
+  if (!grid) return;
+  grid.addEventListener("click", e => {
+    if (e.target.closest(".c-actions")) return;            // laisse les boutons Découvrir/Réserver agir normalement
+    const card = e.target.closest(".card[data-href]");
+    if (!card) return;
+    const href = card.getAttribute("data-href");
+    if (href && href !== "#") window.location.href = href;
+  });
 }
 
 /* ---------- Filter chips ---------- */
@@ -351,6 +370,7 @@ function initAutoResize() {
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
+  initCardNav();
   initFilter();
   initHeader();
   initBurger();

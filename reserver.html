@@ -133,6 +133,22 @@
       link.href = url;
       wrap.style.display = "block";
     }
+
+    // Pré-sélection depuis les cartes de l'accueil : reserver.html?venue=flavio
+    (function preselectVenue() {
+      const v = new URLSearchParams(location.search).get("venue");
+      if (!v) return;
+      const sel = document.getElementById("r-venue");
+      if (!sel || ![...sel.options].some(o => o.value === v)) return;
+      sel.value = v;
+      loadOverfull(v);
+      // amène l'utilisateur directement sur le module de réservation
+      setTimeout(() => {
+        const target = document.getElementById("overfull-wrap");
+        const visible = target && target.style.display !== "none";
+        (visible ? target : sel).scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
+    })();
   </script>
 </body>
 </html>
