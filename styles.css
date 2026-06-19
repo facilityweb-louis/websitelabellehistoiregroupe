@@ -35,7 +35,7 @@
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; background: var(--creme); }
 body {
   background: var(--creme);
   color: var(--chocolat);
@@ -167,6 +167,14 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .hero-inner { position: relative; z-index: 3; width: 100%; padding-bottom: 7vh; padding-top: 18vh; }
+
+/* ----- Mode embarqué (iframe Wix) -----
+   Quand le site tourne dans une iframe dont la hauteur est pilotée par Velo,
+   les unités vh pointent vers la hauteur de l'iframe → boucle de redimensionnement
+   (l'iframe grossit, vh grossit, l'iframe regrossit...). On remplace donc les vh
+   du hero par une hauteur stable (--hero-h, calculée en JS sur l'écran réel). */
+.embedded .hero { min-height: var(--hero-h, 720px); }
+.embedded .hero-inner { padding-top: 96px; padding-bottom: 56px; }
 .hero-quote {
   font-family: var(--serif); font-weight: 400;
   font-size: clamp(1.9rem, 4.2vw, 3.7rem); line-height: 1.12; max-width: 19ch;

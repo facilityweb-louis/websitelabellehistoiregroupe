@@ -20,6 +20,20 @@
    │   voir le bloc API_CONFIG plus bas dans ce fichier.    │
    └────────────────────────────────────────────────────────┘ */
 
+/* ---------- Mode embarqué : casse la boucle "vh" dans l'iframe Wix ----------
+   Si le site tourne dans une iframe (Wix), on pose la classe .embedded sur <html>
+   et on fige une hauteur de hero stable basée sur l'écran réel — jamais sur la
+   hauteur de l'iframe (qui est elle-même pilotée par Velo, d'où la boucle). */
+(function setupEmbedded() {
+  const embedded = window.parent && window.parent !== window;
+  if (!embedded) return;
+  const root = document.documentElement;
+  root.classList.add("embedded");
+  const screenH = (window.screen && window.screen.height) ? window.screen.height : 800;
+  const heroH = Math.max(540, Math.min(Math.round(screenH * 0.82), 900));
+  root.style.setProperty("--hero-h", heroH + "px");
+})();
+
 const VENUES = [
   {
     id: "flavio", name: "Flavio", year: 1949, dest: "letouquet", destLabel: "Le Touquet",
@@ -303,18 +317,28 @@ async function handleBooking(form) {
 
 function initAutoResize() {
   if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
-  const sendHeight = () => {
-    const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-    window.parent.postMessage({ type: 'lbh-resize', lbhHeight: height }, '*');
+  let last = 0, scheduled = false;
+  const measure = () => Math.ceil(Math.max(
+    document.documentElement.scrollHeight,
+    document.body ? document.body.scrollHeight : 0,
+    document.body ? document.body.offsetHeight : 0
+  ));
+  const post = () => {
+    scheduled = false;
+    const h = measure();
+    if (h && Math.abs(h - last) > 1) {                 // anti-jitter : on n'émet que si ça change vraiment
+      last = h;
+      window.parent.postMessage({ type: 'lbh-resize', lbhHeight: h }, '*');
+    }
   };
-  if (typeof ResizeObserver !== 'undefined') {
-    const observer = new ResizeObserver(sendHeight);
-    observer.observe(document.body);
-  }
-  const mutationObserver = new MutationObserver(sendHeight);
-  mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
+  const sendHeight = () => {                            // anti-rebond : 1 envoi max par frame
+    if (!scheduled) { scheduled = true; requestAnimationFrame(post); }
+  };
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(sendHeight).observe(document.body);
+  new MutationObserver(sendHeight).observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
   window.addEventListener('resize', sendHeight);
   window.addEventListener('load', sendHeight);
+  window.addEventListener('load', () => setTimeout(sendHeight, 300)); // recale après chargement des images
   sendHeight();
 }
 
