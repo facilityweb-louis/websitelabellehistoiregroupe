@@ -1,0 +1,39 @@
+# Configuration Netlify — La Belle Histoire Groupe
+# Le site est statique : on publie la racine du dépôt telle quelle.
+
+[build]
+  publish = "."
+
+# --- URLs propres : on force une seule URL canonique (bon pour le SEO) ---
+# /index.html -> /        /reserver.html -> /reserver        /evenements.html -> /evenements
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reserver.html"
+  to = "/reserver"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/evenements.html"
+  to = "/evenements"
+  status = 301
+  force = true
+
+# --- En-têtes de sécurité (bonnes pratiques) ---
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=()"
+
+# Cache long pour les images/polices (le HTML reste non mis en cache pour refléter vite les modifs)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
