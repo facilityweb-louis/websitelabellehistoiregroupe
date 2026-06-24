@@ -300,9 +300,11 @@ function renderMap() {
     const logo = logoSrc(v);
     const icon = L.divIcon({
       className: "lbh-pin",
-      html: `<span class="pin-logo" style="-webkit-mask-image:url('${encodeURI(logo)}');mask-image:url('${encodeURI(logo)}')"></span>`,
-      iconSize: [58, 58],
-      iconAnchor: [29, 29]
+      html:
+        `<span class="pin-bubble"><span class="pin-logo" style="-webkit-mask-image:url('${encodeURI(logo)}');mask-image:url('${encodeURI(logo)}')"></span></span>` +
+        `<span class="pin-label">${v.name}</span>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
     });
     const m = L.marker(ll, { icon, title: v.name, riseOnHover: true }).addTo(map);
     m.on("click", () => activate(v.id));   // la fiche ne s'ouvre qu'au clic
