@@ -390,14 +390,20 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   position: relative; aspect-ratio: 4/5; border-radius: 3px; overflow: hidden;
   color: var(--creme); display:flex; align-items:flex-end; padding: 30px; cursor: pointer;
 }
-.dest::before { content:""; position:absolute; inset:0; z-index:-1; transition: transform .9s var(--ease); }
+.dest::before { content:""; position:absolute; inset:0; z-index:0; transition: transform .9s var(--ease); background-size: cover; background-position: center; }
 .dest:hover::before { transform: scale(1.06); }
-.dest::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 30%, rgba(10,6,3,.7)); }
-.dest > * { position: relative; z-index:1; }
-.dest .d1::before { } /* placeholder */
+.dest::after { content:""; position:absolute; inset:0; z-index:1; background: linear-gradient(180deg, transparent 30%, rgba(10,6,3,.72)); }
+.dest > * { position: relative; z-index:2; }
+
+/* Diaporama photos (Le Touquet) */
+.dest-slides { position:absolute; inset:0; z-index:0; overflow:hidden; }
+.dest-slides img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform: scale(1.04); transition: opacity 1.2s var(--ease), transform 6s var(--ease); }
+.dest-slides img.on { opacity:1; transform: scale(1); }
+.dest:hover .dest-slides img.on { transform: scale(1.08); }
+
 .dest-letouquet::before { background: linear-gradient(150deg,#2f5e8a,#16263a); }
-.dest-hardelot::before  { background: linear-gradient(150deg,#3d6b4f,#172a1f); }
-.dest-meribel::before   { background: linear-gradient(150deg,#6a7d86,#222c33); }
+.dest-hardelot::before  { background: url('assets/destinations/hardelot.jpg') center/cover; }
+.dest-meribel::before   { background: url('assets/logos/tipi.jpg') center/cover; }
 .dest .d-name { font-family: var(--serif); font-size: 1.9rem; }
 .dest .d-meta { font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(246,241,231,.8); margin-top: 6px; }
 

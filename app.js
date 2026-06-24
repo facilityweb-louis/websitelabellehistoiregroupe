@@ -506,11 +506,40 @@ function initAutoResize() {
   sendHeight();
 }
 
+/* ---------- Diaporama carte "Le Touquet" (photos des établissements) ---------- */
+function initDestSlideshow() {
+  const card = document.querySelector(".dest-letouquet");
+  if (!card) return;
+  const imgs = VENUES.filter(v => v.dest === "letouquet" && v.image).map(v => v.image);
+  if (!imgs.length) return;
+
+  const slides = document.createElement("div");
+  slides.className = "dest-slides";
+  imgs.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = encodeURI(src);
+    img.alt = "";
+    img.loading = "lazy";
+    if (i === 0) img.classList.add("on");
+    slides.appendChild(img);
+  });
+  card.insertBefore(slides, card.firstChild);
+
+  const items = slides.querySelectorAll("img");
+  let i = 0;
+  setInterval(() => {
+    items[i].classList.remove("on");
+    i = (i + 1) % items.length;
+    items[i].classList.add("on");
+  }, 3200);
+}
+
 /* ---------- Init ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
   initCardNav();
   renderMap();
+  initDestSlideshow();
   initFilter();
   initHeader();
   initBurger();
