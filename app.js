@@ -185,6 +185,139 @@ function renderVenues(filter = "all") {
   observeReveal();
 }
 
+/* ---------- Carte interactive (vraie carte Leaflet + encart Tipi / Méribel) ----------
+   Coordonnées GPS réelles de chaque maison (relevées sur OpenStreetMap).
+   Pour déplacer un repère : changez simplement [latitude, longitude]. */
+const MAP_LATLNG = {
+  basenord: [50.53609, 1.59440],  // 1 av. Jean Ruet — Base Nautique Nord
+  atelier:  [50.52475, 1.58264],  // 1 rue Saint-Jean
+  impasse:  [50.52322, 1.58490],  // 77 rue de Metz
+  amour:    [50.52326, 1.58474],  // 74 rue de Metz
+  caravane: [50.52308, 1.58515],  // 73 rue de Metz
+  marcel:   [50.52256, 1.59037],  // av. des Phares
+  flavio:   [50.52169, 1.59229],  // 1 av. du Verger — Club de la Forêt
+  plage:    [50.52039, 1.57974],  // Bd de la Plage — la digue
+  nonna:    [50.51857, 1.59501]   // rond-point des Sports — P. de Coubertin
+};
+
+let _lbhMap = null;
+let _lbhMarkers = null;
+
+function renderMap() {
+  const stage  = document.getElementById("map-stage");
+  const legend = document.getElementById("map-legend");
+  const inset  = document.getElementById("map-inset");
+  if (!stage || !legend) return;
+  const touquet = VENUES.filter(v => v.dest === "letouquet");
+
+  // structure : conteneur de la vraie carte + fiche détail superposée
+  stage.innerHTML =
+    '<div class="map-canvas" id="map-canvas"></div>' +
+    '<div class="map-detail" id="map-detail" hidden></div>';
+
+  // légende numérotée
+  legend.innerHTML = touquet.map((v, i) =>
+    `<li><button class="leg-item" type="button" data-id="${v.id}">` +
+      `<span class="leg-n">${String(i + 1).padStart(2, "0")}</span>` +
+      `<span class="leg-txt"><strong>${v.name}</strong><em>${v.type}</em></span>` +
+    `</button></li>`
+  ).join("");
+
+  // encart Tipi / Méribel
+  const tipi = VENUES.find(v => v.id === "tipi");
+  if (inset && tipi) {
+    const url = venueHref(tipi);
+    const ext = /^https?:/.test(url) ? ' target="_blank" rel="noopener"' : "";
+    inset.innerHTML =
+      '<span class="inset-flag">Les 3 Vallées · Altitude</span>' +
+      '<span class="inset-place">Méribel</span>' +
+      `<img class="inset-logo" src="${logoSrc(tipi)}" alt="${tipi.name}" />` +
+      `<h4>${tipi.name}</h4><p>${tipi.type}</p>` +
+      '<div class="md-actions">' +
+        `<a class="mini line" href="${url}"${ext}>Découvrir</a>` +
+        `<a class="mini solid" href="reserver.html?venue=${tipi.id}">Réserver</a>` +
+      '</div>';
+  }
+
+  // fiche détail (réutilisée par les repères et la légende)
+  function activate(id, pan) {
+    const v = VENUES.find(x => x.id === id);
+    if (!v) return;
+    const i = touquet.findIndex(x => x.id === id);
+    if (_lbhMarkers) Object.entries(_lbhMarkers).forEach(([mid, m]) => {
+      const el = m.getElement();
+      if (el) el.classList.toggle("active", mid === id);
+    });
+    legend.querySelectorAll(".leg-item").forEach(l => l.classList.toggle("active", l.dataset.id === id));
+    const detail = document.getElementById("map-detail");
+    const url = venueHref(v);
+    const ext = /^https?:/.test(url) ? ' target="_blank" rel="noopener"' : "";
+    detail.innerHTML =
+      `<img class="md-logo" src="${logoSrc(v)}" alt="${v.name}" />` +
+      '<div class="md-body">' +
+        `<span class="md-num">${String(i + 1).padStart(2, "0")} — ${v.destLabel}</span>` +
+        `<h3>${v.name}</h3><p>${v.type}</p>` +
+        '<div class="md-actions">' +
+          `<a class="mini line" href="${url}"${ext}>Découvrir</a>` +
+          `<a class="mini solid" href="reserver.html?venue=${v.id}">Réserver</a>` +
+        '</div>' +
+      '</div>';
+    detail.hidden = false;
+    if (pan && _lbhMap && _lbhMarkers[id]) {
+      _lbhMap.setView(_lbhMarkers[id].getLatLng(), Math.max(_lbhMap.getZoom(), 16), { animate: true });
+    }
+  }
+
+  // Leaflet absent (hors-ligne) : on garde la légende + l'encart, sans plantage
+  if (typeof L === "undefined") {
+    const c = document.getElementById("map-canvas");
+    if (c) c.style.display = "none";
+    legend.addEventListener("click", e => { const it = e.target.closest(".leg-item"); if (it) activate(it.dataset.id); });
+    return;
+  }
+
+  // --- vraie carte (zoom / déplacement) ---
+  const map = L.map("map-canvas", {
+    scrollWheelZoom: false,   // n'attrape pas le scroll de la page tant qu'on ne clique pas
+    zoomControl: true
+  });
+  _lbhMap = map;
+  map.on("focus", () => map.scrollWheelZoom.enable());
+  map.on("blur",  () => map.scrollWheelZoom.disable());
+
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+
+  const markers = {};
+  _lbhMarkers = markers;
+  const pts = [];
+  touquet.forEach((v, i) => {
+    const ll = MAP_LATLNG[v.id];
+    if (!ll) return;
+    pts.push(ll);
+    const icon = L.divIcon({
+      className: "lbh-pin",
+      html: `<span>${i + 1}</span>`,
+      iconSize: [34, 34],
+      iconAnchor: [17, 17]
+    });
+    const m = L.marker(ll, { icon, title: v.name, riseOnHover: true }).addTo(map);
+    m.on("click", () => activate(v.id));   // la fiche ne s'ouvre qu'au clic
+    markers[v.id] = m;
+  });
+
+  if (pts.length) map.fitBounds(pts, { padding: [48, 48], maxZoom: 15 });
+
+  // clic sur la légende = ouvre la fiche + zoome sur l'adresse
+  legend.addEventListener("click", e => { const it = e.target.closest(".leg-item"); if (it) activate(it.dataset.id, true); });
+
+  // pas de fiche par défaut : la carte reste visible tant qu'on n'a pas cliqué
+  setTimeout(() => map.invalidateSize(), 300);          // recalcul après révélation
+  window.addEventListener("resize", () => map.invalidateSize());
+}
+
 /* ---------- Clic sur toute la carte = Découvrir (sauf sur les 2 boutons) ---------- */
 function initCardNav() {
   const grid = document.getElementById("venue-grid");
@@ -371,6 +504,7 @@ function initAutoResize() {
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
   initCardNav();
+  renderMap();
   initFilter();
   initHeader();
   initBurger();
