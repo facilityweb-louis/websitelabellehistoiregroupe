@@ -557,18 +557,18 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .map-canvas .leaflet-bar { box-shadow: 0 6px 16px -8px rgba(0,0,0,.45); }
 .map-canvas .leaflet-control-attribution { font-family: var(--body); font-size: 10px; }
 
-/* repères numérotés (divIcon Leaflet) */
-.lbh-pin { background: none; border: 0; }
-.lbh-pin span {
-  display:flex; align-items:center; justify-content:center;
-  width: 34px; height: 34px; border-radius: 50%;
-  background: var(--chocolat); color: var(--creme); border: 2px solid var(--creme);
-  font-family: var(--serif); font-size: 1rem; line-height: 1; cursor: pointer;
-  box-shadow: 0 6px 14px -6px rgba(0,0,0,.6);
-  transition: transform .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+/* repères = logos en marron (divIcon Leaflet, logo recoloré via masque CSS) */
+.lbh-pin { background: none; border: 0; cursor: pointer; }
+.lbh-pin .pin-logo {
+  display:block; width: 58px; height: 58px;
+  background-color: var(--chocolat);
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+  -webkit-mask-size: contain; mask-size: contain;
+  filter: drop-shadow(0 2px 4px rgba(255,247,234,.9)) drop-shadow(0 1px 2px rgba(0,0,0,.35));
+  transition: transform .25s var(--ease), background-color .25s var(--ease);
 }
-.lbh-pin:hover span, .lbh-pin.active span { background: var(--cuivre); transform: scale(1.16); }
-.lbh-pin.active span { box-shadow: 0 0 0 6px rgba(184,115,51,.24), 0 8px 16px -6px rgba(0,0,0,.6); }
+.lbh-pin:hover .pin-logo, .lbh-pin.active .pin-logo { background-color: var(--cuivre); transform: scale(1.12); }
 
 .map-detail {
   position:absolute; left: 18px; bottom: 18px; right: 18px; max-width: 350px;
@@ -577,6 +577,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   box-shadow: 0 22px 44px -22px rgba(0,0,0,.65); animation: mapPop .4s var(--ease);
   pointer-events: none;
 }
+.map-detail[hidden] { display: none; }   /* la classe display:flex masquait l'attribut hidden */
 .map-detail a { pointer-events: auto; }
 @keyframes mapPop { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform:none; } }
 .md-logo { width: 62px; height: 62px; object-fit: contain; filter: brightness(0) invert(1); opacity:.95; flex-shrink:0; }
@@ -651,7 +652,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   /* carte interactive */
   .map-layout { grid-template-columns: 1fr; gap: 22px; margin-top: 32px; }
   .map-stage { aspect-ratio: 4 / 5; }
-  .lbh-pin span { width: 30px; height: 30px; font-size: .92rem; }
+  .lbh-pin .pin-logo { width: 46px; height: 46px; }
   .map-detail { left: 10px; right: 10px; bottom: 10px; max-width: none; padding: 14px 16px; gap: 12px; }
   .md-logo { width: 48px; height: 48px; }
   .md-body h3 { font-size: 1.3rem; }

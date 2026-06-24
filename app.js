@@ -89,7 +89,7 @@ const VENUES = [
     tags: ["Restaurant", "Show", "Dj Set"],
     image: "assets/logos/caravane 1.JPG",
     desc: "La dernière génération des tables du groupe : une cuisine voyageuse, une ambiance vivante et une terrasse pour profiter des beaux jours touquettois.",
-    info: { "Type": "Restaurant", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Vivante · terrasse" }
+    info: { "Type": "Restaurant", "Adresse": "73 rue de Metz, 62520 Le Touquet", "Ambiance": "Vivante · terrasse" }
   },
   {
     id: "amour", name: "L’Amour", year: 2023, dest: "letouquet", destLabel: "Le Touquet",
@@ -193,7 +193,7 @@ const MAP_LATLNG = {
   atelier:  [50.52475, 1.58264],  // 1 rue Saint-Jean
   impasse:  [50.52322, 1.58490],  // 77 rue de Metz
   amour:    [50.52326, 1.58474],  // 74 rue de Metz
-  caravane: [50.52308, 1.58515],  // 73 rue de Metz
+  caravane: [50.52334, 1.58500],  // 73 rue de Metz, 62520 Le Touquet
   marcel:   [50.52256, 1.59037],  // av. des Phares
   flavio:   [50.52169, 1.59229],  // 1 av. du Verger — Club de la Forêt
   plage:    [50.52039, 1.57974],  // Bd de la Plage — la digue
@@ -297,11 +297,12 @@ function renderMap() {
     const ll = MAP_LATLNG[v.id];
     if (!ll) return;
     pts.push(ll);
+    const logo = logoSrc(v);
     const icon = L.divIcon({
       className: "lbh-pin",
-      html: `<span>${i + 1}</span>`,
-      iconSize: [34, 34],
-      iconAnchor: [17, 17]
+      html: `<span class="pin-logo" style="-webkit-mask-image:url('${encodeURI(logo)}');mask-image:url('${encodeURI(logo)}')"></span>`,
+      iconSize: [58, 58],
+      iconAnchor: [29, 29]
     });
     const m = L.marker(ll, { icon, title: v.name, riseOnHover: true }).addTo(map);
     m.on("click", () => activate(v.id));   // la fiche ne s'ouvre qu'au clic
@@ -314,8 +315,13 @@ function renderMap() {
   legend.addEventListener("click", e => { const it = e.target.closest(".leg-item"); if (it) activate(it.dataset.id, true); });
 
   // pas de fiche par défaut : la carte reste visible tant qu'on n'a pas cliqué
-  setTimeout(() => map.invalidateSize(), 300);          // recalcul après révélation
-  window.addEventListener("resize", () => map.invalidateSize());
+
+  // Recalcul de taille fiable : le conteneur grandit après chargement (polices,
+  // animation reveal, images) — sans ça, les tuiles du bas ne se chargent pas.
+  const fix = () => map.invalidateSize();
+  [120, 350, 700, 1400].forEach(t => setTimeout(fix, t));
+  window.addEventListener("resize", fix);
+  if (window.ResizeObserver) new ResizeObserver(fix).observe(stage);
 }
 
 /* ---------- Clic sur toute la carte = Découvrir (sauf sur les 2 boutons) ---------- */
