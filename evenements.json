@@ -1,6 +1,7 @@
 {
   "updated": "2026-06-25",
   "semaine": "2026-W26",
+  "sources": ["Planning DJs (Google Sheet)", "Planning artistes Rose Music (Excel)"],
   "events": [
     {
       "venue": "L'Impasse",
@@ -11,7 +12,7 @@
     },
     {
       "venue": "Caravane",
-      "artiste": "Julien + artistes",
+      "artiste": "Julien · Mez",
       "date": "2026-06-25",
       "heure": "",
       "url": "https://www.instagram.com/restaurantcaravane/"
@@ -32,7 +33,7 @@
     },
     {
       "venue": "Caravane",
-      "artiste": "Julien",
+      "artiste": "Julien · Indrit",
       "date": "2026-06-26",
       "heure": "",
       "url": "https://www.instagram.com/restaurantcaravane/"
@@ -53,7 +54,7 @@
     },
     {
       "venue": "Caravane",
-      "artiste": "Julien",
+      "artiste": "Julien · Indrit",
       "date": "2026-06-27",
       "heure": "",
       "url": "https://www.instagram.com/restaurantcaravane/"
@@ -66,6 +67,13 @@
       "url": "https://www.instagram.com/laplagedespirates/"
     },
     {
+      "venue": "Caravane",
+      "artiste": "Beryl",
+      "date": "2026-07-02",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
       "venue": "L'Impasse",
       "artiste": "Thomas Berlin",
       "date": "2026-07-03",
@@ -73,11 +81,67 @@
       "url": "https://www.instagram.com/limpasse_letouquet/"
     },
     {
+      "venue": "Caravane",
+      "artiste": "Beryl",
+      "date": "2026-07-03",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
       "venue": "L'Impasse",
       "artiste": "Thomas Berlin",
       "date": "2026-07-04",
       "heure": "",
       "url": "https://www.instagram.com/limpasse_letouquet/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Beryl",
+      "date": "2026-07-04",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Léo + Kelly",
+      "date": "2026-07-05",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Inès + Loris",
+      "date": "2026-07-09",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Inès + Loris",
+      "date": "2026-07-10",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Inès + Loris",
+      "date": "2026-07-11",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Amélie & Gauthier",
+      "date": "2026-07-12",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Amélie & Gauthier",
+      "date": "2026-07-13",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
     }
   ]
 }
