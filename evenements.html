@@ -51,31 +51,13 @@
     <div class="container">
       <div class="events-wrap">
         <div>
-          <span class="label sec-index">Prochains événements</span>
-          <!-- Liste remplie automatiquement par Mice Operations quand l'API est activée (voir API_CONFIG dans app.js). Sinon, contenu de démo ci-dessous. -->
+          <span class="label sec-index">DJs &amp; Artistes cette semaine</span>
           <div class="event-list" id="event-list-live" style="margin-top:30px">
-            <div class="event-row" style="border-color:var(--line)">
-              <div class="event-date"><div class="d" style="color:var(--cuivre-2)">15</div><div class="m" style="color:var(--cuivre-2)">Juin</div></div>
-              <div class="event-info"><h4 style="font-family:var(--serif);color:var(--chocolat)">Soirée Jazz</h4><p style="color:var(--cuivre-2)">Le Marcel · 20h00 → 00h00</p></div>
-              <a class="event-cta" href="#">Découvrir →</a>
-            </div>
-            <div class="event-row" style="border-color:var(--line)">
-              <div class="event-date"><div class="d" style="color:var(--cuivre-2)">28</div><div class="m" style="color:var(--cuivre-2)">Juin</div></div>
-              <div class="event-info"><h4 style="font-family:var(--serif);color:var(--chocolat)">DJ Set &amp; Cocktails</h4><p style="color:var(--cuivre-2)">Caravane · 19h00 → 01h00</p></div>
-              <a class="event-cta" href="#">Découvrir →</a>
-            </div>
-            <div class="event-row" style="border-color:var(--line)">
-              <div class="event-date"><div class="d" style="color:var(--cuivre-2)">06</div><div class="m" style="color:var(--cuivre-2)">Juil</div></div>
-              <div class="event-info"><h4 style="font-family:var(--serif);color:var(--chocolat)">Brunch de la Plage</h4><p style="color:var(--cuivre-2)">La Plage des Pirates · 11h00 → 16h00</p></div>
-              <a class="event-cta" href="#">Découvrir →</a>
-            </div>
-            <div class="event-row" style="border-color:var(--line);border-bottom:1px solid var(--line)">
-              <div class="event-date"><div class="d" style="color:var(--cuivre-2)">18</div><div class="m" style="color:var(--cuivre-2)">Juil</div></div>
-              <div class="event-info"><h4 style="font-family:var(--serif);color:var(--chocolat)">Aperitivo Italien</h4><p style="color:var(--cuivre-2)">La Nonna · 18h00 → 21h00</p></div>
-              <a class="event-cta" href="#">Découvrir →</a>
+            <div class="event-empty" id="event-empty" style="display:none;padding:24px 0;color:var(--cuivre-2);font-family:var(--serif);font-size:1.1rem">
+              Aucun événement annoncé cette semaine — revenez bientôt.
             </div>
           </div>
-          <div style="margin-top:18px"><span class="api-tag" style="color:var(--vert)">Agenda synchronisé via Mice Operations</span></div>
+          <div style="margin-top:14px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cuivre-2)" id="event-updated"></div>
         </div>
 
         <div class="mice-card" style="background:var(--chocolat)">

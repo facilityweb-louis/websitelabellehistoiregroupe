@@ -427,22 +427,66 @@ const API_CONFIG = {
   }
 };
 
-/* --- Événements via Mice Operations (remplit #event-list-live si présent) --- */
+/* --- Événements DJs/Artistes — lit evenements.json (mis à jour chaque matin par agent IA) --- */
+const MOIS_FR = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
+
 async function loadEvents() {
   const target = document.getElementById("event-list-live");
-  if (!target || !API_CONFIG.miceOperations.enabled) return; // sinon : liste statique conservée
+  if (!target) return;
   try {
-    const res = await fetch(API_CONFIG.miceOperations.eventsUrl, {
-      headers: { Authorization: "Bearer " + API_CONFIG.miceOperations.apiKey }
+    const res = await fetch("evenements.json?v=" + Date.now());
+    const data = await res.json();
+    const events = (data.events || []).filter(e => {
+      // N'afficher que les événements de la semaine en cours et à venir
+      if (!e.date) return true;
+      const d = new Date(e.date);
+      const now = new Date(); now.setHours(0,0,0,0);
+      return d >= now;
     });
-    const events = await res.json();
-    target.innerHTML = events.map(e => `
-      <div class="event-row">
-        <div class="event-date"><div class="d">${e.day}</div><div class="m">${e.month}</div></div>
-        <div class="event-info"><h4>${e.title}</h4><p>${e.venue} · ${e.time}</p></div>
-        <a class="event-cta" href="${e.url || '#'}">Découvrir →</a>
-      </div>`).join("");
-  } catch (err) { console.warn("Mice Operations indisponible, données de démo utilisées.", err); }
+
+    if (!events.length) {
+      document.getElementById("event-empty").style.display = "";
+    } else {
+      const rows = events.map(e => {
+        const d = e.date ? new Date(e.date) : null;
+        const jour = d ? d.getDate() : "";
+        const mois = d ? MOIS_FR[d.getMonth()] : "";
+        const instagramMap = {
+          "L'Impasse":           "https://www.instagram.com/limpasse_letouquet/",
+          "La Plage des Pirates":"https://www.instagram.com/laplagedespirates/",
+          "Caravane":            "https://www.instagram.com/restaurantcaravane/",
+          "La Base Nord":        "https://www.instagram.com/la.base.nord/",
+          "L'Atelier Éphémère":  "https://www.instagram.com/latelierephemereletouquet/",
+          "La Nonna":            "https://www.instagram.com/lanonna_letouquet/",
+          "L'Amour":             "https://www.instagram.com/lamour_letouquet/",
+          "Flavio":              "https://www.instagram.com/flavio_clubdelaforet/",
+          "Le Marcel":           "https://www.instagram.com/lemarcel_letouquet/",
+          "Tipi Méribel":        "https://www.instagram.com/tipimeribel/"
+        };
+        const lien = e.url || instagramMap[e.venue] || "#";
+        const heure = e.heure ? ` · ${e.heure}` : "";
+        return `<div class="event-row">
+          <div class="event-date"><div class="d">${jour}</div><div class="m">${mois}</div></div>
+          <div class="event-info">
+            <h4>${e.artiste || e.titre || "Événement"}</h4>
+            <p>${e.venue}${heure}</p>
+          </div>
+          <a class="event-cta" href="${lien}" target="_blank" rel="noopener">Voir →</a>
+        </div>`;
+      }).join("");
+      target.innerHTML = rows;
+    }
+
+    // Afficher la date de dernière mise à jour
+    const upd = document.getElementById("event-updated");
+    if (upd && data.updated) {
+      const d = new Date(data.updated);
+      upd.textContent = `Mis à jour le ${d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long"})}`;
+    }
+  } catch (err) {
+    console.warn("evenements.json indisponible.", err);
+    document.getElementById("event-empty") && (document.getElementById("event-empty").style.display = "");
+  }
 }
 
 /* --- Réservation via Overfull (appelée par le formulaire de reserver.html) --- */
