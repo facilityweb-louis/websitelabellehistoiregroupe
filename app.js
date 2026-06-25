@@ -468,8 +468,8 @@ async function loadEvents() {
         return `<div class="event-row">
           <div class="event-date"><div class="d">${jour}</div><div class="m">${mois}</div></div>
           <div class="event-info">
+            <p class="event-venue">${e.venue}${heure}</p>
             <h4>${e.artiste || e.titre || "Événement"}</h4>
-            <p>${e.venue}${heure}</p>
           </div>
           <a class="event-cta" href="${lien}" target="_blank" rel="noopener">Voir →</a>
         </div>`;
