@@ -1,0 +1,5 @@
+# Redirections — La Belle Histoire Groupe
+# URLs propres (SEO canonical)
+/index.html    /           301!
+/reserver.html /reserver   301!
+/evenements.html /evenements 301!
