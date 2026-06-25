@@ -427,6 +427,40 @@ const API_CONFIG = {
   }
 };
 
+/* --- Événements homepage — affiche les 4 prochains events depuis evenements.json --- */
+async function loadHomeEvents() {
+  const target = document.getElementById("event-list-home");
+  if (!target) return;
+  try {
+    const res = await fetch("evenements.json?v=" + Date.now());
+    const data = await res.json();
+    const now = new Date(); now.setHours(0,0,0,0);
+    const events = (data.events || [])
+      .filter(e => !e.date || new Date(e.date) >= now)
+      .slice(0, 4);
+    if (!events.length) {
+      document.getElementById("event-home-empty").style.display = "";
+      return;
+    }
+    target.innerHTML = events.map(e => {
+      const d = e.date ? new Date(e.date) : null;
+      const jour = d ? d.getDate() : "";
+      const mois = d ? MOIS_FR[d.getMonth()] : "";
+      const heure = e.heure ? ` · ${e.heure}` : "";
+      return `<div class="event-row">
+        <div class="event-date"><div class="d">${jour}</div><div class="m">${mois}</div></div>
+        <div class="event-info">
+          <p class="event-venue">${e.venue}${heure}</p>
+          <h4>${e.artiste || "Événement"}</h4>
+        </div>
+        <a class="event-cta" href="evenements.html">Voir →</a>
+      </div>`;
+    }).join("");
+  } catch(err) {
+    document.getElementById("event-home-empty") && (document.getElementById("event-home-empty").style.display = "");
+  }
+}
+
 /* --- Événements DJs/Artistes — lit evenements.json (mis à jour chaque matin par agent IA) --- */
 const MOIS_FR = ["Jan","Fév","Mar","Avr","Mai","Jun","Jul","Aoû","Sep","Oct","Nov","Déc"];
 
@@ -586,6 +620,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCardNav();
   renderMap();
   initDestSlideshow();
+  loadHomeEvents();
   initFilter();
   initHeader();
   initBurger();
