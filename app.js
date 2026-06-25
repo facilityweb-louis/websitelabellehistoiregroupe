@@ -627,6 +627,8 @@ document.addEventListener("DOMContentLoaded", () => {
   observeReveal();
   loadEvents();
   initAutoResize();
+  // Rafraîchissement automatique des événements toutes les 60 secondes
+  setInterval(() => { loadHomeEvents(); loadEvents(); }, 60_000);
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeVenue(); });
   const ov = document.getElementById("modal");
   if (ov) ov.addEventListener("click", e => { if (e.target === ov) closeVenue(); });
