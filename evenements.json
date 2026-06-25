@@ -1,5 +1,83 @@
 {
   "updated": "2026-06-25",
   "semaine": "2026-W26",
-  "events": []
+  "events": [
+    {
+      "venue": "L'Impasse",
+      "artiste": "Flow",
+      "date": "2026-06-25",
+      "heure": "",
+      "url": "https://www.instagram.com/limpasse_letouquet/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Julien + artistes",
+      "date": "2026-06-25",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "La Plage des Pirates",
+      "artiste": "Flow",
+      "date": "2026-06-25",
+      "heure": "",
+      "url": "https://www.instagram.com/laplagedespirates/"
+    },
+    {
+      "venue": "L'Impasse",
+      "artiste": "Benjamin",
+      "date": "2026-06-26",
+      "heure": "",
+      "url": "https://www.instagram.com/limpasse_letouquet/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Julien",
+      "date": "2026-06-26",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "La Plage des Pirates",
+      "artiste": "Julien",
+      "date": "2026-06-26",
+      "heure": "",
+      "url": "https://www.instagram.com/laplagedespirates/"
+    },
+    {
+      "venue": "L'Impasse",
+      "artiste": "Storm",
+      "date": "2026-06-27",
+      "heure": "",
+      "url": "https://www.instagram.com/limpasse_letouquet/"
+    },
+    {
+      "venue": "Caravane",
+      "artiste": "Julien",
+      "date": "2026-06-27",
+      "heure": "",
+      "url": "https://www.instagram.com/restaurantcaravane/"
+    },
+    {
+      "venue": "La Plage des Pirates",
+      "artiste": "Julien",
+      "date": "2026-06-27",
+      "heure": "",
+      "url": "https://www.instagram.com/laplagedespirates/"
+    },
+    {
+      "venue": "L'Impasse",
+      "artiste": "Thomas Berlin",
+      "date": "2026-07-03",
+      "heure": "",
+      "url": "https://www.instagram.com/limpasse_letouquet/"
+    },
+    {
+      "venue": "L'Impasse",
+      "artiste": "Thomas Berlin",
+      "date": "2026-07-04",
+      "heure": "",
+      "url": "https://www.instagram.com/limpasse_letouquet/"
+    }
+  ]
 }
