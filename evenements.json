@@ -12,7 +12,7 @@
     },
     {
       "venue": "Caravane",
-      "artiste": "Julien · Mez",
+      "artiste": "Julien · MEZ",
       "date": "2026-06-25",
       "heure": "",
       "url": "https://www.instagram.com/restaurantcaravane/"
@@ -67,13 +67,6 @@
       "url": "https://www.instagram.com/laplagedespirates/"
     },
     {
-      "venue": "Caravane",
-      "artiste": "Beryl",
-      "date": "2026-07-02",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
       "venue": "L'Impasse",
       "artiste": "Thomas Berlin",
       "date": "2026-07-03",
@@ -88,6 +81,13 @@
       "url": "https://www.instagram.com/restaurantcaravane/"
     },
     {
+      "venue": "La Plage des Pirates",
+      "artiste": "Shark · Antoine Selman",
+      "date": "2026-07-03",
+      "heure": "",
+      "url": "https://www.instagram.com/laplagedespirates/"
+    },
+    {
       "venue": "L'Impasse",
       "artiste": "Thomas Berlin",
       "date": "2026-07-04",
@@ -98,48 +98,6 @@
       "venue": "Caravane",
       "artiste": "Beryl",
       "date": "2026-07-04",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Léo + Kelly",
-      "date": "2026-07-05",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Inès + Loris",
-      "date": "2026-07-09",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Inès + Loris",
-      "date": "2026-07-10",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Inès + Loris",
-      "date": "2026-07-11",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Amélie & Gauthier",
-      "date": "2026-07-12",
-      "heure": "",
-      "url": "https://www.instagram.com/restaurantcaravane/"
-    },
-    {
-      "venue": "Caravane",
-      "artiste": "Amélie & Gauthier",
-      "date": "2026-07-13",
       "heure": "",
       "url": "https://www.instagram.com/restaurantcaravane/"
     }
