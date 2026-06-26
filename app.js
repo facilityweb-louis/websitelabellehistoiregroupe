@@ -556,9 +556,7 @@ async function handleBooking(form) {
 function initBackTop() {
   const btn = document.getElementById("back-top");
   if (!btn) return;
-  window.addEventListener("scroll", () => {
-    btn.classList.toggle("visible", window.scrollY > 400);
-  }, { passive: true });
+  btn.classList.add("visible");
   btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
 
