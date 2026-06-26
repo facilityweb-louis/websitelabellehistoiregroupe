@@ -695,19 +695,30 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .reserve-cta { padding: 60px 40px; }
 }
 
+/* ── Tablette portrait (≤ 1024px) — burger visible ───────── */
+@media (max-width: 1024px) {
+  .nav { grid-template-columns: auto 1fr auto; }
+  .nav-links.left { display: none; }
+  .nav-links.right .nav-only { display: none; }
+  .nav-links.right .nav-sm-hide { display: none; }
+  .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
+  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
+  .nav-links.left.open {
+    display: flex; position: fixed; inset: 0;
+    background: var(--chocolat); color: var(--creme);
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 28px; z-index: 1500;
+  }
+  .nav-links.left.open a { font-size: 1.1rem; color: var(--creme); }
+  .nav-links.left.open .burger-extra { display: flex !important; }
+}
+
 /* ── Tablette portrait (≤ 768px) ──────────────────────────── */
 @media (max-width: 768px) {
   .container { padding: 0 24px; }
   .section { padding: 50px 0; }
   .section-head { margin-bottom: 40px; }
   .section-head h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); }
-
-  /* Nav */
-  .nav { grid-template-columns: auto 1fr auto; }
-  .nav-links.left { display: none; }
-  .nav-links.right .nav-only { display: none; }
-  .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
-  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
 
   /* Hero */
   .hero-quote { font-size: clamp(1.5rem, 4.5vw, 2.2rem); max-width: 100%; }
@@ -762,16 +773,6 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   /* Modal */
   .modal { grid-template-columns: 1fr; }
   .modal-visual { min-height: 180px; }
-
-  /* Menu mobile */
-  .nav-links.left.open {
-    display: flex; position: fixed; inset: 0;
-    background: var(--chocolat); color: var(--creme);
-    flex-direction: column; justify-content: center; align-items: center;
-    gap: 28px; z-index: 1500;
-  }
-  .nav-links.left.open a { font-size: 1.1rem; color: var(--creme); }
-  .nav-links.left.open .burger-extra { display: flex !important; }
 }
 
 /* ── Mobile (≤ 480px) ─────────────────────────────────────── */
