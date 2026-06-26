@@ -556,8 +556,11 @@ async function handleBooking(form) {
 function initBackTop() {
   const btn = document.getElementById("back-top");
   if (!btn) return;
-  btn.classList.add("visible");
-  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.documentElement.scrollTop = 0;
+    try { window.parent.postMessage({ type: "scrollToTop" }, "*"); } catch(e) {}
+  });
 }
 
 function initAutoResize() {
@@ -623,7 +626,16 @@ function initDestSlideshow() {
 
 /* ---------- Init ---------- */
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-window.scrollTo(0, 0);
+// Force scroll top — fonctionne dans iframe et hors iframe
+const _forceTop = () => {
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body && (document.body.scrollTop = 0);
+  // Demande au parent Wix de scroller en haut
+  try { window.parent.postMessage({ type: "scrollToTop" }, "*"); } catch(e) {}
+};
+_forceTop();
+window.addEventListener("load", _forceTop);
 
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
