@@ -395,13 +395,11 @@ function initBurger() {
   const open  = () => {
     menu.classList.add("open");
     burger.classList.add("open");
-    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKey);
   };
   const close = () => {
     menu.classList.remove("open");
     burger.classList.remove("open");
-    document.body.style.overflow = "";
     document.removeEventListener("keydown", onKey);
   };
   const toggle = () => menu.classList.contains("open") ? close() : open();
@@ -658,24 +656,12 @@ const _forceTop = () => {
 };
 _forceTop();
 
-// ── Scroll passthrough iframe → parent Wix ──────────────────
+// ── Scroll passthrough iframe → parent Wix (wheel desktop uniquement) ──
 (function() {
   const inIframe = () => { try { return window.self !== window.top; } catch(e) { return true; } };
   if (!inIframe()) return;
-  // Désactive le scroll interne → tous les events remontent naturellement au parent
-  document.documentElement.style.overflow = "hidden";
-  document.body.style.overflow = "hidden";
-  // Wheel passthrough (desktop)
   window.addEventListener("wheel", function(e) {
     try { window.parent.postMessage({ type: "lbh-wheel", deltaY: e.deltaY, deltaX: e.deltaX }, "*"); } catch(e2) {}
-  }, { passive: true });
-  // Touch passthrough (tablette/mobile)
-  let _ty = 0;
-  window.addEventListener("touchstart", function(e) { _ty = e.touches[0].clientY; }, { passive: true });
-  window.addEventListener("touchmove", function(e) {
-    const dy = _ty - e.touches[0].clientY;
-    _ty = e.touches[0].clientY;
-    try { window.parent.postMessage({ type: "lbh-wheel", deltaY: dy, deltaX: 0 }, "*"); } catch(e2) {}
   }, { passive: true });
 })();
 

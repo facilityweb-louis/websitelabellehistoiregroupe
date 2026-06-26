@@ -719,7 +719,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
   .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
   .nav-links.left.open {
-    display: flex; position: fixed; inset: 0;
+    display: flex !important; position: fixed; inset: 0;
     background: var(--chocolat);
     flex-direction: column; justify-content: center; align-items: center;
     gap: 32px; z-index: 1500;
