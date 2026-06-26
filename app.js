@@ -553,6 +553,15 @@ async function handleBooking(form) {
   finally { if (btn) btn.disabled = false; }
 }
 
+function initBackTop() {
+  const btn = document.getElementById("back-top");
+  if (!btn) return;
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("visible", window.scrollY > 400);
+  }, { passive: true });
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+}
+
 function initAutoResize() {
   if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
   let last = 0, scheduled = false;
@@ -627,6 +636,7 @@ document.addEventListener("DOMContentLoaded", () => {
   observeReveal();
   loadEvents();
   initAutoResize();
+  initBackTop();
   // Rafraîchissement automatique des événements toutes les 60 secondes
   setInterval(() => { loadHomeEvents(); loadEvents(); }, 60_000);
   document.addEventListener("keydown", e => { if (e.key === "Escape") closeVenue(); });
