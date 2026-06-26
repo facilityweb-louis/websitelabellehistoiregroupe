@@ -652,7 +652,9 @@ function initDestSlideshow() {
 
 /* ---------- Init ---------- */
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-// Force scroll top — fonctionne dans iframe et hors iframe
+// Supprime le hash de l'URL sans recharger (évite le scroll vers une ancre au chargement)
+if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+// Force scroll top
 const _forceTop = () => {
   window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
@@ -660,6 +662,8 @@ const _forceTop = () => {
   try { window.parent.postMessage({ type: "scrollToTop" }, "*"); } catch(e) {}
 };
 _forceTop();
+// Second passage après chargement complet (images, fonts)
+window.addEventListener("load", () => requestAnimationFrame(_forceTop));
 
 // ── Scroll passthrough iframe → parent Wix (wheel desktop uniquement) ──
 (function() {
