@@ -631,11 +631,30 @@ const _forceTop = () => {
   window.scrollTo(0, 0);
   document.documentElement.scrollTop = 0;
   document.body && (document.body.scrollTop = 0);
-  // Demande au parent Wix de scroller en haut
   try { window.parent.postMessage({ type: "scrollToTop" }, "*"); } catch(e) {}
 };
 _forceTop();
 window.addEventListener("load", _forceTop);
+
+// ── Scroll passthrough iframe → parent Wix ──────────────────
+// Transmet les événements wheel et touch au parent pour éviter
+// le blocage du défilement quand le curseur est sur l'iframe.
+(function() {
+  const inIframe = () => { try { return window.self !== window.top; } catch(e) { return true; } };
+  if (!inIframe()) return;
+  // Wheel (desktop)
+  window.addEventListener("wheel", function(e) {
+    try { window.parent.postMessage({ type: "lbh-wheel", deltaY: e.deltaY, deltaX: e.deltaX }, "*"); } catch(e2) {}
+  }, { passive: true });
+  // Touch (tablette / mobile)
+  let _ty = 0;
+  window.addEventListener("touchstart", function(e) { _ty = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener("touchmove", function(e) {
+    const dy = _ty - e.touches[0].clientY;
+    _ty = e.touches[0].clientY;
+    try { window.parent.postMessage({ type: "lbh-wheel", deltaY: dy, deltaX: 0 }, "*"); } catch(e2) {}
+  }, { passive: true });
+})();
 
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
