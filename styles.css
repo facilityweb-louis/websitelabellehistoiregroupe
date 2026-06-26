@@ -142,6 +142,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .header-light.scrolled .brand { color: var(--chocolat); }
 
 .burger { display: none; }
+.burger-extra { display: none; }
 
 /* =========================================================
    HERO
@@ -700,5 +701,4 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   }
   .nav-links.left.open a { font-size:1.1rem; color: var(--creme); }
   .nav-links.left.open .burger-extra { display:flex !important; }
-  .burger-extra { display: none; }
 }
