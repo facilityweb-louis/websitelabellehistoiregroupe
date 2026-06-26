@@ -634,19 +634,19 @@ const _forceTop = () => {
   try { window.parent.postMessage({ type: "scrollToTop" }, "*"); } catch(e) {}
 };
 _forceTop();
-window.addEventListener("load", _forceTop);
 
 // ── Scroll passthrough iframe → parent Wix ──────────────────
-// Transmet les événements wheel et touch au parent pour éviter
-// le blocage du défilement quand le curseur est sur l'iframe.
 (function() {
   const inIframe = () => { try { return window.self !== window.top; } catch(e) { return true; } };
   if (!inIframe()) return;
-  // Wheel (desktop)
+  // Désactive le scroll interne → tous les events remontent naturellement au parent
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
+  // Wheel passthrough (desktop)
   window.addEventListener("wheel", function(e) {
     try { window.parent.postMessage({ type: "lbh-wheel", deltaY: e.deltaY, deltaX: e.deltaX }, "*"); } catch(e2) {}
   }, { passive: true });
-  // Touch (tablette / mobile)
+  // Touch passthrough (tablette/mobile)
   let _ty = 0;
   window.addEventListener("touchstart", function(e) { _ty = e.touches[0].clientY; }, { passive: true });
   window.addEventListener("touchmove", function(e) {
