@@ -672,57 +672,147 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 /* =========================================================
    RESPONSIVE
    ========================================================= */
-@media (max-width: 1024px) {
-  .grid { grid-template-columns: repeat(2,1fr); }
-  .intro { grid-template-columns: 1fr; gap: 44px; }
-  .events-wrap { grid-template-columns: 1fr; gap: 40px; }
-  .stat .num { font-size: 3rem; }
-}
-@media (max-width: 900px) {
-  .stats-grid { grid-template-columns: repeat(2,1fr); }
-  .stat { border-right: none; border-bottom: 1px solid var(--line-light); }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .section { padding: 50px 0; }
-  .hero-quote { font-size: clamp(1.6rem, 4vw, 2.4rem); }
-}
+
+/* ── Tablette paysage & petits desktops (≤ 1100px) ───────── */
 @media (max-width: 1100px) {
   .nav-links { gap: 16px; }
   .nav-links a { font-size: .6rem; letter-spacing: .1em; }
   .nav-links .nav-sm-hide { display: none; }
 }
-@media (max-width: 760px) {
-  .container { padding: 0 22px; }
+
+/* ── Tablette paysage (≤ 1024px) ──────────────────────────── */
+@media (max-width: 1024px) {
+  .section { padding: 60px 0; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .intro { grid-template-columns: 1fr; gap: 44px; }
+  .intro-visual { display: none; }
+  .events-wrap { grid-template-columns: 1fr; gap: 36px; }
+  .stat .num { font-size: 3rem; }
+  .map-layout { grid-template-columns: 1fr; gap: 28px; }
+  .map-stage { min-height: 420px; }
+  .dest-grid { gap: 16px; }
+  .footer-top { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  .reserve-cta { padding: 60px 40px; }
+}
+
+/* ── Tablette portrait (≤ 768px) ──────────────────────────── */
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .section { padding: 50px 0; }
+  .section-head { margin-bottom: 40px; }
+  .section-head h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+
+  /* Nav */
   .nav { grid-template-columns: auto 1fr auto; }
-  .nav-links.left { display:none; }
-  .nav-links.right .nav-only { display:none; }
-  .burger { display:inline-flex; flex-direction:column; gap:5px; padding:8px; }
-  .burger span { width:24px; height:1.5px; background: currentColor; transition: .3s; }
-  .stats-grid { grid-template-columns: 1fr 1fr; }
-  .stat { border-right:none; border-bottom: 1px solid var(--line-light); }
-  .grid { grid-template-columns: 1fr; }
-  .dest-grid { grid-template-columns: 1fr; }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
-  .modal { grid-template-columns: 1fr; }
-  .modal-visual { min-height: 200px; }
-  .resa-wrap { grid-template-columns: 1fr; gap: 40px; }
-  .resa-info { border-left:none; border-top:1px solid var(--line); padding-left:0; padding-top:30px; }
+  .nav-links.left { display: none; }
+  .nav-links.right .nav-only { display: none; }
+  .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
+  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
+
+  /* Hero */
+  .hero-quote { font-size: clamp(1.5rem, 4.5vw, 2.2rem); max-width: 100%; }
+  .hero-sub { font-size: 1.1rem; }
+  .hero-inner { padding-top: 100px; padding-bottom: 60px; }
+  .hero-play { width: 60px; height: 60px; right: 24px; }
+  .scroll-cue { display: none; }
+
+  /* Stats */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-right: none; border-bottom: 1px solid var(--line-light); padding: 36px 20px; }
+  .stat .num { font-size: 2.6rem; }
+
+  /* Venues */
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .card { aspect-ratio: 3/4; padding: 18px; }
+  .card-logo { width: 75%; max-height: 38%; }
+
+  /* Destinations */
+  .dest-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .dest { aspect-ratio: 3/4; padding: 16px; }
+  .dest .d-name { font-size: 1.3rem; }
+  .dest .d-meta { font-size: .56rem; }
+
+  /* Carte */
+  .map-layout { grid-template-columns: 1fr; gap: 22px; margin-top: 24px; }
+  .map-stage { aspect-ratio: 4/3; min-height: unset; }
+  .map-side { order: -1; }
+  .map-legend { display: grid; grid-template-columns: 1fr 1fr; }
+  .map-inset { display: none; }
+  .lbh-pin .pin-bubble { width: 28px; height: 28px; }
+  .lbh-pin .pin-logo { width: 16px; height: 16px; }
+  .map-detail { left: 8px; right: 8px; bottom: 8px; max-width: none; padding: 12px 14px; gap: 10px; }
+  .md-logo { width: 44px; height: 44px; }
+  .md-body h3 { font-size: 1.2rem; }
+
+  /* Events */
+  .event-row { gap: 12px; }
+  .mice-card { padding: 28px; }
+
+  /* Réservation */
+  .resa-wrap { grid-template-columns: 1fr; gap: 36px; }
+  .resa-info { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 28px; }
   .field-row { grid-template-columns: 1fr; }
-  .hero-play { width: 64px; height:64px; right: 22px; }
+  .reserve-cta { padding: 50px 24px; text-align: center; }
+  .reserve-cta h2 { font-size: clamp(2rem, 6vw, 3rem); }
 
-  /* carte interactive */
-  .map-layout { grid-template-columns: 1fr; gap: 22px; margin-top: 32px; }
-  .map-stage { aspect-ratio: 4 / 5; }
-  .lbh-pin .pin-bubble { width: 30px; height: 30px; }
-  .lbh-pin .pin-logo { width: 17px; height: 17px; }
-  .map-detail { left: 10px; right: 10px; bottom: 10px; max-width: none; padding: 14px 16px; gap: 12px; }
-  .md-logo { width: 48px; height: 48px; }
-  .md-body h3 { font-size: 1.3rem; }
+  /* Footer */
+  .footer-top { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .footer { padding: 60px 0 30px; }
 
-  /* mobile menu */
+  /* Modal */
+  .modal { grid-template-columns: 1fr; }
+  .modal-visual { min-height: 180px; }
+
+  /* Menu mobile */
   .nav-links.left.open {
-    display:flex; position: fixed; inset:0; background: var(--chocolat); color: var(--creme);
-    flex-direction:column; justify-content:center; align-items:center; gap: 30px; z-index: 1500;
+    display: flex; position: fixed; inset: 0;
+    background: var(--chocolat); color: var(--creme);
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 28px; z-index: 1500;
   }
-  .nav-links.left.open a { font-size:1.1rem; color: var(--creme); }
-  .nav-links.left.open .burger-extra { display:flex !important; }
+  .nav-links.left.open a { font-size: 1.1rem; color: var(--creme); }
+  .nav-links.left.open .burger-extra { display: flex !important; }
+}
+
+/* ── Mobile (≤ 480px) ─────────────────────────────────────── */
+@media (max-width: 480px) {
+  .container { padding: 0 18px; }
+  .section { padding: 44px 0; }
+
+  /* Hero */
+  .hero .label { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: .12em; }
+  .hero-quote { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+  .hero-sub { font-size: 1rem; margin-top: 16px; }
+  .hero-inner { padding-top: 90px; padding-bottom: 50px; }
+
+  /* Stats */
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stat { padding: 28px 14px; }
+  .stat .num { font-size: 2.2rem; }
+  .stat .cap { font-size: .58rem; }
+
+  /* Venues */
+  .grid { grid-template-columns: 1fr; gap: 14px; }
+  .card { aspect-ratio: 4/3; padding: 16px; }
+  .card-logo { width: 60%; max-height: 35%; }
+
+  /* Destinations */
+  .dest-grid { grid-template-columns: 1fr; gap: 12px; }
+  .dest { aspect-ratio: 16/9; min-height: 160px; }
+  .dest .d-name { font-size: 1.5rem; }
+
+  /* Carte */
+  .map-stage { aspect-ratio: 1/1; }
+  .map-legend { grid-template-columns: 1fr; }
+
+  /* Footer */
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+
+  /* Events */
+  .events-wrap { grid-template-columns: 1fr; gap: 28px; }
+  .event-row { flex-wrap: wrap; }
+
+  /* Back to top */
+  .back-top { bottom: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem; }
 }
