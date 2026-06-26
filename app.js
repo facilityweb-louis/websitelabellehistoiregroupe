@@ -150,8 +150,8 @@ function venueHref(v) {
 function venueCard(v) {
   const media = v.image ? `<img class="card-media-img" loading="lazy" src="${encodeURI(v.image)}" alt="${v.name}"/>` : "";
   const url = venueHref(v);
-  const external = /^https?:/.test(url);
-  const discoverAttrs = external ? ' target="_blank" rel="noopener"' : "";
+  // Toujours ouvrir dans un nouvel onglet pour ne pas quitter le site principal
+  const discoverAttrs = ' target="_blank" rel="noopener"';
   const resaHref = `reserver.html?venue=${v.id}`; // ouvre la page Réserver sur le widget de cet établissement
   return `
   <article class="card ${v.theme}" data-dest="${v.dest}" data-id="${v.id}" data-href="${url}" aria-label="${v.name}">
@@ -335,7 +335,7 @@ function initCardNav() {
     const card = e.target.closest(".card[data-href]");
     if (!card) return;
     const href = card.getAttribute("data-href");
-    if (href && href !== "#") window.location.href = href;
+    if (href && href !== "#") window.open(href, "_blank", "noopener");
   });
 }
 
