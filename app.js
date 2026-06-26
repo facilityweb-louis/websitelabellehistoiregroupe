@@ -566,11 +566,15 @@ function initBackTop() {
 function initAutoResize() {
   if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
   let last = 0, scheduled = false;
-  const measure = () => Math.ceil(Math.max(
-    document.documentElement.scrollHeight,
-    document.body ? document.body.scrollHeight : 0,
-    document.body ? document.body.offsetHeight : 0
-  ));
+  // Mesure la vraie hauteur du contenu même si overflow:hidden est actif
+  const measure = () => {
+    let h = 0;
+    Array.from(document.body.children).forEach(el => {
+      const bottom = el.offsetTop + el.offsetHeight;
+      if (bottom > h) h = bottom;
+    });
+    return Math.ceil(h) || Math.ceil(document.body.offsetHeight);
+  };
   const post = () => {
     scheduled = false;
     const h = measure();
