@@ -144,7 +144,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .burger {
   display: none; flex-direction: column; gap: 5px; padding: 10px;
   background: none; border: none; cursor: pointer; z-index: 1600;
-  position: relative;
+  position: relative; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
 .burger span {
   width: 24px; height: 1.5px; background: currentColor;
