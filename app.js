@@ -389,10 +389,29 @@ function initHeader() {
 /* ---------- Mobile menu ---------- */
 function initBurger() {
   const burger = document.querySelector(".burger");
-  const menu = document.querySelector(".nav-links.left");
+  const menu   = document.querySelector(".nav-links.left");
   if (!burger || !menu) return;
-  burger.addEventListener("click", () => menu.classList.toggle("open"));
-  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
+
+  const open  = () => {
+    menu.classList.add("open");
+    burger.classList.add("open");
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+  };
+  const close = () => {
+    menu.classList.remove("open");
+    burger.classList.remove("open");
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", onKey);
+  };
+  const toggle = () => menu.classList.contains("open") ? close() : open();
+  const onKey  = e => { if (e.key === "Escape") close(); };
+
+  burger.addEventListener("click", toggle);
+  // Ferme au clic sur un lien
+  menu.querySelectorAll("a").forEach(a => a.addEventListener("click", close));
+  // Ferme au clic sur l'overlay (fond sombre)
+  menu.addEventListener("click", e => { if (e.target === menu) close(); });
 }
 
 /* ---------- Reveal on scroll ---------- */
