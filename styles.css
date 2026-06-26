@@ -327,7 +327,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .card-logo {
   position: absolute; z-index: 2;
   top: 17%; left: 50%; transform: translateX(-50%);
-  width: 64%; max-height: 32%; object-fit: contain; object-position: center;
+  width: 90%; max-height: 45%; object-fit: contain; object-position: center;
   filter: brightness(0) invert(1); opacity: .96;
   transition: transform .6s var(--ease); pointer-events:none;
 }
