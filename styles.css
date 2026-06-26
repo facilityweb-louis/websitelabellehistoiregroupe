@@ -675,6 +675,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 @media (max-width: 1024px) {
   .grid { grid-template-columns: repeat(2,1fr); }
   .intro { grid-template-columns: 1fr; gap: 44px; }
+  .intro-visual { display: none; }
   .events-wrap { grid-template-columns: 1fr; gap: 40px; }
   .stat .num { font-size: 3rem; }
 }
