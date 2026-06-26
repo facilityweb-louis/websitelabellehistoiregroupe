@@ -675,14 +675,13 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 @media (max-width: 1024px) {
   .grid { grid-template-columns: repeat(2,1fr); }
   .intro { grid-template-columns: 1fr; gap: 44px; }
-  .intro-visual { display: none; }
   .events-wrap { grid-template-columns: 1fr; gap: 40px; }
   .stat .num { font-size: 3rem; }
 }
 @media (max-width: 900px) {
   .dest-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .dest { min-height: 220px; }
-  .dest:last-child { grid-column: 1 / -1; }
+  .dest { min-height: 220px; aspect-ratio: unset; }
+  .dest:last-child { grid-column: 1 / -1; min-height: 180px; }
   .stats-grid { grid-template-columns: repeat(2,1fr); }
   .stat { border-right: none; border-bottom: 1px solid var(--line-light); }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 36px; }
