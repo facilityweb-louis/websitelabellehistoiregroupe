@@ -150,11 +150,9 @@ function venueHref(v) {
 function venueCard(v) {
   const media = v.image ? `<img class="card-media-img" loading="lazy" src="${encodeURI(v.image)}" alt="${v.name}"/>` : "";
   const url = venueHref(v);
-  // Toujours ouvrir dans un nouvel onglet pour ne pas quitter le site principal
-  const discoverAttrs = ' target="_blank" rel="noopener"';
-  const resaHref = `reserver.html?venue=${v.id}`; // ouvre la page Réserver sur le widget de cet établissement
+  const resaHref = `reserver.html?venue=${v.id}`;
   return `
-  <article class="card ${v.theme}" data-dest="${v.dest}" data-id="${v.id}" data-href="${url}" aria-label="${v.name}">
+  <a class="card ${v.theme}" href="${url}" target="_blank" rel="noopener" data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
     ${media}
     <span class="c-year">Depuis ${v.year}</span>
     <span class="c-dest">${v.destLabel}</span>
@@ -163,11 +161,11 @@ function venueCard(v) {
       <p class="c-type">${v.type}</p>
       <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
       <div class="c-actions">
-        <a class="mini line" href="${url}"${discoverAttrs}>Découvrir</a>
-        <a class="mini solid" href="${resaHref}">Réserver</a>
+        <span class="mini line">Découvrir</span>
+        <a class="mini solid" href="${resaHref}" target="_self" rel="noopener" onclick="event.stopPropagation()">Réserver</a>
       </div>
     </div>
-  </article>`;
+  </a>`;
 }
 
 function renderVenues(filter = "all") {
@@ -326,18 +324,8 @@ function renderMap() {
   if (window.ResizeObserver) new ResizeObserver(fix).observe(stage);
 }
 
-/* ---------- Clic sur toute la carte = Découvrir (sauf sur les 2 boutons) ---------- */
-function initCardNav() {
-  const grid = document.getElementById("venue-grid");
-  if (!grid) return;
-  grid.addEventListener("click", e => {
-    if (e.target.closest(".c-actions")) return;            // laisse les boutons Découvrir/Réserver agir normalement
-    const card = e.target.closest(".card[data-href]");
-    if (!card) return;
-    const href = card.getAttribute("data-href");
-    if (href && href !== "#") window.open(href, "_blank", "noopener");
-  });
-}
+/* ---------- Card nav — plus nécessaire, la carte est un <a> natif ---------- */
+function initCardNav() {}
 
 /* ---------- Filter chips ---------- */
 function initFilter() {
