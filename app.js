@@ -394,14 +394,12 @@ function initBurger() {
   const onKey  = e => { if (e.key === "Escape") close(); };
 
   burger.addEventListener("click", toggle);
-  // Fallback touch pour iframe Wix tablette
   burger.addEventListener("touchend", e => { e.preventDefault(); toggle(); }, { passive: false });
-  // Ferme au clic sur un lien
+  // Ferme au clic sur un lien — sans preventDefault pour laisser la navigation se faire
   menu.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", close);
-    a.addEventListener("touchend", e => { e.preventDefault(); close(); }, { passive: false });
+    a.addEventListener("click", () => setTimeout(close, 50));
   });
-  // Ferme au clic sur l'overlay (fond sombre)
+  // Ferme au clic sur l'overlay
   menu.addEventListener("click", e => { if (e.target === menu) close(); });
 }
 
