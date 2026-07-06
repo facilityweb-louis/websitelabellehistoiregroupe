@@ -712,14 +712,12 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 
 /* ── Tablette portrait (≤ 1024px) — burger visible ───────── */
 @media (max-width: 1024px) {
-  /* Ordre : burger | brand centré | bouton Réserver */
   .nav { grid-template-columns: auto 1fr auto; }
-  .burger { order: -1; display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
-  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
-  .brand { justify-self: center; }
   .nav-links.left { display: none; }
   .nav-links.right .nav-only { display: none; }
   .nav-links.right .nav-sm-hide { display: none; }
+  .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
+  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
   .nav-links.left.open {
     display: flex !important; position: fixed; inset: 0;
     background: var(--chocolat);
@@ -744,20 +742,15 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 
 /* ── Tablette portrait (≤ 768px) ──────────────────────────── */
 @media (max-width: 768px) {
-  .container { padding: 0 20px; }
+  .container { padding: 0 24px; }
   .section { padding: 50px 0; }
   .section-head { margin-bottom: 40px; }
   .section-head h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); }
 
-  /* Page hero (sous-pages) */
-  .page-hero { padding: 140px 0 70px; }
-  .page-hero h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); }
-
   /* Hero */
-  .hero .label { font-size: clamp(1.8rem, 5.5vw, 3rem); letter-spacing: .16em; }
-  .hero-quote { font-size: clamp(1.4rem, 4.2vw, 2rem); max-width: 100%; }
+  .hero-quote { font-size: clamp(1.5rem, 4.5vw, 2.2rem); max-width: 100%; }
   .hero-sub { font-size: 1.1rem; }
-  .hero-inner { padding-top: 110px; padding-bottom: 60px; }
+  .hero-inner { padding-top: 100px; padding-bottom: 60px; }
   .hero-play { width: 60px; height: 60px; right: 24px; }
   .scroll-cue { display: none; }
 
@@ -766,13 +759,10 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .stat { border-right: none; border-bottom: 1px solid var(--line-light); padding: 36px 20px; }
   .stat .num { font-size: 2.6rem; }
 
-  /* Venues — 2 colonnes portrait */
+  /* Venues */
   .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .card { aspect-ratio: 3/4; padding: 18px; }
   .card-logo { width: 75%; max-height: 38%; }
-  .card .c-tags { gap: 5px; margin-top: 10px; }
-  .card .c-actions { margin-top: 12px; gap: 8px; }
-  .card .c-actions .mini { padding: 9px 14px; font-size: .58rem; }
 
   /* Destinations */
   .dest-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
@@ -793,8 +783,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .md-body h3 { font-size: 1.2rem; }
 
   /* Events */
-  .event-row { grid-template-columns: 72px 1fr auto; gap: 12px; }
-  .event-info h4 { font-size: 1.2rem; }
+  .event-row { gap: 12px; }
   .mice-card { padding: 28px; }
 
   /* Réservation */
@@ -802,7 +791,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .resa-info { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 28px; }
   .field-row { grid-template-columns: 1fr; }
   .reserve-cta { padding: 50px 24px; text-align: center; }
-  .reserve-cta .big { font-size: clamp(2rem, 6vw, 3.2rem); }
+  .reserve-cta h2 { font-size: clamp(2rem, 6vw, 3rem); }
 
   /* Footer */
   .footer-top { grid-template-columns: repeat(2, 1fr); gap: 32px; }
@@ -815,84 +804,43 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 
 /* ── Mobile (≤ 480px) ─────────────────────────────────────── */
 @media (max-width: 480px) {
-  .container { padding: 0 16px; }
-  .section { padding: 40px 0; }
-  .section-head { margin-bottom: 32px; }
-
-  /* Page hero (sous-pages) */
-  .page-hero { padding: 110px 0 55px; }
-  .page-hero h1 { font-size: clamp(1.9rem, 8vw, 2.8rem); }
-  .page-hero p { font-size: 1.15rem; margin-top: 14px; }
+  .container { padding: 0 18px; }
+  .section { padding: 44px 0; }
 
   /* Hero */
-  .hero .label { font-size: clamp(1.5rem, 6.5vw, 2.2rem); letter-spacing: .1em; }
-  .hero-quote { font-size: clamp(1.25rem, 4.8vw, 1.7rem); }
-  .hero-sub { font-size: .98rem; margin-top: 14px; }
-  .hero-inner { padding-top: 90px; padding-bottom: 48px; }
+  .hero .label { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: .12em; }
+  .hero-quote { font-size: clamp(1.3rem, 5vw, 1.8rem); }
+  .hero-sub { font-size: 1rem; margin-top: 16px; }
+  .hero-inner { padding-top: 90px; padding-bottom: 50px; }
 
   /* Stats */
   .stats-grid { grid-template-columns: 1fr 1fr; }
-  .stat { padding: 26px 12px; }
-  .stat .num { font-size: 2.1rem; }
-  .stat .cap { font-size: .58rem; line-height: 1.5; }
+  .stat { padding: 28px 14px; }
+  .stat .num { font-size: 2.2rem; }
+  .stat .cap { font-size: .58rem; }
 
-  /* Venues — 1 colonne pleine largeur, portrait */
+  /* Venues */
   .grid { grid-template-columns: 1fr; gap: 14px; }
-  .card { aspect-ratio: 3/4; padding: 18px; }
-  .card-logo { width: 68%; max-height: 36%; top: 15%; }
-  .card .c-year { top: 20px; left: 18px; font-size: .58rem; }
-  .card .c-dest { top: 20px; right: 18px; font-size: .54rem; }
-  .card .c-type { font-size: 1.05rem; }
-  .card .c-tags { gap: 5px; margin-top: 10px; }
-  .card .c-actions { margin-top: 12px; gap: 8px; }
-  .card .c-actions .mini { padding: 10px 16px; font-size: .6rem; }
+  .card { aspect-ratio: 4/3; padding: 16px; }
+  .card-logo { width: 60%; max-height: 35%; }
 
-  /* Discover card */
-  .card.discover h3 { font-size: 1.4rem; }
-
-  /* Destinations — colonne unique, format 16/9 */
-  .dest-grid { grid-template-columns: 1fr; gap: 10px; }
-  .dest { aspect-ratio: 16/9; min-height: 150px; padding: 20px; }
-  .dest .d-name { font-size: 1.6rem; }
-  .dest .d-meta { font-size: .58rem; margin-top: 4px; }
+  /* Destinations */
+  .dest-grid { grid-template-columns: 1fr; gap: 12px; }
+  .dest { aspect-ratio: 16/9; min-height: 160px; }
+  .dest .d-name { font-size: 1.5rem; }
 
   /* Carte */
-  .map-stage { aspect-ratio: 4/3; }
-  .map-legend { display: grid; grid-template-columns: 1fr; }
-  .leg-item { padding: 10px 6px; }
-  .leg-txt strong { font-size: 1.05rem; }
-  .leg-txt em { font-size: .9rem; }
-
-  /* Events */
-  .events-wrap { gap: 28px; }
-  /* event-row : switch en flex pour pouvoir faire wrapper le CTA */
-  .event-row {
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: 8px 14px; padding: 18px 0;
-  }
-  .event-date { min-width: 52px; flex-shrink: 0; }
-  .event-date .d { font-size: 1.7rem; }
-  .event-info { flex: 1; min-width: 0; }
-  .event-info h4 { font-size: 1.15rem; }
-  .event-cta { font-size: .62rem; margin-left: auto; }
-  .mice-card { padding: 22px 18px; }
-  .mice-card h3 { font-size: 1.4rem; }
-
-  /* Réservation CTA */
-  .reserve-cta .big { font-size: clamp(1.9rem, 7vw, 2.6rem); margin: 18px 0 14px; }
-  .reserve-cta p { font-size: 1.1rem; }
+  .map-stage { aspect-ratio: 1/1; }
+  .map-legend { grid-template-columns: 1fr; }
 
   /* Footer */
-  .footer-top { grid-template-columns: 1fr; gap: 26px; }
-  .footer { padding: 50px 0 26px; }
+  .footer-top { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-  .footer .tag { font-size: 1.05rem; }
+
+  /* Events */
+  .events-wrap { grid-template-columns: 1fr; gap: 28px; }
+  .event-row { flex-wrap: wrap; }
 
   /* Back to top */
-  .back-top { bottom: 18px; right: 16px; width: 42px; height: 42px; font-size: 1rem; }
-
-  /* Modal */
-  .modal-overlay { padding: 16px; }
-  .modal-body { padding: 28px 20px; }
-  .modal-body h2 { font-size: 1.9rem; }
+  .back-top { bottom: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem; }
 }
