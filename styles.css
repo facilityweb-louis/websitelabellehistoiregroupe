@@ -712,12 +712,14 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 
 /* ── Tablette portrait (≤ 1024px) — burger visible ───────── */
 @media (max-width: 1024px) {
+  /* Layout nav : [≡ burger] [brand centré] [Réserver] */
   .nav { grid-template-columns: auto 1fr auto; }
+  .burger { order: -1; display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
+  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
+  .brand { justify-self: center; }
   .nav-links.left { display: none; }
   .nav-links.right .nav-only { display: none; }
   .nav-links.right .nav-sm-hide { display: none; }
-  .burger { display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
-  .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
   .nav-links.left.open {
     display: flex !important; position: fixed; inset: 0;
     background: var(--chocolat);
@@ -746,6 +748,10 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .section { padding: 50px 0; }
   .section-head { margin-bottom: 40px; }
   .section-head h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+
+  /* Page hero sous-pages (reserver.html, evenements.html) */
+  .page-hero { padding: 130px 0 70px; }
+  .page-hero h1 { font-size: clamp(2.2rem, 6vw, 3.5rem); }
 
   /* Hero */
   .hero-quote { font-size: clamp(1.5rem, 4.5vw, 2.2rem); max-width: 100%; }
@@ -804,8 +810,13 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 
 /* ── Mobile (≤ 480px) ─────────────────────────────────────── */
 @media (max-width: 480px) {
-  .container { padding: 0 18px; }
+  .container { padding: 0 16px; }
   .section { padding: 44px 0; }
+
+  /* Page hero sous-pages */
+  .page-hero { padding: 110px 0 55px; }
+  .page-hero h1 { font-size: clamp(1.9rem, 8vw, 2.8rem); }
+  .page-hero p { font-size: 1.1rem; margin-top: 12px; }
 
   /* Hero */
   .hero .label { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: .12em; }
@@ -819,10 +830,10 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .stat .num { font-size: 2.2rem; }
   .stat .cap { font-size: .58rem; }
 
-  /* Venues */
+  /* Venues — portrait (même ratio qu'à 768px) pour éviter le chevauchement logo/contenu */
   .grid { grid-template-columns: 1fr; gap: 14px; }
-  .card { aspect-ratio: 4/3; padding: 16px; }
-  .card-logo { width: 60%; max-height: 35%; }
+  .card { aspect-ratio: 3/4; padding: 18px; }
+  .card-logo { width: 70%; max-height: 38%; }
 
   /* Destinations */
   .dest-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -837,9 +848,15 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .footer-top { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
 
-  /* Events */
-  .events-wrap { grid-template-columns: 1fr; gap: 28px; }
-  .event-row { flex-wrap: wrap; }
+  /* Events — conversion grid → flex pour permettre le wrapping */
+  .events-wrap { gap: 28px; }
+  .event-row {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px 16px; padding: 20px 0;
+  }
+  .event-date { flex-shrink: 0; min-width: 50px; text-align: center; }
+  .event-info { flex: 1; min-width: 0; }
+  .event-cta { margin-left: auto; flex-shrink: 0; }
 
   /* Back to top */
   .back-top { bottom: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem; }
