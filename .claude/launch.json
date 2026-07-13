@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "lbh-preview",
+      "name": "lbh-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8124", "--directory", "/Users/louisfontaine/Documents/labellehistoiregroupe"],
-      "port": 8124
+      "runtimeArgs": ["-m", "http.server", "4325"],
+      "port": 4325
     }
   ]
 }

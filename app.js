@@ -69,7 +69,7 @@ const VENUES = [
   },
   {
     id: "atelier", name: "L’Atelier Éphémère", year: 2017, dest: "letouquet", destLabel: "Le Touquet",
-    theme: "t-vert", type: "Restaurant éphémère",
+    theme: "t-vert", type: "Restaurant",
     tags: ["Restaurant", "Terrasse"],
     image: "assets/logos/Atelier ephemere.JPG",
     desc: "Un restaurant au concept mouvant, qui se réinvente au fil des saisons et des envies. Une carte qui change, des collaborations, des éditions limitées : l’éphémère comme signature.",
