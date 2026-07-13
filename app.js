@@ -148,7 +148,8 @@ function venueHref(v) {
 
 /* ---------- Render venue cards ---------- */
 function venueCard(v) {
-  const media = v.image ? `<img class="card-media-img" loading="lazy" src="${encodeURI(v.image)}" alt="${v.name}"/>` : "";
+  // loading="eager" : les photos se chargent immédiatement (pas de lazy qui cause des cartes sombres)
+  const media = v.image ? `<img class="card-media-img" src="${encodeURI(v.image)}" alt=""/>` : "";
   const url = venueHref(v);
   const resaHref = `reserver.html?venue=${v.id}`;
   return `
@@ -162,7 +163,8 @@ function venueCard(v) {
       <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
       <div class="c-actions">
         <span class="mini line">Découvrir</span>
-        <a class="mini solid" href="${resaHref}" target="_self" rel="noopener" onclick="event.stopPropagation()">Réserver</a>
+        <button class="mini solid" type="button"
+          onclick="event.preventDefault(); event.stopPropagation(); window.location.href='${resaHref}'">Réserver</button>
       </div>
     </div>
   </a>`;
