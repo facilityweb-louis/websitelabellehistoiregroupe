@@ -405,6 +405,38 @@ function initBurger() {
   menu.addEventListener("click", e => { if (e.target === menu) close(); });
 }
 
+/* ---------- Compteurs animés ---------- */
+function initCounters() {
+  const nums = document.querySelectorAll(".stat .num");
+  if (!nums.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      obs.unobserve(e.target);
+      const el = e.target;
+      // Extraire la partie numérique (ignorer <sup>)
+      const raw = el.childNodes[0].textContent.trim();
+      const target = parseInt(raw, 10);
+      if (isNaN(target)) return;
+      const suffix = el.querySelector("sup") ? el.querySelector("sup").textContent : "";
+      const duration = 1400;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / duration, 1);
+        // Ease out cubic
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(ease * target);
+        el.childNodes[0].textContent = val;
+        if (el.querySelector("sup")) el.querySelector("sup").textContent = suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else { el.childNodes[0].textContent = target; if (el.querySelector("sup")) el.querySelector("sup").textContent = suffix; }
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.4 });
+  nums.forEach(n => obs.observe(n));
+}
+
 /* ---------- Reveal on scroll ---------- */
 let revealObserver;
 function observeReveal() {
@@ -672,6 +704,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initBurger();
   observeReveal();
+  initCounters();
   loadEvents();
   initAutoResize();
   initBackTop();

@@ -483,6 +483,52 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .reserve-cta p { font-family: var(--body); font-size: 1.3rem; max-width: 50ch; margin: 0 auto 34px; }
 
 /* =========================================================
+   PRESSE
+   ========================================================= */
+.press-section { background: var(--chocolat); }
+.press-head { text-align: center; margin-bottom: 48px; }
+.press-head .label { color: var(--cuivre); justify-content: center; }
+.press-sub {
+  font-family: var(--body);
+  font-size: 1rem;
+  color: rgba(246,241,231,.45);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.press-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px 48px;
+}
+.press-name {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  font-style: italic;
+  color: rgba(246,241,231,.35);
+  letter-spacing: .03em;
+  transition: color .35s;
+  cursor: default;
+  white-space: nowrap;
+}
+.press-name:hover { color: rgba(246,241,231,.85); }
+
+/* Séparateurs entre noms */
+.press-name:not(:last-child)::after {
+  content: "·";
+  margin-left: 48px;
+  color: var(--cuivre);
+  opacity: .4;
+  font-style: normal;
+}
+@media (max-width: 600px) {
+  .press-name:not(:last-child)::after { display: none; }
+  .press-logos { gap: 20px 24px; }
+}
+
+/* =========================================================
    AVIS GOOGLE
    ========================================================= */
 .review-section { background: var(--creme-2); }
