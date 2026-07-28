@@ -437,6 +437,18 @@ function initCounters() {
   nums.forEach(n => obs.observe(n));
 }
 
+/* ---------- Illustrations : apparition au scroll ---------- */
+function initIllus() {
+  const targets = document.querySelectorAll(".illus-gorille, .illus-vinyle, .illus-cocktails");
+  if (!targets.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.15 });
+  targets.forEach(t => obs.observe(t));
+}
+
 /* ---------- Reveal on scroll ---------- */
 let revealObserver;
 function observeReveal() {
@@ -705,6 +717,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBurger();
   observeReveal();
   initCounters();
+  initIllus();
   loadEvents();
   initAutoResize();
   initBackTop();

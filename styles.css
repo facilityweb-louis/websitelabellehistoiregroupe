@@ -529,6 +529,116 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 }
 
 /* =========================================================
+   ILLUSTRATIONS AU CRAYON
+   ========================================================= */
+
+/* Base commune */
+.illus {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+
+/* ── Hero : logo BH en filigrane centré ── */
+.illus-hero-seal {
+  width: clamp(320px, 45vw, 680px);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: .07;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
+/* ── Pizza : flotte en haut à droite de la section établissements ── */
+.illus-pizza {
+  width: clamp(180px, 18vw, 280px);
+  top: 40px; right: -30px;
+  opacity: .18;
+  mix-blend-mode: multiply;
+  transform: rotate(14deg);
+  animation: illus-float 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+/* ── Montagne : grande, bas à droite de la section destinations ── */
+.illus-montagne {
+  width: clamp(260px, 32vw, 480px);
+  bottom: -20px; right: -40px;
+  opacity: .14;
+  mix-blend-mode: multiply;
+  animation: illus-float 7s ease-in-out infinite;
+  z-index: 0;
+}
+
+/* ── Gorille : section événements, gauche, visible + apparition ── */
+.illus-gorille {
+  width: clamp(140px, 14vw, 220px);
+  bottom: 32px; left: -20px;
+  opacity: 0;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  transform: rotate(-8deg) translateY(30px);
+  transition: opacity .8s ease, transform .8s ease;
+  z-index: 0;
+}
+.illus-gorille.visible {
+  opacity: .22;
+  transform: rotate(-8deg) translateY(0);
+}
+
+/* ── Vinyle : section événements, bas à droite, tourne en continu ── */
+.illus-vinyle {
+  width: clamp(120px, 11vw, 180px);
+  bottom: 24px; right: 24px;
+  opacity: 0;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  transition: opacity 1s ease .3s;
+  animation: illus-spin 12s linear infinite paused;
+  z-index: 0;
+}
+.illus-vinyle.visible {
+  opacity: .2;
+  animation-play-state: running;
+}
+
+/* ── Cocktails : section réservation, droite, animé au scroll ── */
+.illus-cocktails {
+  width: clamp(160px, 15vw, 240px);
+  top: 50%; right: -20px;
+  transform: translateY(-50%) rotate(10deg) translateX(40px);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition: opacity .7s ease, transform .7s ease;
+  z-index: 0;
+}
+.illus-cocktails.visible {
+  opacity: .22;
+  transform: translateY(-50%) rotate(10deg) translateX(0);
+}
+
+/* ── Animations keyframes ── */
+@keyframes illus-float {
+  0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+  50%       { transform: translateY(-14px) rotate(var(--r, 0deg)); }
+}
+.illus-pizza   { --r: 14deg; }
+.illus-montagne{ --r: 0deg;  }
+
+@keyframes illus-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile : réduire ou cacher sur très petits écrans */
+@media (max-width: 480px) {
+  .illus-pizza, .illus-montagne, .illus-cocktails { display: none; }
+  .illus-gorille { width: 90px; left: -10px; }
+  .illus-vinyle  { width: 80px; right: 10px; }
+}
+
+/* =========================================================
    AVIS GOOGLE
    ========================================================= */
 .review-section { background: var(--creme-2); }
