@@ -462,6 +462,26 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .event-info p { font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,241,231,.6); margin-top: 5px; }
 .event-info .event-venue { font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: var(--cuivre); margin-top: 0; font-weight: 600; }
 .event-cta { font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--cuivre); white-space: nowrap; }
+/* Section privatisations — principale */
+.mice-section { background: var(--chocolat); color: var(--creme); }
+.mice-section .sec-index { color: var(--cuivre); }
+.mice-layout { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 70px; align-items: start; }
+.mice-editorial h2 { color: var(--creme); font-size: clamp(2rem, 4.4vw, 3.4rem); margin-top: 20px; line-height: 1.04; }
+.mice-editorial .editorial { color: rgba(246,241,231,.78); margin-top: 22px; }
+.mice-editorial .btn { margin-top: 36px; }
+.mice-sub { font-family: var(--body); font-size: 1.1rem; color: rgba(246,241,231,.5); margin-top: 14px; line-height: 1.5; }
+.mice-services-box { border: 1px solid var(--line-light); border-radius: 3px; padding: 36px 32px; }
+.mice-services-title { font-size: .64rem; letter-spacing: .26em; text-transform: uppercase; color: var(--sable); margin-bottom: 24px; font-weight: 500; }
+.mice-services-box ul { list-style: none; }
+.mice-services-box li { font-family: var(--body); font-size: 1.2rem; padding: 14px 0; border-bottom: 1px solid var(--line-light); display: flex; align-items: center; gap: 14px; color: var(--creme); }
+.mice-services-box li:last-child { border-bottom: none; padding-bottom: 0; }
+.mice-services-box li::before { content: "→"; color: var(--cuivre); font-size: .82rem; flex-shrink: 0; }
+
+/* Section DJs & Artistes — secondaire */
+.dj-section { background: var(--chocolat-2); color: var(--creme); padding: clamp(50px, 7vh, 90px) 0; }
+.dj-section .sec-index { color: var(--cuivre); }
+.dj-subtitle { margin-top: 9px; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: rgba(246,241,231,.4); }
+
 .mice-card {
   border: 1px solid var(--line-light); border-radius: 3px; padding: 36px 32px;
   color: var(--creme);
@@ -869,6 +889,7 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .intro { grid-template-columns: 1fr; gap: 44px; }
   .intro-visual { display: none; }
   .events-wrap { grid-template-columns: 1fr; gap: 36px; }
+  .mice-layout { grid-template-columns: 1fr; gap: 40px; }
   .stat .num { font-size: 3rem; }
   .map-layout { grid-template-columns: 1fr; gap: 28px; }
   .map-stage { min-height: 420px; }
