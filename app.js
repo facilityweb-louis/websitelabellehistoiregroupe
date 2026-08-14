@@ -382,18 +382,36 @@ function initBurger() {
   const menu   = document.querySelector(".nav-links.left");
   if (!burger || !menu) return;
 
+  let _scrollY = 0;
+  const lockScroll = () => {
+    _scrollY = window.scrollY;
+    document.body.style.position   = "fixed";
+    document.body.style.top        = `-${_scrollY}px`;
+    document.body.style.left       = "0";
+    document.body.style.right      = "0";
+    document.body.style.overflow   = "hidden";
+  };
+  const unlockScroll = () => {
+    document.body.style.position = "";
+    document.body.style.top      = "";
+    document.body.style.left     = "";
+    document.body.style.right    = "";
+    document.body.style.overflow = "";
+    window.scrollTo(0, _scrollY); // restitue la position
+  };
+
   const open  = () => {
     menu.classList.add("open");
     burger.classList.add("open");
     burger.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden"; // scroll lock
+    lockScroll();
     document.addEventListener("keydown", onKey);
   };
   const close = () => {
     menu.classList.remove("open");
     burger.classList.remove("open");
     burger.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = ""; // libère le scroll
+    unlockScroll();
     document.removeEventListener("keydown", onKey);
   };
   const toggle = () => menu.classList.contains("open") ? close() : open();
