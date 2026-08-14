@@ -905,29 +905,56 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   .burger { order: -1; display: inline-flex; flex-direction: column; gap: 5px; padding: 8px; }
   .burger span { width: 24px; height: 1.5px; background: currentColor; transition: .3s; }
   .brand { justify-self: center; }
-  .nav-links.left { display: none; }
   .nav-links.right .nav-only { display: none; }
   .nav-links.right .nav-sm-hide { display: none; }
-  .nav-links.left.open {
-    display: flex !important; position: fixed; inset: 0;
+
+  /* Menu plein écran — toujours dans le DOM, caché via opacity/visibility */
+  .nav-links.left {
+    display: flex !important;
+    position: fixed;
+    inset: 0;
     background: var(--chocolat);
-    flex-direction: column; justify-content: center; align-items: center;
-    gap: 32px; z-index: 1500;
-    animation: menuIn .32s var(--ease) both;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    z-index: 1500;
+    /* État fermé */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity .35s var(--ease), visibility .35s, transform .35s var(--ease);
   }
-  .nav-links.left.open a {
-    font-family: var(--serif); font-size: 1.4rem; color: var(--creme);
-    letter-spacing: .08em; text-transform: none;
-    opacity: 0; animation: menuItemIn .4s var(--ease) both;
+
+  /* État ouvert */
+  .nav-links.left.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
   }
-  .nav-links.left.open li:nth-child(1) a { animation-delay: .06s; }
-  .nav-links.left.open li:nth-child(2) a { animation-delay: .10s; }
-  .nav-links.left.open li:nth-child(3) a { animation-delay: .14s; }
-  .nav-links.left.open li:nth-child(4) a { animation-delay: .18s; }
-  .nav-links.left.open li:nth-child(5) a { animation-delay: .22s; }
-  .nav-links.left.open li:nth-child(6) a { animation-delay: .26s; }
-  .nav-links.left.open a::after { background: var(--cuivre); }
-  .nav-links.left.open .burger-extra { display: flex !important; }
+
+  /* Liens du menu */
+  .nav-links.left a {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 4vw, 1.7rem);
+    color: var(--creme);
+    letter-spacing: .06em;
+    text-transform: none;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .3s ease, transform .3s ease, color .2s;
+  }
+  .nav-links.left.open li:nth-child(1) a { opacity:1; transform:none; transition-delay:.08s; }
+  .nav-links.left.open li:nth-child(2) a { opacity:1; transform:none; transition-delay:.13s; }
+  .nav-links.left.open li:nth-child(3) a { opacity:1; transform:none; transition-delay:.18s; }
+  .nav-links.left.open li:nth-child(4) a { opacity:1; transform:none; transition-delay:.23s; }
+  .nav-links.left.open li:nth-child(5) a { opacity:1; transform:none; transition-delay:.28s; }
+  .nav-links.left.open li:nth-child(6) a { opacity:1; transform:none; transition-delay:.33s; }
+  .nav-links.left a:hover { color: var(--cuivre); }
+  .nav-links.left a::after { background: var(--cuivre); }
+  .nav-links.left .burger-extra { display: flex !important; }
 }
 
 /* ── Tablette portrait (≤ 768px) ──────────────────────────── */

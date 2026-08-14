@@ -385,21 +385,24 @@ function initBurger() {
   const open  = () => {
     menu.classList.add("open");
     burger.classList.add("open");
+    burger.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden"; // scroll lock
     document.addEventListener("keydown", onKey);
   };
   const close = () => {
     menu.classList.remove("open");
     burger.classList.remove("open");
+    burger.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = ""; // libère le scroll
     document.removeEventListener("keydown", onKey);
   };
   const toggle = () => menu.classList.contains("open") ? close() : open();
   const onKey  = e => { if (e.key === "Escape") close(); };
 
   burger.addEventListener("click", toggle);
-  burger.addEventListener("touchend", e => { e.preventDefault(); toggle(); }, { passive: false });
   // Ferme au clic sur un lien — sans preventDefault pour laisser la navigation se faire
   menu.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", () => setTimeout(close, 50));
+    a.addEventListener("click", () => setTimeout(close, 80));
   });
   // Ferme au clic sur l'overlay
   menu.addEventListener("click", e => { if (e.target === menu) close(); });
