@@ -198,7 +198,7 @@ const MAP_LATLNG = {
   flavio:   [50.52169, 1.59229],  // 1 av. du Verger — Club de la Forêt
   plage:    [50.52039, 1.57974],  // Bd de la Plage — la digue
   nonna:    [50.51857, 1.59501],  // rond-point des Sports — P. de Coubertin
-  tipi:     [45.39160, 6.55820]   // Piste de l'Aigle — Méribel, Les 3 Vallées
+  tipi:     [45.37379, 6.58096]   // Piste de l'Aigle — Méribel-Mottaret, 73550
 };
 
 let _lbhMap = null;
