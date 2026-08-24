@@ -197,7 +197,8 @@ const MAP_LATLNG = {
   marcel:   [50.52256, 1.59037],  // av. des Phares
   flavio:   [50.52169, 1.59229],  // 1 av. du Verger — Club de la Forêt
   plage:    [50.52039, 1.57974],  // Bd de la Plage — la digue
-  nonna:    [50.51857, 1.59501]   // rond-point des Sports — P. de Coubertin
+  nonna:    [50.51857, 1.59501],  // rond-point des Sports — P. de Coubertin
+  tipi:     [45.39160, 6.55820]   // Piste de l'Aigle — Méribel, Les 3 Vallées
 };
 
 let _lbhMap = null;
@@ -208,42 +209,41 @@ function renderMap() {
   const legend = document.getElementById("map-legend");
   const inset  = document.getElementById("map-inset");
   if (!stage || !legend) return;
-  const touquet = VENUES.filter(v => v.dest === "letouquet");
+
+  // Tous les établissements avec coordonnées GPS
+  const allVenues = VENUES.filter(v => MAP_LATLNG[v.id]);
 
   // structure : conteneur de la vraie carte + fiche détail superposée
   stage.innerHTML =
     '<div class="map-canvas" id="map-canvas"></div>' +
     '<div class="map-detail" id="map-detail" hidden></div>';
 
-  // légende numérotée
-  legend.innerHTML = touquet.map((v, i) =>
-    `<li><button class="leg-item" type="button" data-id="${v.id}">` +
-      `<span class="leg-n">${String(i + 1).padStart(2, "0")}</span>` +
-      `<span class="leg-txt"><strong>${v.name}</strong><em>${v.type}</em></span>` +
-    `</button></li>`
-  ).join("");
+  // Légende : Le Touquet d'abord, puis Méribel avec séparateur
+  const touquet = allVenues.filter(v => v.dest === "letouquet");
+  const meribel = allVenues.filter(v => v.dest === "meribel");
+  legend.innerHTML =
+    touquet.map((v, i) =>
+      `<li><button class="leg-item" type="button" data-id="${v.id}">` +
+        `<span class="leg-n">${String(i + 1).padStart(2, "0")}</span>` +
+        `<span class="leg-txt"><strong>${v.name}</strong><em>${v.type}</em></span>` +
+      `</button></li>`
+    ).join("") +
+    (meribel.length ? `<li class="leg-sep"><span>Méribel · Les 3 Vallées</span></li>` : "") +
+    meribel.map((v, i) =>
+      `<li><button class="leg-item" type="button" data-id="${v.id}">` +
+        `<span class="leg-n">${String(touquet.length + i + 1).padStart(2, "0")}</span>` +
+        `<span class="leg-txt"><strong>${v.name}</strong><em>${v.type}</em></span>` +
+      `</button></li>`
+    ).join("");
 
-  // encart Tipi / Méribel
-  const tipi = VENUES.find(v => v.id === "tipi");
-  if (inset && tipi) {
-    const url = venueHref(tipi);
-    const ext = /^https?:/.test(url) ? ' target="_blank" rel="noopener"' : "";
-    inset.innerHTML =
-      '<span class="inset-flag">Les 3 Vallées · Altitude</span>' +
-      '<span class="inset-place">Méribel</span>' +
-      `<img class="inset-logo" src="${logoSrc(tipi)}" alt="${tipi.name}" />` +
-      `<h4>${tipi.name}</h4><p>${tipi.type}</p>` +
-      '<div class="md-actions">' +
-        `<a class="mini line" href="${url}"${ext}>Découvrir</a>` +
-        `<a class="mini solid" href="reserver.html?venue=${tipi.id}">Réserver</a>` +
-      '</div>';
-  }
+  // Masquer l'encart Tipi séparé (plus nécessaire)
+  if (inset) inset.style.display = "none";
 
   // fiche détail (réutilisée par les repères et la légende)
   function activate(id, pan) {
     const v = VENUES.find(x => x.id === id);
     if (!v) return;
-    const i = touquet.findIndex(x => x.id === id);
+    const i = allVenues.findIndex(x => x.id === id);
     if (_lbhMarkers) Object.entries(_lbhMarkers).forEach(([mid, m]) => {
       const el = m.getElement();
       if (el) el.classList.toggle("active", mid === id);
@@ -264,11 +264,13 @@ function renderMap() {
       '</div>';
     detail.hidden = false;
     if (pan && _lbhMap && _lbhMarkers[id]) {
-      _lbhMap.setView(_lbhMarkers[id].getLatLng(), Math.max(_lbhMap.getZoom(), 16), { animate: true });
+      // zoom adapté : Le Touquet → 16, Méribel → 14
+      const zoom = v.dest === "meribel" ? 14 : 16;
+      _lbhMap.setView(_lbhMarkers[id].getLatLng(), zoom, { animate: true });
     }
   }
 
-  // Leaflet absent (hors-ligne) : on garde la légende + l'encart, sans plantage
+  // Leaflet absent (hors-ligne) : on garde la légende, sans plantage
   if (typeof L === "undefined") {
     const c = document.getElementById("map-canvas");
     if (c) c.style.display = "none";
@@ -278,7 +280,7 @@ function renderMap() {
 
   // --- vraie carte (zoom / déplacement) ---
   const map = L.map("map-canvas", {
-    scrollWheelZoom: false,   // n'attrape pas le scroll de la page tant qu'on ne clique pas
+    scrollWheelZoom: false,
     zoomControl: true
   });
   _lbhMap = map;
@@ -293,7 +295,7 @@ function renderMap() {
   const markers = {};
   _lbhMarkers = markers;
   const pts = [];
-  touquet.forEach((v, i) => {
+  allVenues.forEach(v => {
     const ll = MAP_LATLNG[v.id];
     if (!ll) return;
     pts.push(ll);
@@ -307,11 +309,12 @@ function renderMap() {
       iconAnchor: [16, 16]
     });
     const m = L.marker(ll, { icon, title: v.name, riseOnHover: true }).addTo(map);
-    m.on("click", () => activate(v.id));   // la fiche ne s'ouvre qu'au clic
+    m.on("click", () => activate(v.id));
     markers[v.id] = m;
   });
 
-  if (pts.length) map.fitBounds(pts, { padding: [48, 48], maxZoom: 15 });
+  // fitBounds sur tous les points — montre toute la France avec les 2 destinations
+  if (pts.length) map.fitBounds(pts, { padding: [48, 48], maxZoom: 7 });
 
   // clic sur la légende = ouvre la fiche + zoome sur l'adresse
   legend.addEventListener("click", e => { const it = e.target.closest(".leg-item"); if (it) activate(it.dataset.id, true); });

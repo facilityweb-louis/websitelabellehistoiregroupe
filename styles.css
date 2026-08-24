@@ -850,6 +850,8 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
 .leg-txt { display:flex; flex-direction: column; }
 .leg-txt strong { font-family: var(--serif); font-weight: 500; font-size: 1.18rem; }
 .leg-txt em { font-style: normal; font-family: var(--body); font-size: .98rem; color: var(--cuivre-2); }
+.leg-sep { padding: 10px 0 6px; pointer-events: none; }
+.leg-sep span { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--cuivre); font-family: var(--label); }
 
 .map-inset {
   background: var(--chocolat); color: var(--creme); border-radius: 4px; padding: 24px;
