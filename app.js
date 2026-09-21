@@ -108,6 +108,15 @@ const VENUES = [
     info: { "Cuisine": "Italienne · napolitaine", "Horaires": "10h00 → 22h30", "Adresse": "Centre P. de Coubertin, rond-point des Sports" }
   },
   {
+    id: "soleil", name: "Soleil", year: 2025, dest: "letouquet", destLabel: "Le Touquet",
+    theme: "t-night", type: "Night-club",
+    tags: ["Club", "DJ Set", "Nuit"],
+    image: "assets/venues/soleil.jpg",
+    comingSoon: true,
+    desc: "Le nouveau club nocturne de La Belle Histoire Groupe au Touquet. Une adresse électrisante pour les nuits qui ne finissent pas.",
+    info: { "Concept": "Night-club", "Adresse": "Le Touquet-Paris-Plage", "Ouverture": "Prochainement" }
+  },
+  {
     id: "tipi", name: "Tipi", year: 2024, dest: "meribel", destLabel: "Méribel",
     theme: "t-mountain", type: "Restaurant d’altitude · piste",
     tags: ["Altitude", "Bistronomie", "After-ski"],
@@ -122,7 +131,7 @@ const VENUES = [
 const LOGO_FILE = {
   flavio: "flavio", impasse: "impasse", plage: "pirates", marcel: "marcel",
   atelier: "atelier", basenord: "basenord", caravane: "caravane",
-  amour: "amour", nonna: "nonna", tipi: "tipi"
+  amour: "amour", nonna: "nonna", tipi: "tipi", soleil: "soleil"
 };
 function logoSrc(v) { return `assets/logos/logo-${LOGO_FILE[v.id] || v.id}.png`; }
 
@@ -152,6 +161,25 @@ function venueCard(v) {
   const media = v.image ? `<img class="card-media-img" src="${encodeURI(v.image)}" alt=""/>` : "";
   const url = venueHref(v);
   const resaHref = `reserver.html?venue=${v.id}`;
+
+  // Carte "Ouverture prochaine"
+  if (v.comingSoon) {
+    return `
+    <article class="card ${v.theme} card-coming-soon" data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
+      ${media}
+      <span class="c-soon-badge">Bientôt</span>
+      <span class="c-dest">${v.destLabel}</span>
+      <img class="card-logo" src="${logoSrc(v)}" alt="${v.name}" loading="lazy" />
+      <div class="c-bottom">
+        <p class="c-type">${v.type}</p>
+        <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
+        <div class="c-actions">
+          <span class="mini line" style="opacity:.5;pointer-events:none;cursor:default">Ouverture prochaine</span>
+        </div>
+      </div>
+    </article>`;
+  }
+
   return `
   <a class="card ${v.theme}" href="${url}" target="_blank" rel="noopener" data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
     ${media}

@@ -370,6 +370,16 @@ h1,h2,h3 { font-family: var(--serif); font-weight: 500; line-height: 1.04; lette
   font-size: .64rem; letter-spacing: .2em; border: 1px solid rgba(246,241,231,.4);
   padding: 5px 11px; border-radius: 30px; backdrop-filter: blur(2px);
 }
+/* Badge "Bientôt" pour les établissements à venir */
+.card .c-soon-badge {
+  position: absolute; top: 26px; left: 28px;
+  font-size: .6rem; letter-spacing: .22em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 30px;
+  background: var(--cuivre); color: var(--creme);
+  font-family: var(--label);
+}
+.card-coming-soon { cursor: default; }
+.card-coming-soon::after { opacity: .55 !important; } /* voile un peu plus sombre */
 .card .c-dest {
   position:absolute; top: 26px; right: 28px;
   font-size: .58rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(246,241,231,.75);
