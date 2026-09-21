@@ -11,17 +11,6 @@
   <meta property="og:description" content="Le night-club de La Belle Histoire Groupe. Bar privé Chicago. Ouverture 2026." />
   <meta property="og:image" content="https://websitelabellehistoiregroupe.pages.dev/assets/soleil/crowd.jpg" />
   <link rel="icon" type="image/png" href="assets/logos/lbh-seal.png" />
-  <script>
-    (function () {
-      var ok = false;
-      try { ok = sessionStorage.getItem('soleil-access') === 'ok'; } catch (e) {}
-      if (ok) return;
-      document.documentElement.classList.add('locked');
-      // Code fourni dans l'URL (?k=...) : on masque le formulaire le temps de vérifier
-      if (new URLSearchParams(location.search).get('k'))
-        document.documentElement.classList.add('checking');
-    })();
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -36,44 +25,6 @@
     }
 
     html { background: var(--black); color: var(--white); scroll-behavior: smooth; }
-
-    /* ── ACCÈS PRIVÉ ── */
-    html.locked body > *:not(.gate) { display: none !important; }
-    html.locked { overflow: hidden; }
-    html.checking .gate > * { visibility: hidden; }
-    .gate {
-      position: fixed; inset: 0; z-index: 10000;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 26px; padding: 24px; background: var(--black);
-    }
-    .gate-logo { width: clamp(150px, 26vw, 250px); opacity: .9; }
-    .gate-label {
-      font-size: .62rem; letter-spacing: .3em; margin-right: -.3em;
-      text-transform: uppercase; color: rgba(245,240,235,.35);
-    }
-    .gate-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    .gate-input {
-      width: 220px; padding: 13px 16px;
-      background: transparent; border: 1px solid rgba(245,240,235,.2);
-      color: var(--white); font-family: 'Jost', sans-serif;
-      font-size: .78rem; letter-spacing: .2em; text-transform: uppercase;
-      outline: none; transition: border-color .3s;
-    }
-    .gate-input:focus { border-color: var(--red); }
-    .gate-btn {
-      padding: 13px 26px; border: none; cursor: pointer;
-      background: var(--red); color: var(--white);
-      font-family: 'Jost', sans-serif; font-weight: 500;
-      font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
-      transition: opacity .3s;
-    }
-    .gate-btn:hover { opacity: .85; }
-    .gate-error {
-      min-height: 16px;
-      font-size: .62rem; letter-spacing: .2em; text-transform: uppercase;
-      color: var(--red); opacity: 0; transition: opacity .3s;
-    }
-    .gate-error.show { opacity: 1; }
 
     body {
       font-family: 'Jost', sans-serif;
@@ -595,67 +546,6 @@
   </style>
 </head>
 <body>
-
-  <div class="gate" id="gate">
-    <img class="gate-logo" src="assets/logos/logo-soleil.png" alt="Soleil" />
-    <p class="gate-label">Accès privé</p>
-    <form class="gate-form" id="gate-form">
-      <input class="gate-input" id="gate-input" type="password" placeholder="Code" autocomplete="off" aria-label="Code d'accès" />
-      <button class="gate-btn" type="submit">Entrer</button>
-    </form>
-    <p class="gate-error" id="gate-error">Code incorrect</p>
-  </div>
-
-  <script>
-    (function () {
-      const gate = document.getElementById('gate');
-      if (!document.documentElement.classList.contains('locked')) {
-        gate.remove();
-        return;
-      }
-      const CODE_HASH = '32e5b194e3217e094cea4b546a9196aa3d64588a63610eeb9430e9738ccd9410';
-      const input = document.getElementById('gate-input');
-      const error = document.getElementById('gate-error');
-      const root  = document.documentElement;
-
-      async function isValid(code) {
-        const bytes  = new TextEncoder().encode(String(code).trim().toUpperCase());
-        const digest = await crypto.subtle.digest('SHA-256', bytes);
-        return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('') === CODE_HASH;
-      }
-
-      // Déverrouillage sur place : fonctionne même si sessionStorage est bloqué (iframe)
-      function unlock() {
-        try { sessionStorage.setItem('soleil-access', 'ok'); } catch (e) {}
-        root.classList.remove('locked', 'checking');
-        gate.remove();
-        window.dispatchEvent(new Event('scroll'));
-      }
-
-      // 1) Code passé dans l'URL (?k=...) : utilisé par l'intégration Wix
-      const urlCode = new URLSearchParams(location.search).get('k');
-      if (urlCode) {
-        isValid(urlCode).then(good => {
-          if (good) unlock();
-          else { root.classList.remove('checking'); input.focus(); }
-        });
-      } else {
-        input.focus();
-      }
-
-      // 2) Saisie manuelle
-      document.getElementById('gate-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (await isValid(input.value)) {
-          unlock();
-        } else {
-          error.classList.add('show');
-          input.value = '';
-          input.focus();
-        }
-      });
-    })();
-  </script>
 
   <div class="scroll-progress" id="scroll-progress"></div>
 
