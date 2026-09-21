@@ -13,6 +13,10 @@
   <link rel="icon" type="image/png" href="assets/logos/lbh-seal.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Le fond du hero est le plus gros élément visible à l'ouverture. Déclaré en
+       CSS, il n'est découvert qu'une fois la feuille de style analysée : on le
+       demande dès la première ligne du document. -->
+  <link rel="preload" as="image" href="assets/venues/soleil.jpg" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -123,7 +127,9 @@
 
     /* ── HERO ── */
     .s-hero {
-      height: 100vh; min-height: 620px;
+      /* svh plutôt que vh : sur mobile, vh ignore la barre d'adresse, si bien
+         que le bas du hero se retrouve hors de l'écran à l'ouverture. */
+      height: 100vh; height: 100svh; min-height: 620px;
       position: relative; overflow: hidden;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -152,6 +158,10 @@
       font-size: .65rem; letter-spacing: .3em; margin-right: -.3em;
       text-transform: uppercase;
       color: var(--red);
+      /* Rouge sur une photo rouge : sans halo sombre, la ligne disparaît sur
+         les zones claires du cliché, surtout une fois repliée sur deux lignes
+         en écran étroit. */
+      text-shadow: 0 0 14px rgba(6,6,6,.95), 0 1px 4px rgba(6,6,6,.85);
       opacity: 0; animation: fadeUp 1s var(--ease) .3s forwards;
     }
     .hero-title {
@@ -567,7 +577,9 @@
     .footer-brand {
       display: flex; align-items: center; gap: 14px; text-decoration: none;
     }
-    .footer-brand img { height: 26px; opacity: .4; filter: invert(1); }
+    /* width auto est indispensable : l'attribut width du balisage servirait
+       sinon de base de calcul en flexbox et étirerait le sceau. */
+    .footer-brand img { height: 26px; width: auto; opacity: .4; filter: invert(1); }
     .footer-brand span {
       font-size: .63rem; letter-spacing: .2em; text-transform: uppercase;
       color: rgba(245,240,235,.28);
@@ -617,7 +629,8 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <span class="hero-label">Le Touquet-Paris-Plage · Night-club</span>
-      <img src="assets/logos/logo-soleil.png" alt="Soleil" class="hero-logo" />
+      <img src="assets/logos/logo-soleil.png" alt="Soleil" class="hero-logo"
+           width="848" height="1200" fetchpriority="high" decoding="async" />
       <p class="hero-sub">By La Belle Histoire Groupe</p>
       <p class="hero-address">26 rue Saint-Jean · 62520 Le Touquet-Paris-Plage</p>
     </div>
@@ -677,7 +690,8 @@
     <div class="container-s">
       <div class="chicago-grid">
         <div class="chicago-visual reveal-img">
-          <img src="assets/soleil/chicago.jpg" alt="Chicago, le bar privé de Soleil" class="chicago-photo" />
+          <img src="assets/soleil/chicago.jpg" alt="Chicago, le bar privé de Soleil" class="chicago-photo"
+               width="1440" height="1800" loading="lazy" decoding="async" />
           <span class="chicago-badge">Bar Privé</span>
         </div>
         <div class="chicago-content">
@@ -685,7 +699,8 @@
             <span class="eyebrow inner">À l'intérieur de Soleil</span>
           </div>
           <h2 class="chicago-title reveal-img">
-            <img class="chicago-logo" src="assets/soleil/chicago-logo.png" alt="Chicago" />
+            <img class="chicago-logo" src="assets/soleil/chicago-logo.png" alt="Chicago"
+                 width="2092" height="340" loading="lazy" decoding="async" />
           </h2>
           <p class="body-text fade-in">Niché au cœur de Soleil, Chicago est le bar privé réservé à ceux qui cherchent quelque chose au-delà de la nuit ordinaire. Un espace intime, une sélection de spiritueux pointue, et une atmosphère à part, entre le club et le salon.</p>
           <p class="body-text fade-in" style="margin-top:4px">Sur invitation ou sur réservation. Pour les nuits qui méritent un cadre d'exception.</p>
@@ -698,11 +713,13 @@
   <section class="s-gallery">
     <div class="gallery-grid">
       <figure class="gallery-item reveal-img">
-        <img src="assets/soleil/curtain.jpg" alt="Scénographie lumineuse de Soleil" loading="lazy" />
+        <img src="assets/soleil/curtain.jpg" alt="Scénographie lumineuse de Soleil"
+             width="1200" height="1200" loading="lazy" decoding="async" />
         <figcaption class="gallery-caption">La scène</figcaption>
       </figure>
       <figure class="gallery-item reveal-img">
-        <img src="assets/soleil/lounge.jpg" alt="Ambiance du club Soleil" loading="lazy" />
+        <img src="assets/soleil/lounge.jpg" alt="Ambiance du club Soleil"
+             width="1200" height="1800" loading="lazy" decoding="async" />
         <figcaption class="gallery-caption">L'ambiance</figcaption>
       </figure>
     </div>
@@ -763,7 +780,8 @@
   <!-- FOOTER -->
   <footer class="s-footer">
     <a class="footer-brand" href="index.html">
-      <img src="assets/logos/lbh-seal.png" alt="La Belle Histoire Groupe" />
+      <img src="assets/logos/lbh-seal.png" alt="La Belle Histoire Groupe"
+           width="292" height="320" loading="lazy" decoding="async" />
       <span>La Belle Histoire Groupe</span>
     </a>
     <ul class="footer-nav">
