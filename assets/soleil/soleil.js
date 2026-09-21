@@ -148,18 +148,23 @@
       var inView = cr.bottom > 80 && cr.top < window.innerHeight * 0.5;
 
       if (nav) {
+        // La barre reste visible en permanence, en verre dépoli translucide.
         if (local > 80) {
-          nav.style.background     = 'rgba(6,6,6,0.94)';
-          nav.style.backdropFilter = 'blur(14px)';
-          nav.style.borderColor    = 'rgba(245,240,235,0.06)';
+          nav.style.background      = 'rgba(6,6,6,0.55)';
+          nav.style.backdropFilter  = 'blur(18px) saturate(140%)';
+          nav.style.webkitBackdropFilter = 'blur(18px) saturate(140%)';
+          nav.style.borderColor     = 'rgba(245,240,235,0.08)';
         } else {
-          nav.style.background     = 'transparent';
-          nav.style.backdropFilter = 'none';
-          nav.style.borderColor    = 'transparent';
+          nav.style.background      = 'transparent';
+          nav.style.backdropFilter  = 'none';
+          nav.style.webkitBackdropFilter = 'none';
+          nav.style.borderColor     = 'transparent';
         }
 
-        if (!inView || (local > 220 && dy > 3)) nav.classList.add('nav-hidden');
-        else if (dy < -3 || local < 220)        nav.classList.remove('nav-hidden');
+        // Elle ne s'efface que lorsque le bloc Soleil quitte l'écran, ce qui
+        // n'arrive que dans l'élément personnalisé, jamais dans l'iframe.
+        if (!inView) nav.classList.add('nav-hidden');
+        else         nav.classList.remove('nav-hidden');
       }
 
       if (progress) {
