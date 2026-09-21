@@ -1,2 +1,5 @@
 .DS_Store
 wix-export/
+
+# Préférences Claude Code propres à cette machine
+.claude/settings.local.json
