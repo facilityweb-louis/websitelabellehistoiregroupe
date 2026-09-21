@@ -133,7 +133,7 @@ const LOGO_FILE = {
   atelier: "atelier", basenord: "basenord", caravane: "caravane",
   amour: "amour", nonna: "nonna", tipi: "tipi", soleil: "soleil"
 };
-function logoSrc(v) { return `assets/logos/logo-${LOGO_FILE[v.id] || v.id}.png`; }
+function logoSrc(v) { return `assets/logos/logo-${LOGO_FILE[v.id] || v.id}.png?v=2`; }
 
 /* ---------- Liens vers les pages Wix des établissements ----------
    Le site tourne dans une iframe github.io : un chemin relatif (/flavio) pointerait
@@ -158,7 +158,7 @@ function venueHref(v) {
 /* ---------- Render venue cards ---------- */
 function venueCard(v) {
   // loading="eager" : les photos se chargent immédiatement (pas de lazy qui cause des cartes sombres)
-  const media = v.image ? `<img class="card-media-img" src="${encodeURI(v.image)}" alt=""/>` : "";
+  const media = v.image ? `<img class="card-media-img" src="${encodeURI(v.image)}?v=2" alt=""/>` : "";
   const url = venueHref(v);
   const resaHref = `reserver.html?venue=${v.id}`;
 
