@@ -20,7 +20,9 @@
   var ORIGIN = typeof window.SOLEIL_ORIGIN === 'string'
     ? window.SOLEIL_ORIGIN
     : 'https://websitelabellehistoiregroupe.pages.dev';
-  var ENGINE = ORIGIN + '/assets/soleil/soleil.js';
+  // Hors de /assets/, dont le cache d'un an empêcherait toute correction
+  // d'atteindre les visiteurs déjà venus.
+  var ENGINE = ORIGIN + '/soleil-engine.js';
 
   // URL propre en production, repli sur le fichier pour tout hébergeur qui ne
   // réécrit pas les extensions.
