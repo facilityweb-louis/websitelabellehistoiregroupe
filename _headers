@@ -24,3 +24,10 @@
 /assets/soleil/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=31536000, immutable
+
+# Le moteur d'animation, lui, évolue : s'il héritait du cache d'un an des
+# images voisines, une correction ne parviendrait jamais aux visiteurs déjà
+# venus. On le fait revalider à chaque visite.
+/assets/soleil/soleil.js
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=0, must-revalidate
