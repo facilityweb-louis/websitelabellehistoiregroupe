@@ -71,7 +71,55 @@
     }
     .nav-links .cta:hover { background: var(--white); color: var(--black) !important; }
 
-    @media (max-width: 680px) { .nav-links { display: none; } }
+    /* ── MENU MOBILE ──
+       Le bouton n'existe que sous 680px, où la barre est trop étroite pour
+       porter les liens. Le panneau est positionné en absolu par rapport à la
+       nav : celle-ci porte un translateY, ce qui ferait d'elle le bloc
+       conteneur d'un enfant en position fixed, qui se replierait sur elle. */
+    .nav-burger {
+      display: none; position: relative; z-index: 2;
+      width: 36px; height: 36px; margin-right: -8px; padding: 0;
+      background: none; border: 0; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-burger span {
+      position: absolute; left: 7px; right: 7px; height: 1px;
+      background: var(--white);
+      transition: transform .45s var(--ease);
+    }
+    .nav-burger span:nth-child(1) { top: 15px; }
+    .nav-burger span:nth-child(2) { top: 21px; }
+    .s-nav.menu-open .nav-burger span:nth-child(1) { transform: translateY(3px) rotate(45deg); }
+    .s-nav.menu-open .nav-burger span:nth-child(2) { transform: translateY(-3px) rotate(-45deg); }
+
+    @media (max-width: 680px) {
+      .nav-burger { display: block; }
+      .nav-logo { position: relative; z-index: 2; }
+
+      .nav-links {
+        position: absolute; top: 0; left: 0; right: 0; z-index: 1;
+        height: 100vh; height: 100dvh;
+        flex-direction: column; justify-content: center; align-items: center;
+        gap: 38px; overflow-y: auto;
+        background: rgba(6,6,6,.96);
+        backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+        opacity: 0; visibility: hidden;
+        transition: opacity .45s var(--ease), visibility .45s;
+      }
+      .s-nav.menu-open .nav-links { opacity: 1; visibility: visible; }
+
+      .nav-links li {
+        opacity: 0; transform: translateY(14px);
+        transition: opacity .5s var(--ease), transform .5s var(--ease);
+      }
+      .s-nav.menu-open .nav-links li { opacity: 1; transform: none; }
+      .s-nav.menu-open .nav-links li:nth-child(1) { transition-delay: .10s; }
+      .s-nav.menu-open .nav-links li:nth-child(2) { transition-delay: .17s; }
+      .s-nav.menu-open .nav-links li:nth-child(3) { transition-delay: .24s; }
+
+      .nav-links a { font-size: 1.05rem; letter-spacing: .22em; color: var(--white); }
+      .nav-links .cta { padding: 14px 40px; margin-top: 6px; }
+    }
 
     /* ── HERO ── */
     .s-hero {
@@ -552,7 +600,11 @@
   <!-- NAV -->
   <nav class="s-nav" id="s-nav">
     <a class="nav-logo" href="soleil.html">Soleil</a>
-    <ul class="nav-links">
+    <button class="nav-burger" id="nav-burger" type="button"
+            aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
       <li><a href="#chicago">Chicago</a></li>
       <li><a href="#programme">Programme</a></li>
       <li><a href="#contact" class="cta">Réserver</a></li>

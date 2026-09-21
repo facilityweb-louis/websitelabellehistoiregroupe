@@ -76,6 +76,58 @@
       if (block) block.classList.add('is-split');
     }
 
+    // Navigation et menu sont câblés avant toute sortie anticipée : ils doivent
+    // rester utilisables même quand les animations sont désactivées.
+
+    // Les ancres internes ne fonctionnent pas dans un shadow DOM : on les gère.
+    all('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var href = a.getAttribute('href');
+        if (href === '#') return;
+        var target = root.getElementById
+          ? root.getElementById(href.slice(1))
+          : root.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        window.scrollTo({
+          top: target.getBoundingClientRect().top + window.scrollY,
+          behavior: reduce ? 'auto' : 'smooth'
+        });
+      });
+    });
+
+    // Sous 680px les liens sont repliés derrière un bouton : la barre est trop
+    // étroite pour les porter.
+    var burger = byId('nav-burger');
+    if (burger && nav) {
+      var setMenu = function (open) {
+        nav.classList.toggle('menu-open', open);
+        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+        // Le document hôte, pas le conteneur : c'est lui qui défile.
+        document.body.style.overflow = open ? 'hidden' : '';
+      };
+
+      burger.addEventListener('click', function () {
+        setMenu(!nav.classList.contains('menu-open'));
+      });
+
+      // Un menu laissé ouvert masquerait la section qu'on vient d'atteindre.
+      all('.nav-links a').forEach(function (a) {
+        a.addEventListener('click', function () { setMenu(false); });
+      });
+
+      window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' || e.key === 'Esc') setMenu(false);
+      });
+
+      // Au passage en écran large le panneau disparaît : sans cela le
+      // défilement du document resterait bloqué.
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 680) setMenu(false);
+      });
+    }
+
     if (reduce) {
       all(REVEALABLE).forEach(function (el) { el.classList.add('revealed'); });
       return;
@@ -194,21 +246,6 @@
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
-
-    // Les ancres internes ne fonctionnent pas dans un shadow DOM : on les gère.
-    all('a[href^="#"]').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var target = root.getElementById
-          ? root.getElementById(a.getAttribute('href').slice(1))
-          : root.querySelector(a.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        window.scrollTo({
-          top: target.getBoundingClientRect().top + window.scrollY,
-          behavior: 'smooth'
-        });
-      });
-    });
   }
 
   window.initSoleil = initSoleil;
