@@ -427,11 +427,10 @@
       text-transform: uppercase; padding: 6px 16px; border-radius: 1px;
     }
     .chicago-content { display: flex; flex-direction: column; gap: 22px; }
-    .chicago-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900; font-size: clamp(72px, 10vw, 148px);
-      line-height: .84; text-transform: uppercase; color: var(--white);
-      text-shadow: 0 0 80px rgba(212,0,10,.3);
+    .chicago-title { line-height: 0; }
+    .chicago-logo {
+      display: block; width: clamp(300px, 50vw, 620px); max-width: 100%; height: auto;
+      filter: brightness(0) invert(1) drop-shadow(0 0 70px rgba(212,0,10,.35));
     }
 
     /* ── PROGRAMME ── */
@@ -713,9 +712,9 @@
           <div class="reveal-block">
             <span class="eyebrow inner">À l'intérieur de Soleil</span>
           </div>
-          <div class="reveal-block">
-            <h2 class="chicago-title inner">Chi<br class="br-lg">cago.</h2>
-          </div>
+          <h2 class="chicago-title reveal-img">
+            <img class="chicago-logo" src="assets/soleil/chicago-logo.png" alt="Chicago" />
+          </h2>
           <p class="body-text fade-in">Niché au cœur de Soleil, Chicago est le bar privé réservé à ceux qui cherchent quelque chose au-delà de la nuit ordinaire. Un espace intime, une sélection de spiritueux pointue, et une atmosphère à part, entre le club et le salon.</p>
           <p class="body-text fade-in" style="margin-top:4px">Sur invitation ou sur réservation. Pour les nuits qui méritent un cadre d'exception.</p>
         </div>
@@ -820,13 +819,10 @@
 
     // Découpe un titre en lignes masquées, puis en lettres décalées dans le temps.
     function splitHeading(el) {
-      const wide = window.innerWidth > 768;
       const lines = [[]];
       [...el.childNodes].forEach(n => {
-        if (n.nodeType === 1 && n.tagName === 'BR') {
-          if (n.classList.contains('br-lg') && !wide) return;
-          lines.push([]);
-        } else lines[lines.length - 1].push(n);
+        if (n.nodeType === 1 && n.tagName === 'BR') lines.push([]);
+        else lines[lines.length - 1].push(n);
       });
       el.textContent = '';
       lines.forEach(nodes => {
@@ -868,7 +864,7 @@
       return;
     }
 
-    document.querySelectorAll('.showcase-quote, .manifeste-big, .chicago-title, .programme-h2, .contact-h2')
+    document.querySelectorAll('.showcase-quote, .manifeste-big, .programme-h2, .contact-h2')
       .forEach(splitHeading);
 
     let pending = [...document.querySelectorAll(REVEALABLE)];
