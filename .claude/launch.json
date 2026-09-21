@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "lbh-site",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4325"],
+      "name": "lbh-evenements",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "4325", "."],
       "port": 4325
     }
   ]

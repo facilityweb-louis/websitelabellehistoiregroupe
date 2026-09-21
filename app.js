@@ -110,7 +110,7 @@ const VENUES = [
   {
     id: "soleil", name: "Soleil", year: 2025, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-night", type: "Night-club",
-    tags: ["Club", "DJ Set", "Nuit"],
+    tags: ["Show", "DJ Set", "Night"],
     image: "assets/venues/soleil.jpg",
     comingSoon: true,
     desc: "Le nouveau club nocturne de La Belle Histoire Groupe au Touquet. Une adresse électrisante pour les nuits qui ne finissent pas.",
