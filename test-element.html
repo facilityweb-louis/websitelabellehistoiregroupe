@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Test — simulation d'une page Wix contenant &lt;soleil-page&gt;</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #fff; color: #222; }
+    .wix-header {
+      position: sticky; top: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px; background: #fff; border-bottom: 1px solid #e5e5e5;
+    }
+    .wix-header strong { letter-spacing: .1em; font-size: 14px; }
+    .wix-header nav a { margin-left: 22px; font-size: 13px; color: #444; text-decoration: none; }
+    .wix-seo { max-width: 780px; margin: 0 auto; padding: 60px 24px; }
+    .wix-seo h1 { font-size: 30px; margin: 0 0 18px; }
+    .wix-seo p { line-height: 1.7; color: #555; margin: 0 0 14px; }
+    .wix-footer { padding: 60px 40px; background: #f3f3f3; font-size: 13px; color: #666; }
+  </style>
+</head>
+<body>
+
+  <!-- En-tête Wix simulé : vérifie que la nav Soleil ne se bat pas avec lui -->
+  <header class="wix-header">
+    <strong>LA BELLE HISTOIRE GROUPE</strong>
+    <nav><a href="#">Accueil</a><a href="#">Événements</a><a href="#">Soleil</a><a href="#">Contact</a></nav>
+  </header>
+
+  <!-- Contenu SEO natif, celui qui portera le référencement -->
+  <section class="wix-seo">
+    <h1>Soleil, night-club au Touquet-Paris-Plage</h1>
+    <p>Soleil est le night-club de La Belle Histoire Groupe, au 26 rue Saint-Jean au Touquet-Paris-Plage. Ouverture en 2026.</p>
+    <p>Il abrite Chicago, un bar privé accessible sur invitation ou sur réservation.</p>
+  </section>
+
+  <!-- L'élément personnalisé, exactement comme Wix l'insérera -->
+  <soleil-page></soleil-page>
+
+  <section class="wix-footer">Pied de page Wix simulé. Il doit rester lisible, sans grain ni barre rouge par-dessus.</section>
+
+  <script>window.SOLEIL_ORIGIN = '';</script>
+  <script src="soleil-element.js"></script>
+</body>
+</html>

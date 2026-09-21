@@ -9,3 +9,18 @@
 # Cache long pour les assets (images, fonts, JS, CSS)
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# L'élément personnalisé <soleil-page> tourne sur le site Wix et lit ces
+# fichiers en cross-origin : CORS doit donc être ouvert en lecture.
+/soleil
+  Access-Control-Allow-Origin: *
+
+/soleil.html
+  Access-Control-Allow-Origin: *
+
+/soleil-element.js
+  Access-Control-Allow-Origin: *
+
+/assets/soleil/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
