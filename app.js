@@ -424,6 +424,11 @@ function initHeader() {
    parents, y compris en origines différentes. Aucun code n'est donc à ajouter
    côté Wix. Mesuré : navigation par ancre, le parent reste à 0 ; avec
    scrollIntoView, il se déplace bien jusqu'à la section. */
+
+/* Hauteur réservée à l'en-tête du site Wix, qui reste collé en haut et
+   recouvrirait sinon le titre de la section visée. */
+const ANCHOR_HEADER = 96;
+
 function initAnchors() {
   document.addEventListener("click", e => {
     const a = e.target.closest && e.target.closest('a[href^="#"]');
@@ -435,7 +440,22 @@ function initAnchors() {
 
     e.preventDefault();
 
-    const go = () => target.scrollIntoView({ behavior: "smooth", block: "start" });
+    /* Viser le haut de la section ferait arriver sur ses 70 à 150 px de marge
+       intérieure : un écran de vide avant le premier mot. On vise donc son
+       premier bloc de contenu (le chapeau de section, ou à défaut le
+       conteneur), et on remonte la différence par une marge de défilement
+       négative. scroll-margin-top est bien pris en compte lorsque le
+       défilement se propage au cadre parent : mesuré, la section arrive à
+       l'offset demandé et non à 0. */
+    const go = () => {
+      const head = target.querySelector(":scope > .container > .section-head")
+                || target.querySelector(":scope > .container");
+      const gap = head
+        ? head.getBoundingClientRect().top - target.getBoundingClientRect().top
+        : 0;
+      target.style.scrollMarginTop = Math.round(ANCHOR_HEADER - gap) + "px";
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
 
     // Le menu mobile fige le corps de page et restitue la position en se
     // fermant : viser la cible avant ce retour la ferait annuler.
