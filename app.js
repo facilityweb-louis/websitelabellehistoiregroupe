@@ -470,9 +470,10 @@ function initBurger() {
   const menu   = document.querySelector(".nav-links.left");
   if (!burger || !menu) return;
 
-  let _scrollY = 0;
+  let _scrollY = 0, _locked = false;
   const lockScroll = () => {
     _scrollY = window.scrollY;
+    _locked = true;
     document.body.style.position   = "fixed";
     document.body.style.top        = `-${_scrollY}px`;
     document.body.style.left       = "0";
@@ -480,6 +481,10 @@ function initBurger() {
     document.body.style.overflow   = "hidden";
   };
   const unlockScroll = () => {
+    // Ne restituer la position que si on l'avait réellement figée : sinon
+    // l'appel renvoie la page en haut alors que rien ne le demandait.
+    if (!_locked) return;
+    _locked = false;
     document.body.style.position = "";
     document.body.style.top      = "";
     document.body.style.left     = "";
@@ -506,9 +511,16 @@ function initBurger() {
   const onKey  = e => { if (e.key === "Escape") close(); };
 
   burger.addEventListener("click", toggle);
-  // Ferme au clic sur un lien — sans preventDefault pour laisser la navigation se faire
+  // Ferme au clic sur un lien — sans preventDefault pour laisser la navigation
+  // se faire. Uniquement si le menu est ouvert : au-delà de 1024px il ne l'est
+  // jamais, et fermer à vide renvoyait la page en haut 80 ms après le clic,
+  // en plein défilement vers l'ancre. C'est ce qui empêchait « Le Groupe » et
+  // « Nos Établissements » de descendre, alors que « Destinations » et
+  // « Contact », qui sont dans la barre de droite, n'étaient pas concernés.
   menu.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", () => setTimeout(close, 80));
+    a.addEventListener("click", () => {
+      if (menu.classList.contains("open")) setTimeout(close, 80);
+    });
   });
   // Ferme au clic sur l'overlay
   menu.addEventListener("click", e => { if (e.target === menu) close(); });
