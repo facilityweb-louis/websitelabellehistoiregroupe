@@ -146,21 +146,6 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
-    /* Dans un cadre dimensionné sur le contenu, svh ne vaut plus la hauteur de
-       l'écran mais celle de la page : le hero l'avalerait tout entière, ce qui
-       agrandirait la page, donc le cadre, donc le hero. --frame-h fige la
-       hauteur du cadre relevée avant tout redimensionnement, c'est-à-dire la
-       valeur même que svh donne aujourd'hui : l'affichage ne bouge pas.
-
-       Le repli sur 100svh n'est pas décoratif. Ces règles ne valent que si le
-       script a jugé la hauteur du cadre crédible ; s'il s'abstient, ou s'il n'a
-       pas encore tourné, la page garde exactement sa mise en page actuelle.
-       C'est la leçon des deux tentatives précédentes, où une hauteur relevée
-       trop tôt valait zéro et repliait toute la page en son milieu. */
-    .embedded .s-hero     { height: var(--frame-h, 100svh); }
-    .embedded .s-showcase { height: calc(var(--frame-h, 100svh) * .94); }
-    .embedded .hero-logo  { max-height: calc(var(--frame-h, 100svh) * .48); }
-    .embedded .nav-links  { height: var(--frame-h, 100svh); }
     .hero-bg {
       position: absolute; inset: -12%;
       background: url('assets/venues/soleil.jpg') center top / cover no-repeat;
@@ -810,85 +795,6 @@
     </ul>
     <span class="footer-copy">© 2026 Soleil · La Belle Histoire Groupe</span>
   </footer>
-
-  <!-- Page affichée dans un cadre : elle annonce sa hauteur à son hôte.
-
-       Sur le site Wix, cette page vit au fond de deux cadres emboîtés, et aucun
-       des deux ne connaît sa hauteur : ils gardent celle d'un écran, et tout ce
-       qui dépasse est rogné — le pied de page, tout en bas, disparaît en
-       premier. Le message remonte de cadre en cadre jusqu'à Wix, qui ajuste la
-       hauteur du composant. Le relais à poser côté Wix est dans WIX-SOLEIL.md ;
-       s'il n'y est pas, rien ne casse, la page défile simplement dans le cadre
-       comme avant.
-
-       Ce script vit en fin de corps, et non dans l'en-tête comme aux deux
-       premières tentatives : la hauteur du cadre n'a de sens qu'une fois la
-       mise en page faite. Relevée trop tôt elle valait zéro, et les sections
-       qui s'y adossent s'effondraient — c'est ce qui repliait la page en son
-       milieu. Ici elle est lue après coup, et rejetée si elle est absurde. -->
-  <script>
-  (function () {
-    if (!window.parent || window.parent === window) return;
-
-    var root = document.documentElement;
-
-    /* Une hauteur de cadre invraisemblable ne sert à rien : mieux vaut laisser
-       la page telle quelle, avec ses svh, que de l'adosser à une valeur fausse.
-       Le plancher de 400 px écarte le cadre pas encore dimensionné, qui vaut
-       zéro ou quelques pixels ; le plafond écarte le cas où l'hôte aurait déjà
-       étiré le cadre à la hauteur du contenu avant que l'on ne mesure. */
-    function adopt() {
-      if (root.classList.contains('embedded')) return true;
-      var h = window.innerHeight;
-      if (!(h >= 400 && h <= 2000)) return false;
-      root.style.setProperty('--frame-h', h + 'px');
-      root.classList.add('embedded');
-      return true;
-    }
-
-    var last = 0, scheduled = false;
-
-    /* Bas réel de chaque bloc, marges comprises : offsetTop et offsetHeight les
-       ignorent et sous-estimaient la page de dix pixels, assez pour rogner la
-       dernière ligne du pied de page. */
-    function measure() {
-      var h = 0;
-      Array.prototype.forEach.call(document.body.children, function (el) {
-        var b = el.getBoundingClientRect().bottom + window.scrollY;
-        if (b > h) h = b;
-      });
-      return Math.ceil(h);
-    }
-
-    function post() {
-      scheduled = false;
-      // Tant que la hauteur du cadre n'a pas été adoptée, les sections en svh
-      // se mesureraient contre la page elle-même : on n'émet rien.
-      if (!adopt()) return;
-      var h = measure();
-      // On n'émet que sur un vrai changement, sinon la moindre animation
-      // entretiendrait un aller-retour de redimensionnement sans fin.
-      if (h && Math.abs(h - last) > 1) {
-        last = h;
-        window.parent.postMessage({ type: 'lbh-resize', lbhHeight: h }, '*');
-      }
-    }
-
-    function send() { if (!scheduled) { scheduled = true; requestAnimationFrame(post); } }
-
-    send();
-    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(send).observe(document.body);
-    new MutationObserver(send).observe(document.body, { childList: true, subtree: true, attributes: true });
-    // Images et polices arrivent après coup et déplacent le bas de la page.
-    document.querySelectorAll('img').forEach(function (img) {
-      if (!img.complete) img.addEventListener('load', send, { once: true });
-    });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(send);
-    window.addEventListener('load', function () {
-      [0, 200, 600, 1400, 3000].forEach(function (t) { setTimeout(send, t); });
-    });
-  })();
-  </script>
 
   <script src="soleil-engine.js"></script>
   <script>initSoleil(document, document.body);</script>
