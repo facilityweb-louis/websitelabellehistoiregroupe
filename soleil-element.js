@@ -38,11 +38,16 @@
   }
 
   // Les liens relatifs de la page autonome pointent vers les pages du site Wix.
+  // Attention : /evenements, /reserver et /mentions-legales n'existent pas sur
+  // Wix (vérifié sur pages-sitemap.xml, ils renvoient 404). Ces trois pages ne
+  // vivent que dans le cadre embarqué de la page d'accueil : on renvoie donc
+  // vers leur version autonome, qui sert exactement le même contenu. À créer
+  // sur Wix si on veut les garder sur le domaine principal.
   var LINKS = {
     'index.html':           'https://www.labellehistoiregroupe.com/',
-    'evenements.html':      'https://www.labellehistoiregroupe.com/evenements',
-    'reserver.html':        'https://www.labellehistoiregroupe.com/reserver',
-    'mentions-legales.html': 'https://www.labellehistoiregroupe.com/mentions-legales',
+    'evenements.html':      ORIGIN + '/evenements.html',
+    'reserver.html':        ORIGIN + '/reserver.html',
+    'mentions-legales.html': ORIGIN + '/mentions-legales.html',
     'soleil.html':          '#'
   };
 

@@ -414,6 +414,36 @@ function initHeader() {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+/* ---------- Ancres internes (Le Groupe, Nos Établissements, Contact…) ----------
+   Dans la page Wix, le cadre est redimensionné à la hauteur de son contenu
+   (voir initAutoResize) : il n'a donc aucun défilement propre, c'est la page
+   parente qui défile. Un lien "#groupe" demandait au cadre de se déplacer,
+   alors qu'il n'avait nulle part où aller : le clic ne produisait rien.
+
+   scrollIntoView, lui, remonte la chaîne de défilement jusqu'aux cadres
+   parents, y compris en origines différentes. Aucun code n'est donc à ajouter
+   côté Wix. Mesuré : navigation par ancre, le parent reste à 0 ; avec
+   scrollIntoView, il se déplace bien jusqu'à la section. */
+function initAnchors() {
+  document.addEventListener("click", e => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (!href || href === "#") return;
+    const target = document.getElementById(href.slice(1));
+    if (!target) return;
+
+    e.preventDefault();
+
+    const go = () => target.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Le menu mobile fige le corps de page et restitue la position en se
+    // fermant : viser la cible avant ce retour la ferait annuler.
+    if (document.querySelector(".nav-links.left.open")) setTimeout(go, 180);
+    else go();
+  });
+}
+
 /* ---------- Mobile menu ---------- */
 function initBurger() {
   const burger = document.querySelector(".burger");
@@ -774,6 +804,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFilter();
   initHeader();
   initBurger();
+  initAnchors();
   observeReveal();
   initCounters();
   initIllus();
