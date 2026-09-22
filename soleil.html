@@ -146,6 +146,18 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
+    /* Dans un cadre redimensionné à la hauteur du contenu, svh vaut la hauteur
+       de ce contenu, pas celle de l'écran : le hero avalerait la page entière
+       et chaque mesure le ferait grandir encore. On lui fige donc une hauteur
+       tirée de l'écran réel, que le cadre ne peut pas influencer. */
+    .embedded .s-hero { height: var(--hero-h, 720px); min-height: 0; }
+    /* Même raison pour tout ce qui se mesure en hauteur d'écran : dans le cadre
+       ces unités ne veulent plus rien dire. On les recalcule sur --hero-h, qui
+       vient de l'écran réel. Ces règles l'emportent sur celles des media
+       queries, leur sélecteur étant plus spécifique. */
+    .embedded .s-showcase { height: calc(var(--hero-h, 720px) * .94); min-height: 0; }
+    .embedded .hero-logo  { max-height: calc(var(--hero-h, 720px) * .48); }
+    .embedded .nav-links  { height: var(--hero-h, 720px); }
     .hero-bg {
       position: absolute; inset: -12%;
       background: url('assets/venues/soleil.jpg') center top / cover no-repeat;
@@ -608,6 +620,68 @@
       .s-footer { flex-direction: column; align-items: flex-start; }
     }
   </style>
+
+  <!-- Page affichée dans un cadre : on annonce notre hauteur à l'hôte.
+
+       Sur le site Wix, cette page vit au fond de deux cadres emboîtés : le
+       composant HTML de Wix contient un court fragment, qui contient lui-même
+       le cadre pointant ici. Aucun des deux ne connaît la hauteur de la page,
+       et le fragment intermédiaire masque ce qui dépasse : sans ce message,
+       tout ce qui se trouve sous les premiers 844 px est rogné et le pied de
+       page devient invisible.
+
+       Le message remonte de cadre en cadre jusqu'à Wix, qui ajuste la hauteur
+       du composant. Le fragment intermédiaire et le code Velo qui le reçoivent
+       sont documentés dans WIX-SOLEIL.md.
+
+       Ce script est placé avant le corps de la page pour que la classe
+       .embedded soit posée avant le premier rendu : elle empêche le hero de
+       se caler sur la hauteur du cadre, qui dépend elle-même de la nôtre. -->
+  <script>
+  (function () {
+    if (!window.parent || window.parent === window) return;
+    var root = document.documentElement;
+    root.classList.add('embedded');
+    var screenH = (window.screen && window.screen.height) ? window.screen.height : 800;
+    root.style.setProperty('--hero-h', Math.max(540, Math.min(Math.round(screenH * 0.82), 900)) + 'px');
+
+    var last = 0, scheduled = false;
+    function measure() {
+      var h = 0;
+      Array.prototype.forEach.call(document.body ? document.body.children : [], function (el) {
+        var b = el.offsetTop + el.offsetHeight;
+        if (b > h) h = b;
+      });
+      return Math.ceil(h);
+    }
+    function post() {
+      scheduled = false;
+      var h = measure();
+      // On n'émet que sur un vrai changement : sinon la moindre animation
+      // déclencherait un aller-retour de redimensionnement en boucle.
+      if (h && Math.abs(h - last) > 1) {
+        last = h;
+        window.parent.postMessage({ type: 'lbh-resize', lbhHeight: h }, '*');
+      }
+    }
+    function send() { if (!scheduled) { scheduled = true; requestAnimationFrame(post); } }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      send();
+      if (typeof ResizeObserver !== 'undefined') new ResizeObserver(send).observe(document.body);
+      new MutationObserver(send).observe(document.body, { childList: true, subtree: true, attributes: true });
+      // Les images et les polices arrivent après coup et déplacent le bas de page.
+      document.querySelectorAll('img').forEach(function (img) {
+        if (!img.complete) img.addEventListener('load', send, { once: true });
+      });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(send);
+    });
+    window.addEventListener('resize', send);
+    window.addEventListener('load', function () {
+      [0, 200, 600, 1400, 3000].forEach(function (t) { setTimeout(send, t); });
+    });
+  })();
+  </script>
 </head>
 <body>
 
