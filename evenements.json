@@ -1,27 +1,16 @@
 {
-  "updated": "2026-08-17",
-  "semaine": "2026-W34",
+  "updated": "2026-09-22",
+  "semaine": "2026-W39",
   "sources": ["Planning DJs (Google Sheet)", "Planning artistes Rose Music (Excel)"],
   "events": [
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-08-17", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-08-18", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Lil'B", "date": "2026-08-19", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Before TMB - FLOWW B2B Isaac", "date": "2026-08-20", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · Stella", "date": "2026-08-20", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Thomas Berlin", "date": "2026-08-21", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · Stella", "date": "2026-08-21", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Thomas Berlin", "date": "2026-08-22", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · Stella", "date": "2026-08-22", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Storm B2B Lil'B", "date": "2026-08-23", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-08-24", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Lil'B", "date": "2026-08-25", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-08-26", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Helix'hear / Victor (percu)", "date": "2026-08-27", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "Storm · JULIA + ELYOS", "date": "2026-08-27", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "dj Kent B2B Storm", "date": "2026-08-28", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · JULIA + ELYOS", "date": "2026-08-28", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "TBA", "date": "2026-08-29", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · JULIA + ELYOS", "date": "2026-08-29", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Flow b2b Helix'hear", "date": "2026-08-30", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" }
+    { "venue": "L'Impasse", "artiste": "julien", "date": "2026-09-23", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Lil'B", "date": "2026-09-24", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-25", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "julien · FANNY + LEO ALRIC", "date": "2026-09-25", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "julien · FANNY + LEO ALRIC", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-27", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "FANNY", "date": "2026-10-02", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "Caravane", "artiste": "FANNY", "date": "2026-10-03", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" }
   ]
 }

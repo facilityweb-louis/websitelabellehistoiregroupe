@@ -39,7 +39,7 @@ const VENUES = [
     id: "flavio", name: "Flavio", year: 1949, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-chocolat", type: "Gastronomique — Club de la Forêt",
     tags: ["Gastronomique", "Cave 100 réf.", "Traditionnel"],
-    image: "assets/logos/flavio 2.JPG",
+    image: "assets/venues/flavio-w1200.jpg",
     desc: "L’institution historique du groupe. Une cuisine classique servie par une brigade complète, une cave de près de cent références et un sommelier pour vous accompagner. Le « Club de la Forêt » incarne l’art de recevoir à la française.",
     info: { "Cuisine": "Gastronomique traditionnelle", "Adresse": "Le Touquet-Paris-Plage", "Esprit": "Institution · brigade · cave" }
   },
@@ -47,7 +47,7 @@ const VENUES = [
     id: "impasse", name: "L’Impasse", year: 1999, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-night", type: "Bar · Food · Music & Drinks",
     tags: ["Music", "Food", "Good Vibes"],
-    image: "assets/logos/Impasse.JPG",
+    image: "assets/venues/impasse-w1200.jpg",
     desc: "Le concept mixte du groupe : un bar à l’ambiance soirée où la cuisine, les cocktails et la musique se répondent. Un lieu pensé pour prolonger la nuit en excellente compagnie.",
     info: { "Concept": "Resto · Bar · Musique", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Soirée" }
   },
@@ -55,7 +55,7 @@ const VENUES = [
     id: "plage", name: "La Plage des Pirates", year: 2009, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-sable", type: "Restaurant-bar de plage",
     tags: ["Spritz o'clock", "DJ Set", "Beach Life"],
-    image: "assets/logos/pirates.jpg",
+    image: "assets/venues/pirates-w1200.jpg",
     desc: "Sur la digue, du petit-déjeuner au dîner. Transats à louer, pieds dans le sable et DJs le week-end dès 18h. Le spot beach festif du Touquet, ouvert de mars à octobre.",
     info: { "Saison": "Mars → Octobre", "Horaires": "9h00 → 22h30", "Adresse": "Sur la digue, Le Touquet" }
   },
@@ -63,7 +63,7 @@ const VENUES = [
     id: "marcel", name: "Le Marcel", year: 2016, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-chocolat", type: "Bar · Cocktails",
     tags: ["Bar", "Cocktails", "Karaoké"],
-    image: "assets/logos/MARCEL  OCT-43.jpg",
+    image: "assets/venues/marcel-w1200.jpg",
     desc: "Un bar pur au positionnement cocktails affirmé. Cadre soigné, sélection pointue et atmosphère idéale pour l’apéritif comme pour les fins de soirée entre amis.",
     info: { "Type": "Bar à cocktails", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Cocktails · apéritif" }
   },
@@ -71,7 +71,7 @@ const VENUES = [
     id: "atelier", name: "L’Atelier Éphémère", year: 2017, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-vert", type: "Restaurant",
     tags: ["Restaurant", "Terrasse"],
-    image: "assets/logos/Atelier ephemere.JPG",
+    image: "assets/venues/atelier-w1200.jpg",
     desc: "Un restaurant au concept mouvant, qui se réinvente au fil des saisons et des envies. Une carte qui change, des collaborations, des éditions limitées : l’éphémère comme signature.",
     info: { "Concept": "Carte évolutive", "Adresse": "Le Touquet-Paris-Plage", "Esprit": "Éphémère · saisonnier" }
   },
@@ -79,7 +79,7 @@ const VENUES = [
     id: "basenord", name: "La Base Nord", year: 2018, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-night", type: "Restaurant",
     tags: ["Vue mer", "Terre-Mer"],
-    image: "assets/logos/labasenord.JPG",
+    image: "assets/venues/basenord-w1200.jpg",
     desc: "Une table conviviale et généreuse au cœur du Touquet. Un cadre chaleureux pour partager de bons moments, midi et soir.",
     info: { "Type": "Restaurant", "Adresse": "Le Touquet-Paris-Plage", "Ambiance": "Convivial" }
   },
@@ -87,7 +87,7 @@ const VENUES = [
     id: "caravane", name: "Caravane", year: 2022, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-vert", type: "Restaurant",
     tags: ["Restaurant", "Show", "Dj Set"],
-    image: "assets/logos/caravane 1.JPG",
+    image: "assets/venues/caravane-w1200.jpg",
     desc: "La dernière génération des tables du groupe : une cuisine voyageuse, une ambiance vivante et une terrasse pour profiter des beaux jours touquettois.",
     info: { "Type": "Restaurant", "Adresse": "73 rue de Metz, 62520 Le Touquet", "Ambiance": "Vivante · terrasse" }
   },
@@ -95,7 +95,7 @@ const VENUES = [
     id: "amour", name: "L’Amour", year: 2023, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-bordeaux", type: "Restaurant romantique", heart: true,
     tags: ["Romantique", "Dîner aux chandelles", "Nappe blanche"],
-    image: "assets/logos/AMOUR1.jpg",
+    image: "assets/venues/amour-w1200.jpg",
     desc: "L’adresse romantique du Touquet. Convivial le midi, intimiste le soir avec sa nappe blanche et ses dîners aux chandelles. Le lieu des grandes occasions et des déclarations.",
     info: { "Cuisine": "Romantique · soignée", "Adresse": "74 rue de Metz, Le Touquet", "Soir": "Dîner aux chandelles" }
   },
@@ -103,7 +103,7 @@ const VENUES = [
     id: "nonna", name: "La Nonna", year: 2023, dest: "letouquet", destLabel: "Le Touquet",
     theme: "t-cuivre", type: "Trattoria · Pizzeria napolitaine",
     tags: ["Italien", "Pizza & Pasta", "Aperitivo"],
-    image: "assets/logos/NONNA FEV-07.jpg",
+    image: "assets/venues/nonna-w1200.jpg",
     desc: "Une trattoria à l’italienne : pizza napolitaine signée le pizzaïolo Lucas, pasta maison et aperitivo. Au centre tennistique Pierre de Coubertin, rond-point des Sports.",
     info: { "Cuisine": "Italienne · napolitaine", "Horaires": "10h00 → 22h30", "Adresse": "Centre P. de Coubertin, rond-point des Sports" }
   },
@@ -120,7 +120,7 @@ const VENUES = [
     id: "tipi", name: "Tipi", year: 2024, dest: "meribel", destLabel: "Méribel",
     theme: "t-mountain", type: "Restaurant d’altitude · piste",
     tags: ["Altitude", "Bistronomie", "After-ski"],
-    image: "assets/logos/tipi.jpg",
+    image: "assets/venues/tipi-w1200.jpg",
     desc: "Sur la Piste de l’Aigle à Méribel-Mottaret, au cœur des 3 Vallées. Le chef Fabien François (ex-Robuchon, Alléno) signe une bistronomie et des spécialités montagnardes. After-ski festif et soirées du jeudi jusqu’à 23h30.",
     info: { "Chef": "Fabien François", "Lieu": "Piste de l’Aigle, Méribel-Mottaret", "Jeudi": "Soirées jusqu’à 23h30" }
   }
@@ -134,6 +134,14 @@ const LOGO_FILE = {
   amour: "amour", nonna: "nonna", tipi: "tipi", soleil: "soleil"
 };
 function logoSrc(v) { return `assets/logos/logo-${LOGO_FILE[v.id] || v.id}.png?v=2`; }
+
+/* La photo d'un établissement est affichée à trois endroits : la carte, le
+   diaporama de la destination Le Touquet et la fenêtre de détail. Il faut que
+   les trois demandent exactement la même URL, sinon le navigateur y voit trois
+   ressources distinctes et télécharge la photo trois fois. C'est ce qui se
+   passait : le diaporama omettait le ?v=2, ce qui doublait à lui seul près de
+   3 Mo au chargement. */
+function photoSrc(v) { return encodeURI(v.image) + "?v=2"; }
 
 /* ---------- Liens vers les pages Wix des établissements ----------
    Le site tourne dans une iframe github.io : un chemin relatif (/flavio) pointerait
@@ -157,9 +165,21 @@ function venueHref(v) {
 }
 
 /* ---------- Render venue cards ---------- */
-function venueCard(v) {
-  // loading="eager" : les photos se chargent immédiatement (pas de lazy qui cause des cartes sombres)
-  const media = v.image ? `<img class="card-media-img" src="${encodeURI(v.image)}?v=2" alt=""/>` : "";
+/* Nombre de cartes dont la photo est demandée tout de suite. Au-delà, on
+   diffère : la grille compte onze maisons, mais selon la largeur d'écran une
+   seule (mobile), deux ou trois sont visibles sans faire défiler. Charger les
+   onze avant le premier affichage retardait la page de plusieurs mégaoctets.
+   Quatre couvre la première rangée des trois dispositions.
+
+   C'est aussi la raison pour laquelle ces quatre-là restent en chargement
+   immédiat : un differé sur une carte déjà à l'écran la laisse sur son dégradé
+   de repli le temps que la photo arrive, ce qui donne l'impression d'une carte
+   éteinte. */
+const EAGER_CARDS = 4;
+
+function venueCard(v, i) {
+  const lazy = i >= EAGER_CARDS ? ' loading="lazy" decoding="async"' : "";
+  const media = v.image ? `<img class="card-media-img" src="${photoSrc(v)}"${lazy} alt=""/>` : "";
   const url = venueHref(v);
   const resaHref = `reserver.html?venue=${v.id}`;
 
@@ -387,7 +407,7 @@ function openVenue(id) {
   const overlay = document.getElementById("modal");
   overlay.querySelector(".modal").className = "modal " + v.theme;
   const visual = overlay.querySelector(".modal-visual");
-  visual.style.setProperty("--card-grad", v.image ? `url('${v.image}') center/cover no-repeat` : "");
+  visual.style.setProperty("--card-grad", v.image ? `url('${photoSrc(v)}') center/cover no-repeat` : "");
   overlay.querySelector(".modal-logo").src = logoSrc(v);
   overlay.querySelector(".modal-visual .mono").textContent = v.name;
   overlay.querySelector("#m-year").textContent = "Depuis " + v.year + " · " + v.destLabel;
@@ -738,6 +758,11 @@ function initBackTop() {
   });
 }
 
+/* État du pont de redimensionnement avec la page hôte.
+   "unknown" tant qu'on n'a pas tranché, "alive" si l'hôte suit la hauteur du
+   contenu, "dead" s'il garde un cadre de hauteur fixe. Voir checkBridge. */
+window.__lbhBridge = "unknown";
+
 function initAutoResize() {
   if (!window.parent || window.parent === window || typeof window.parent.postMessage !== 'function') return;
   let last = 0, scheduled = false;
@@ -773,33 +798,74 @@ function initAutoResize() {
     if (!img.complete) img.addEventListener('load', sendHeight, { once: true });
   });
   sendHeight();
+
+  /* ---- Filet de sécurité : et si personne n'écoute ? ----
+
+     Tout le comportement de la page dans Wix repose sur un accord : on envoie
+     notre hauteur, l'hôte redimensionne le cadre, et comme le cadre fait alors
+     la taille du contenu il n'a aucun défilement propre — d'où le relais de la
+     molette vers le parent et le recours à scrollIntoView pour les ancres.
+
+     Si l'hôte cesse de tenir sa part (code supprimé de l'éditeur Wix, section
+     remise à une hauteur fixe), le cadre reste court, le contenu déborde, et la
+     molette part au parent au lieu de faire défiler le cadre : tout ce qui est
+     sous la pliure devient inatteignable. Le pied de page, tout en bas, est le
+     premier à disparaître.
+
+     On ne peut pas interroger le parent, il est sur un autre domaine. Mais
+     notre propre fenêtre suffit : dans un cadre correctement redimensionné,
+     innerHeight vaut la hauteur du contenu. S'il reste beaucoup plus court, le
+     pont est rompu et on rend son défilement au cadre. */
+  const checkBridge = () => {
+    const h = measure();
+    if (!h) return;
+    // Marge large : arrondis, bordures de l'hôte, barres d'outils mobiles.
+    const alive = window.innerHeight >= h - 300;
+    window.__lbhBridge = alive ? "alive" : "dead";
+    document.documentElement.classList.toggle("frame-unresized", !alive);
+  };
+  // Après chargement, le temps que les images tardives aient fixé la hauteur.
+  window.addEventListener('load', () => setTimeout(checkBridge, 1500));
+  setTimeout(checkBridge, 5000);
 }
 
 /* ---------- Diaporama carte "Le Touquet" (photos des établissements) ---------- */
 function initDestSlideshow() {
   const card = document.querySelector(".dest-letouquet");
   if (!card) return;
-  const imgs = VENUES.filter(v => v.dest === "letouquet" && v.image).map(v => v.image);
+  const imgs = VENUES.filter(v => v.dest === "letouquet" && v.image).map(photoSrc);
   if (!imgs.length) return;
 
+  /* Les vignettes ne reçoivent leur src qu'au fur et à mesure du défilé, avec
+     une longueur d'avance. Les demander toutes à la construction faisait venir
+     l'intégralité des photos d'établissement dès le chargement — soit près de
+     3 Mo pour une image visible à la fois, et cela annulait le chargement
+     différé des cartes, qui utilisent exactement les mêmes fichiers. */
   const slides = document.createElement("div");
   slides.className = "dest-slides";
-  imgs.forEach((src, i) => {
+  const items = imgs.map((src, i) => {
     const img = document.createElement("img");
-    img.src = encodeURI(src);
     img.alt = "";
-    img.loading = "lazy";
+    img.dataset.src = src;
     if (i === 0) img.classList.add("on");
     slides.appendChild(img);
+    return img;
   });
   card.insertBefore(slides, card.firstChild);
 
-  const items = slides.querySelectorAll("img");
+  const fetchOne = n => {
+    const img = items[n % items.length];
+    if (!img.src) img.src = img.dataset.src;
+  };
+  fetchOne(0);
+  fetchOne(1);
+
   let i = 0;
   setInterval(() => {
     items[i].classList.remove("on");
     i = (i + 1) % items.length;
     items[i].classList.add("on");
+    fetchOne(i + 1); // la suivante est demandée pendant l'affichage de celle-ci
   }, 3200);
 }
 
@@ -823,9 +889,73 @@ window.addEventListener("load", () => requestAnimationFrame(_forceTop));
   const inIframe = () => { try { return window.self !== window.top; } catch(e) { return true; } };
   if (!inIframe()) return;
   window.addEventListener("wheel", function(e) {
+    /* Si l'hôte ne redimensionne plus le cadre (voir checkBridge), le cadre a
+       son propre défilement et c'est lui qu'il faut laisser faire : relayer la
+       molette au parent bloquerait le visiteur en haut de la page. */
+    if (window.__lbhBridge === "dead") return;
     try { window.parent.postMessage({ type: "lbh-wheel", deltaY: e.deltaY, deltaX: e.deltaX }, "*"); } catch(e2) {}
   }, { passive: true });
 })();
+
+/* ---------- Vidéos différées ----------
+   Une vidéo marquée preload="none" + data-src n'est téléchargée qu'une fois
+   proche de l'écran. Sans ça, une vidéo de section réclame ses mégaoctets en
+   même temps que celle du hero et retarde tout le premier affichage. La marge
+   de 300px lui laisse le temps d'arriver avant d'être vue ; l'affiche tient la
+   place entre-temps. */
+function initLazyVideo() {
+  const vids = document.querySelectorAll("video.lazy-video[data-src]");
+  if (!vids.length) return;
+
+  /* Deux verrous, parce qu'un seul ne suffit pas.
+
+     Le verrou de proximité (IntersectionObserver) ne sert à rien dans
+     l'embarquement Wix : l'iframe y est dimensionnée à la hauteur du contenu,
+     donc tout est « visible » dès le départ et l'observateur se déclenche
+     aussitôt pour toute la page.
+
+     Le verrou de temps couvre ce cas : on ne demande rien avant que la page
+     ait fini de charger. La vidéo du hero, qui est le même fichier, a alors
+     déjà sa requête en cours ou terminée, et celle-ci est servie par le cache
+     au lieu de repartir sur le réseau. */
+  let pageLoaded = document.readyState === "complete";
+  const wanted = new Set();
+
+  const start = v => {
+    if (v.dataset.started) return;
+    v.dataset.started = "1";
+    const s = document.createElement("source");
+    s.src = v.dataset.src;
+    s.type = "video/mp4";
+    v.appendChild(s);
+    v.load();
+    // play() peut être refusé (mode économie de données du navigateur) : la
+    // vidéo reste alors sur son affiche, ce qui est un repli acceptable.
+    v.play().catch(() => {});
+  };
+
+  const want = v => { wanted.add(v); if (pageLoaded) start(v); };
+
+  if (!pageLoaded) {
+    window.addEventListener("load", () => {
+      pageLoaded = true;
+      wanted.forEach(start);
+    });
+  }
+
+  // Sans IntersectionObserver (très anciens navigateurs), on s'en remet au
+  // seul verrou de temps plutôt que de laisser un cadre vide indéfiniment.
+  if (!("IntersectionObserver" in window)) { vids.forEach(want); return; }
+
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      want(e.target);
+      obs.unobserve(e.target);
+    });
+  }, { rootMargin: "300px 0px" });
+  vids.forEach(v => io.observe(v));
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   renderVenues();
@@ -840,6 +970,7 @@ document.addEventListener("DOMContentLoaded", () => {
   observeReveal();
   initCounters();
   initIllus();
+  initLazyVideo();
   loadEvents();
   initAutoResize();
   initBackTop();

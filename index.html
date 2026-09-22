@@ -101,11 +101,20 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero">
-    <!-- VIDÉO DE FOND : déposez assets/hero.mp4 et elle se lance automatiquement.
-         Sans fichier, le dégradé du hero reste affiché. -->
-    <video class="hero-video" autoplay muted loop playsinline poster="">
-      <source src="assets/logos/MONTAGE_GROUPE_v6.mp4" type="video/mp4" />
-    </video>
+    <!-- VIDÉO DE FOND. Sans fichier, le dégradé du hero reste affiché.
+
+         Elle est montrée à 55 % d'opacité sous un grain : elle n'a aucun besoin
+         d'être en 1080p, d'où la version 720p qui pèse 3,3 Mo au lieu de 19,6.
+
+         Elle n'est pas demandée pendant le chargement de la page : c'est
+         l'affiche, 25 Ko, qui s'affiche immédiatement, et la vidéo ne part
+         qu'une fois le reste arrivé (initLazyVideo dans app.js). Sinon ses
+         mégaoctets passent devant le texte et les photos, et la page reste
+         vide bien plus longtemps — c'était le principal responsable de la
+         lenteur sur téléphone. -->
+    <video class="hero-video lazy-video" muted loop playsinline preload="none"
+           poster="assets/logos/montage-groupe-poster.jpg"
+           data-src="assets/logos/montage-groupe-720.mp4"></video>
     <div class="hero-grain"></div>
     <div class="container hero-inner">
       <div class="hero-top">
@@ -116,7 +125,7 @@
       </h1>
       <p class="hero-sub">Sauf que dans nos restaurants, vous pouvez le faire en excellente compagnie — entouré de vos amis et sur les notes de la musique qu’on vous aura choisie.</p>
     </div>
-    <img class="illus illus-hero-seal" src="assets/illus/lbh_illu.png" alt="" aria-hidden="true" />
+    <img class="illus illus-hero-seal" src="assets/illus/lbh_illu-v2.png" decoding="async" alt="" aria-hidden="true" />
     <span class="hero-videonote">Vidéo immersive · à venir</span>
     <div class="scroll-cue"><span></span>Découvrir</div>
   </section>
@@ -135,7 +144,7 @@
 
   <!-- ============ ÉTABLISSEMENTS ============ -->
   <section class="section venues" id="etablissements" style="position:relative;overflow:hidden">
-    <img class="illus illus-pizza" src="assets/illus/pizza_illu.png" alt="" aria-hidden="true" />
+    <img class="illus illus-pizza" src="assets/illus/pizza_illu-v2.png" loading="lazy" decoding="async" alt="" aria-hidden="true" />
     <div class="container">
       <div class="section-head reveal">
         <span class="label sec-index">01 — Nos Établissements</span>
@@ -173,9 +182,15 @@
   <section class="section" id="groupe">
     <div class="container intro">
       <div class="intro-visual reveal">
-        <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-          <source src="assets/logos/MONTAGE_GROUPE_v6.mp4" type="video/mp4" />
-        </video>
+        <!-- Même montage que le hero. Sans preload="none", les deux lecteurs
+             réclament le fichier en même temps au chargement : le cache HTTP ne
+             les fusionne pas et il part deux fois. On ne le demande donc qu'au
+             moment où cette section approche de l'écran (voir initLazyVideo
+             dans app.js), le hero l'ayant alors déjà mis en cache. -->
+        <video class="lazy-video" muted loop playsinline preload="none"
+               poster="assets/logos/montage-groupe-poster.jpg"
+               data-src="assets/logos/montage-groupe-720.mp4"
+               style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
         <span class="vlabel">Des lieux, des histoires.</span>
       </div>
       <div class="reveal">
@@ -194,7 +209,7 @@
 
   <!-- ============ DESTINATIONS ============ -->
   <section class="section" id="destinations" style="position:relative;overflow:hidden">
-    <img class="illus illus-montagne" src="assets/illus/montagne_illu.png" alt="" aria-hidden="true" />
+    <img class="illus illus-montagne" src="assets/illus/montagne_illu-v2.png" loading="lazy" decoding="async" alt="" aria-hidden="true" />
     <div class="container">
       <div class="section-head reveal">
         <span class="label sec-index">03 — Nos Destinations</span>
@@ -216,8 +231,8 @@
 
   <!-- ============ ÉVÉNEMENTS ============ -->
   <section class="section events" id="evenements" style="position:relative;overflow:hidden">
-    <img class="illus illus-gorille" src="assets/illus/gorille_illu.png" alt="" aria-hidden="true" />
-    <img class="illus illus-vinyle" src="assets/illus/dj_illu.png" alt="" aria-hidden="true" />
+    <img class="illus illus-gorille" src="assets/illus/gorille_illu-v2.png" loading="lazy" decoding="async" alt="" aria-hidden="true" />
+    <img class="illus illus-vinyle" src="assets/illus/dj_illu-v2.png" loading="lazy" decoding="async" alt="" aria-hidden="true" />
     <div class="container">
       <div class="section-head reveal">
         <span class="label sec-index">04 — Événements &amp; Privatisations</span>
@@ -247,7 +262,7 @@
 
   <!-- ============ RÉSERVATION CTA ============ -->
   <section class="section" id="reservation" style="position:relative;overflow:hidden">
-    <img class="illus illus-cocktails" src="assets/illus/cocktails_illu.png" alt="" aria-hidden="true" />
+    <img class="illus illus-cocktails" src="assets/illus/cocktails_illu-v2.png" loading="lazy" decoding="async" alt="" aria-hidden="true" />
     <div class="container reserve-cta reveal">
       <span class="label sec-index" style="justify-content:center">05 — Réservation</span>
       <h2 class="big">Réservez votre table <em>en ligne</em></h2>
