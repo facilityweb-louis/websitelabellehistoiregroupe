@@ -124,7 +124,16 @@
 
   var OVERRIDES = [
     ':host { display: block; position: relative; isolation: isolate;',
-    '        background: #060606; color: #F5F0EB; overflow-x: hidden; }',
+    '        background: #060606; color: #F5F0EB; }',
+    /* clip, surtout pas hidden : dès qu'un axe vaut hidden, l'autre cesse
+       d'être visible et bascule en auto. L'hôte deviendrait alors une zone
+       défilante autonome, avec sa propre position de défilement que le
+       navigateur restaure au rechargement — le hero se retrouvait hors champ,
+       photo et logo compris. clip rogne sans jamais créer de défilement. */
+    /* .soleil-root hérite du overflow-x de body, repris tel quel de la page
+       autonome : il est neutralisé ici pour la même raison. */
+    ':host, .soleil-root { overflow-x: clip; }',
+    '@supports not (overflow: clip) { :host, .soleil-root { overflow-x: visible; } }',
     /* Le grain est limité au bloc Soleil au lieu de couvrir toute la page hôte. */
     '.soleil-root::before { position: absolute; }',
     '.scroll-progress { transition: opacity .3s; }',
@@ -155,8 +164,13 @@
 
         var mount = shadow.querySelector('.soleil-root');
         doc.body.querySelectorAll('script').forEach(function (s) { s.remove(); });
+        // Les adresses sont réécrites dans le document analysé, avant l'insertion.
+        // Un document issu de DOMParser est inerte : aucune requête n'en part.
+        // Insérer d'abord lancerait le chargement des six images sur le domaine
+        // Wix, où elles n'existent pas : six 404 à chaque ouverture, et autant
+        // de connexions prises à celles qui servent les vraies images.
+        absolutise(doc.body);
         mount.innerHTML = doc.body.innerHTML;
-        absolutise(mount);
 
         window.initSoleil(shadow, host);
         host.dispatchEvent(new CustomEvent('soleil-ready'));

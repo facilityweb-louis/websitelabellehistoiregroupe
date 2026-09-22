@@ -152,11 +152,8 @@
 
     // Les bandeaux défilants sont pilotés en JS pour réagir à la vitesse de scroll.
     var marqueeLoop = 0, tickerLoop = 0, marqueeX = 0, tickerX = 0;
-    var baseY = 0;
 
     function measure() {
-      // Position du conteneur dans le document hôte : origine de tous les calculs.
-      baseY = container.getBoundingClientRect().top + window.scrollY;
       if (marquee) marqueeLoop = marquee.scrollWidth / 3;
       if (ticker)  tickerLoop  = ticker.scrollWidth / 2;
       if (tickerX === 0) tickerX = -tickerLoop;
@@ -179,12 +176,24 @@
       velocity += (dy - velocity) * 0.18;
       if (Math.abs(velocity) < 0.01) velocity = 0;
 
-      // Défilement local : 0 quand le haut de la page Soleil touche le haut de l'écran.
-      var local = y - baseY;
+      // Défilement local : 0 quand le haut de la page Soleil touche le haut de
+      // l'écran. Mesuré à chaque image sur la position réelle du conteneur, et
+      // non une fois pour toutes au démarrage : sur Wix la mise en page bouge
+      // encore après l'insertion du bloc, et une origine figée trop tôt
+      // décalait le parallaxe jusqu'à sortir la photo de son cadre.
+      var cr    = container.getBoundingClientRect();
+      var local = -cr.top;
 
       checkReveals();
 
-      if (heroBg) heroBg.style.transform = 'translate3d(0, ' + (local * 0.32) + 'px, 0)';
+      // Le décalage n'est calculé que sur la plage où le hero est effectivement
+      // à l'écran. Au-delà il croîtrait sans fin et une valeur aberrante
+      // suffirait à pousser la photo hors de son cadre : ici elle est bornée.
+      if (heroBg) {
+        var heroH = heroBg.offsetHeight;
+        heroBg.style.transform = 'translate3d(0, ' +
+          (clamp(local, -window.innerHeight, heroH) * 0.32).toFixed(2) + 'px, 0)';
+      }
 
       if (showcase && showcaseBg) {
         var r = showcase.getBoundingClientRect();
@@ -196,7 +205,6 @@
 
       // Les éléments fixes ne doivent vivre que tant que la page Soleil est à l'écran,
       // sinon ils flottent par-dessus le reste de la page hôte.
-      var cr = container.getBoundingClientRect();
       var inView = cr.bottom > 80 && cr.top < window.innerHeight * 0.5;
 
       if (nav) {

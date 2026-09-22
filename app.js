@@ -114,7 +114,7 @@ const VENUES = [
     image: "assets/venues/soleil.jpg",
     comingSoon: true,
     desc: "Le nouveau club nocturne de La Belle Histoire Groupe au Touquet. Une adresse électrisante pour les nuits qui ne finissent pas.",
-    info: { "Concept": "Night-club", "Adresse": "Le Touquet-Paris-Plage", "Ouverture": "Prochainement" }
+    info: { "Concept": "Night-club", "Adresse": "26 rue Saint-Jean, Le Touquet-Paris-Plage", "Ouverture": "Prochainement" }
   },
   {
     id: "tipi", name: "Tipi", year: 2024, dest: "meribel", destLabel: "Méribel",
@@ -145,6 +145,7 @@ const VENUE_URL = {
   flavio: "/flavio", impasse: "/limpasse", plage: "/plagedespirates",
   marcel: "/lemarcel", atelier: "/latelierephemere", basenord: "/labasenord",
   caravane: "/caravane", amour: "/lamour", nonna: "/la-nonna",
+  soleil: "/soleil",
   tipi: "https://www.tipi-meribel.com"
 };
 function venueHref(v) {
@@ -164,6 +165,11 @@ function venueCard(v) {
 
   // Carte "Ouverture prochaine"
   if (v.comingSoon) {
+    // Une maison pas encore ouverte peut déjà avoir sa page : on propose alors
+    // de la découvrir plutôt que d'afficher une mention inerte.
+    const soonAction = VENUE_URL[v.id]
+      ? `<a class="mini line" href="${url}" target="_blank" rel="noopener">Découvrir</a>`
+      : `<span class="mini line" style="opacity:.5;pointer-events:none;cursor:default">Ouverture prochaine</span>`;
     return `
     <article class="card ${v.theme} card-coming-soon" data-dest="${v.dest}" data-id="${v.id}" aria-label="${v.name}">
       ${media}
@@ -174,7 +180,7 @@ function venueCard(v) {
         <p class="c-type">${v.type}</p>
         <div class="c-tags">${v.tags.map(t => `<span>${t}</span>`).join("")}</div>
         <div class="c-actions">
-          <span class="mini line" style="opacity:.5;pointer-events:none;cursor:default">Ouverture prochaine</span>
+          ${soonAction}
         </div>
       </div>
     </article>`;
@@ -226,6 +232,7 @@ const MAP_LATLNG = {
   flavio:   [50.52169, 1.59229],  // 1 av. du Verger — Club de la Forêt
   plage:    [50.52039, 1.57974],  // Bd de la Plage — la digue
   nonna:    [50.51857, 1.59501],  // rond-point des Sports — P. de Coubertin
+  soleil:   [50.52418, 1.58397],  // 26 rue Saint-Jean
   tipi:     [45.37379, 6.58096]   // Piste de l'Aigle — Méribel-Mottaret, 73550
 };
 
