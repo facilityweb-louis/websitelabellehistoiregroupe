@@ -1,16 +1,16 @@
 {
   "updated": "2026-09-22",
   "semaine": "2026-W39",
-  "sources": ["Planning DJs (Google Sheet)", "Planning artistes Rose Music (Excel)"],
+  "sources": ["Régie Booking (portail interne)"],
   "events": [
-    { "venue": "L'Impasse", "artiste": "julien", "date": "2026-09-23", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Shark", "date": "2026-09-23", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
     { "venue": "L'Impasse", "artiste": "Lil'B", "date": "2026-09-24", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
     { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-25", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · FANNY + LEO ALRIC", "date": "2026-09-25", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "julien · FANNY + LEO ALRIC", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "Caravane", "artiste": "Storm · Leo Alric", "date": "2026-09-25", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Milan Tavares", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "Flow · Leo Alric", "date": "2026-09-26", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
     { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-27", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "FANNY", "date": "2026-10-02", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "Caravane", "artiste": "FANNY", "date": "2026-10-03", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" }
+    { "venue": "Caravane", "artiste": "Julien", "date": "2026-10-01", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "Caravane", "artiste": "Julien", "date": "2026-10-02", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" }
   ]
 }
