@@ -2,10 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "lbh-evenements",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "4325", "."],
-      "port": 4325
+      "name": "lbh-site",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/louisfontaine/Documents/labellehistoiregroupe && python3 -m http.server 4324"],
+      "port": 4324,
+      "autoPort": false
     }
   ]
 }
