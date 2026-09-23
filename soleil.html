@@ -796,6 +796,39 @@
     <span class="footer-copy">© 2026 Soleil · La Belle Histoire Groupe</span>
   </footer>
 
+  <script>
+    /* Une image qui échoue laisse un cadre vide et son texte de remplacement à
+       la place du logo. Le serveur, lui, répond bien : l'échec vient du réseau,
+       d'un cadre Wix lent à démarrer ou d'un onglet réveillé trop tôt. Chrome
+       garde alors l'échec en mémoire pour toute la vie de la page, et l'image
+       ne repart jamais d'elle-même.
+
+       On lui redonne donc une chance, deux secondes plus tard, avec une adresse
+       légèrement différente : sans ce détail la requête ne serait pas rejouée.
+       Deux essais, puis on s'arrête. Quand tout va bien, ce code ne fait rien. */
+    (function () {
+      var ESSAIS = 2;
+      function reessayer(img) {
+        // Une img encore vide pointe sur la page elle-même : la relancer ferait
+        // télécharger le HTML en guise de photo.
+        var attr = img.getAttribute('src');
+        if (!attr || !attr.trim()) return;
+        var n = +(img.dataset.reessais || 0);
+        if (n >= ESSAIS) return;
+        img.dataset.reessais = n + 1;
+        var base = img.src.split('#')[0].replace(/[?&]_r=\d+/, '');
+        setTimeout(function () {
+          img.src = base + (base.indexOf('?') < 0 ? '?' : '&') + '_r=' + (n + 1);
+        }, 2000 * (n + 1));
+      }
+      document.querySelectorAll('img').forEach(function (img) {
+        img.addEventListener('error', function () { reessayer(img); });
+        // L'erreur a pu survenir avant que l'écouteur soit posé.
+        if (img.complete && img.naturalWidth === 0) reessayer(img);
+      });
+    })();
+  </script>
+
   <script src="soleil-engine.js"></script>
   <script>initSoleil(document, document.body);</script>
 </body>

@@ -897,6 +897,43 @@ window.addEventListener("load", () => requestAnimationFrame(_forceTop));
   }, { passive: true });
 })();
 
+/* ---------- Images : une seconde chance ----------
+   Une image qui échoue laisse un cadre vide et son texte de remplacement. Le
+   serveur, lui, répond bien : l'échec vient du réseau, d'un cadre Wix lent à
+   démarrer ou d'un onglet réveillé trop tôt. Le navigateur garde alors cet
+   échec en mémoire pour toute la vie de la page, et l'image ne repart jamais
+   d'elle-même.
+
+   On la relance donc deux fois, en espaçant, avec une adresse légèrement
+   différente : sans ce détail la requête ne serait pas rejouée. L'écoute se
+   fait sur le document en phase de capture, car error ne remonte pas : les
+   photos ajoutées en cours de route — fiches, diaporama — en profitent aussi.
+   Quand tout va bien, ce code ne fait rien. */
+function initImageRetry() {
+  const ESSAIS = 2;
+  const relancer = img => {
+    // Une img encore vide — emplacement du diaporama, logo d'une fiche pas
+    // encore ouverte — pointe sur la page elle-même : la relancer ferait
+    // télécharger le HTML en guise de photo.
+    const attr = img.getAttribute("src");
+    if (!attr || !attr.trim()) return;
+    const n = +(img.dataset.reessais || 0);
+    if (n >= ESSAIS) return;
+    img.dataset.reessais = n + 1;
+    const base = img.src.split("#")[0].replace(/[?&]_r=\d+/, "");
+    setTimeout(() => {
+      img.src = base + (base.indexOf("?") < 0 ? "?" : "&") + "_r=" + (n + 1);
+    }, 2000 * (n + 1));
+  };
+  document.addEventListener("error", e => {
+    if (e.target && e.target.tagName === "IMG") relancer(e.target);
+  }, true);
+  // Certaines auront déjà échoué avant que l'écouteur soit posé.
+  document.querySelectorAll("img").forEach(img => {
+    if (img.complete && img.naturalWidth === 0) relancer(img);
+  });
+}
+
 /* ---------- Vidéos différées ----------
    Une vidéo marquée preload="none" + data-src n'est téléchargée qu'une fois
    proche de l'écran. Sans ça, une vidéo de section réclame ses mégaoctets en
@@ -970,6 +1007,7 @@ document.addEventListener("DOMContentLoaded", () => {
   observeReveal();
   initCounters();
   initIllus();
+  initImageRetry();
   initLazyVideo();
   loadEvents();
   initAutoResize();
