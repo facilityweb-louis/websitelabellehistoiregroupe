@@ -1,13 +1,19 @@
 {
-  "updated": "2026-09-28",
-  "semaine": "2026-W40",
+  "updated": "2026-11-12",
+  "semaine": "2026-W46",
   "sources": ["Régie Booking (portail interne)"],
   "events": [
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-09-30", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "Julien · Mathilde", "date": "2026-10-01", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-10-01", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-10-02", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
-    { "venue": "Caravane", "artiste": "Julien · Elyos", "date": "2026-10-02", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
-    { "venue": "Caravane", "artiste": "Flow · Elyos", "date": "2026-10-03", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" }
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-12", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "Julien · Antoine Selman", "date": "2026-11-13", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-13", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "Julien · Antoine Selman", "date": "2026-11-14", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-14", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-18", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Shark", "date": "2026-11-19", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "Julien · Beryl", "date": "2026-11-20", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-20", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "L'Impasse", "artiste": "Flow", "date": "2026-11-21", "heure": "", "url": "https://www.instagram.com/limpasse_letouquet/" },
+    { "venue": "Caravane", "artiste": "Julien · Beryl", "date": "2026-11-21", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" },
+    { "venue": "Caravane", "artiste": "Julien · Antoine Selman", "date": "2026-11-23", "heure": "", "url": "https://www.instagram.com/restaurantcaravane/" }
   ]
 }
